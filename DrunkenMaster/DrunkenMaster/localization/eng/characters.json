@@ -1,0 +1,16 @@
+{
+  "DRUNKENMASTER-DRUNKEN_MASTER.title": "The Drunken Master",
+  "DRUNKENMASTER-DRUNKEN_MASTER.titleObject": "The Drunken Master",
+  "DRUNKENMASTER-DRUNKEN_MASTER.description": "Brews drinks mid-fight and then drinks them.\nSober is when you brew. Drunk is when you spend.",
+  "DRUNKENMASTER-DRUNKEN_MASTER.pronounObject": "him",
+  "DRUNKENMASTER-DRUNKEN_MASTER.pronounSubject": "he",
+  "DRUNKENMASTER-DRUNKEN_MASTER.pronounPossessive": "his",
+  "DRUNKENMASTER-DRUNKEN_MASTER.possessiveAdjective": "his",
+  "DRUNKENMASTER-DRUNKEN_MASTER.aromaPrinciple": "[sine][red]One more round. Then we climb.[/red][/sine]",
+  "DRUNKENMASTER-DRUNKEN_MASTER.banter.alive.endTurnPing": "Drink up.",
+  "DRUNKENMASTER-DRUNKEN_MASTER.banter.dead.endTurnPing": "...",
+  "DRUNKENMASTER-DRUNKEN_MASTER.eventDeathPrevention": "Not before last call.",
+  "DRUNKENMASTER-DRUNKEN_MASTER.goldMonologue": "[sine]That'll cover the tab. Most of it.[/sine]",
+  "DRUNKENMASTER-DRUNKEN_MASTER.cardsModifierTitle": "Drunken Master Cards",
+  "DRUNKENMASTER-DRUNKEN_MASTER.cardsModifierDescription": "Drunken Master cards will now appear in rewards and shops."
+}

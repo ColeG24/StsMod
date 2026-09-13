@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+._*
+
+# Local toolchain (MegaDot editor binary, ~380MB)
+tools/
+
+# Godot
+.godot/
+*.translation
+export_credentials.cfg
+.mono/
+data_*/
+mono_crash.*.json
+
+# .NET / build output
+bin/
+obj/
+publish/
+packages/
+*.user
+*.suo
+TestResults/
+
+# IDEs
+.idea/
+.vs/
+.vscode/
+*.DotSettings.user
+
+# Machine-specific paths (GodotPath / Sts2Path)
+Directory.Build.props
+
+# Claude Code local settings
+.claude/settings.local.json

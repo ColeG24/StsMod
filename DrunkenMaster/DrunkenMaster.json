@@ -1,0 +1,14 @@
+﻿{
+  "id": "DrunkenMaster",
+  "name": "The Drunken Master",
+  "author": "Cole",
+  "description": "A brewer who fights by mixing drinks mid-combat and drinking them. Vertical slice: starter deck, Tavern Rag, Ingredients, Brew, Intoxication.",
+  "version": "v0.1.0",
+  "min_game_version": "0.107.0",
+  "has_pck": true,
+  "has_dll": true,
+  "dependencies": [
+    {"id": "BaseLib", "min_version": "3.4.7"}
+  ],
+  "affects_gameplay": true
+}

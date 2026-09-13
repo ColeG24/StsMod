@@ -1,0 +1,344 @@
+# The Drunken Master — Character Spec v0.2
+
+Target: STS2 character mod, BaseLib 3.4.7+, game version 0.111 (beta branch).
+Status: this document describes **what is built** as of 2026-09-13, plus the open design questions.
+Where the code and an older decision disagree, the code wins and the change is dated inline.
+Build notes, gotchas and file locations live in `DrunkenMaster/DEV_NOTES.md`.
+
+---
+
+## 1. Concept in one paragraph
+
+The Drunken Master fights by brewing drinks mid-combat and then drinking them. Playing
+**Ingredient** cards fills a **Brew** (a 3-slot pot). When the pot is full it automatically seals
+into a **Concoction** — a real potion that goes into a potion slot, composed of the three
+ingredients' effects stacked. Brewing **Ethanol** into a potion and drinking it grants
+**Intoxication**, a banded resource that powers his payoff cards and, at high bands, randomizes card
+costs. Sober is when you brew; drunk is when you spend. The two halves of the character deliberately
+can't run at the same time.
+
+---
+
+## 2. Character stats
+
+| Property | Value |
+|---|---|
+| `StartingHp` | 72 |
+| Potion slots | 5 (3 base + 2 from Tavern Rag on pickup; the game hard-codes 3 with no character override) |
+| `Gender` | Masculine |
+| Starting relic | Tavern Rag |
+| Base class | `PlaceholderCharacterModel`; own static combat sprite, select portrait and head icon; rest site / merchant / energy counter still Ironclad placeholders |
+
+Base-game comparison (decompiled 0.111): Ironclad 80, Defect 75, Regent 75, Silent 70, Necrobinder 66.
+
+---
+
+## 3. Starting deck (10 cards)
+
+| # | Card | Type | Cost | Text | Upgraded |
+|---|---|---|---|---|---|
+| 4 | Strike | Attack | 1 | Deal 6 damage. | Deal 9 damage. |
+| 4 | Defend | Skill | 1 | Gain 5 Block. | Gain 8 Block. |
+| 1 | Free Pour | Skill | 1 | Gain 5 Block. Add a random Ingredient into your hand. | Gain 8 Block. Choose 1 of 3 Ingredients instead. |
+| 1 | Hard Liquor | Attack | 2 | Deal 12 damage. Add an Ethanol into your hand. | Deal 16 damage. The Ethanol is Upgraded. |
+
+Notes:
+- Hard Liquor is the Bash slot. It is the starter deck's **only** Intoxication source, and only
+  indirectly: the Ethanol has to be brewed and the potion drunk.
+- Liquid Courage was the starting Intoxication card until 2026-09-12; it is now a Common.
+- Free Pour's 1-of-3 choice moved to the upgrade on 2026-09-12 so the base card stays quick.
+
+**Starting relic — Tavern Rag:** At the start of combat, add 1 random Ingredient into your hand.
+Upon pickup, gain 2 potion slots.
+
+Changed 2026-09-12 from "every turn" to "start of combat" — **decided**: every turn was judged too
+strong and stepped on Still and Bar Tab. Known consequence (2026-09-13 review): the starter deck
+generates roughly one Ingredient per turn and seals its first potion around turn 3, so Act 1 hallway
+fights show little of the engine. The 2026-09-13 Common batch (attacks that brew) is the intended fix,
+not a Rag change.
+
+---
+
+## 4. The Brew system
+
+### Rules
+
+1. **Brew** is a pot with a **capacity of 3**, visible in combat UI above the draw pile.
+   Capacity is per player and clamped to 1–5: Stockpot adds 1 per stack, Shot Glass removes 1.
+2. Playing an Ingredient card adds its effect to the Brew. Ingredients have **no immediate effect**.
+3. When the pot reaches capacity it **automatically seals** into a Concoction and empties.
+4. The Concoction goes into a free potion slot. **If there is no free slot, the Brew holds at
+   capacity and refuses further Ingredients** until a slot frees up. The refused Ingredient is still
+   played (and Exhausts). The blocked state is logged; there is no dedicated UI for it yet.
+5. The Brew **does not survive combat.** Unsealed Ingredients are lost at end of combat.
+6. There is no manual seal/bottle command.
+
+### Expiry
+
+A Concoction still held when combat ends becomes **Dregs** in the same slot: a stateless, combat-only
+potion that, when drunk, lets you choose 1 of 3 Ingredients to add to your **hand**. This keeps brewed
+potions from being banked for bosses and removed the per-instance persistence problem (§8).
+
+### Concoction composition
+
+The Concoction's effects are the **additive sum** of its Ingredients. No recipe table. The potion's
+description is the Ingredient brew texts stacked, with duplicates collapsed by (Ingredient, upgraded):
+Rotgut + Rotgut + Muddle reads *"Deal 10 damage. Gain 4 Block."*
+
+Two Ingredients modify the others instead of adding an effect:
+- **Everclear**: the other Ingredients trigger twice (Upgraded: three times). Stacks additively.
+- **Seltzer**: enemy-facing effects hit ALL enemies. Upgraded: self-facing buffs also reach every ally.
+
+### Targeting
+
+- Effects resolve to their **natural recipient**: damage and debuffs to the target, Block and buffs
+  to the drinker.
+- A Concoction is **targeted** if it contains any enemy-facing Ingredient, **untargeted** otherwise.
+  `TargetType` is **per-instance, not per-model**.
+- Brewed potions never *target* an ally. Seltzer+ is the single exception that *splashes* buffs to
+  allies (added 2026-09-12; the original "no ally-facing effects ever" rule was relaxed for it).
+
+---
+
+## 5. Ingredient tokens
+
+Ingredients are **generated token cards**, not cards you draft into your deck.
+
+| Property | Value |
+|---|---|
+| Cost | 0 |
+| Type | Skill, rarity Token |
+| Keywords | Exhaust, Ethereal |
+| On play | Adds its effect to the Brew. No immediate effect. |
+| End of turn | Unplayed Ingredients Exhaust (Ethereal). |
+| Generation | Only by the mod's own generators. Never by "add a random card" effects. |
+| Upgrades | Real `OnUpgrade`s. Top Shelf (Ancient Power) upgrades every Ingredient you create; Restock+ / Hard Liquor+ / Sour Punch+ / Mash+ / Wake-Up Call+ hand out Upgraded ones. |
+
+Random pool (9; the original plan was 5 "for learnability" — grew on 2026-09-12):
+
+| Ingredient | Effect contributed | Upgraded | Enemy-facing |
+|---|---|---|---|
+| Rotgut | Deal 5 damage. | 8 | yes |
+| Muddle | Gain 4 Block. | 7 | no |
+| Bitters | Apply 1 Vulnerable. | 2 | yes |
+| Wormwood | Apply 1 Weak. | 2 | yes |
+| Hair of the Dog | Draw 1 card. | 2 | no |
+| Grain Spirit | Gain 1 Energy. | 2 | no |
+| Ethanol | Gain 2 Intoxication. | 3 | no |
+| Everclear | Other Ingredients trigger twice. | three times | — |
+| Seltzer | Brew hits ALL enemies. | also buffs reach allies | — |
+
+Because they're free tokens, they can be pure pot-fillers with no immediate payoff — the usual
+"cards that do nothing on play are a tempo hole" rule doesn't apply to cards that cost no energy
+and no deck slot. Ingredients in the exhaust pile are a resource (Leftovers, Empties, Scrape the Barrel).
+
+---
+
+## 6. Intoxication
+
+A BaseLib **CustomResource** (not a power, not a keyword), shown as a dial above the character with
+the band name under it. Cards can **cost** Intoxication (`SetCanonicalCost` / `SetXCost`); unaffordable
+ones are greyed out and the cost badge shows the price.
+
+| Rule | Value |
+|---|---|
+| Gain | Ethanol (+2, +3 upgraded, when the potion containing it is drunk) and specific cards. **Drinking a potion grants nothing by itself** (2026-09-12). |
+| Decay | 1 at the start of your turn. Decay and per-turn sources (Bar Tab, Nightcap) are summed and applied as **one** change after the energy reset and before the draw, so the band never flickers and drawn cards see the real band. |
+| Persistence | Resets at end of combat. |
+| Max | 12 (Blackout). |
+
+### Bands (4 / 8 / 12 — **decided** 2026-09-12; the v0.1 plan of 3 / 6 / 9 was rejected as too easy)
+
+| Band | Range | Effect |
+|---|---|---|
+| Sober | 0–3 | No effect. (Steady Hands is the only Sober-gated card.) |
+| Tipsy | 4–7 | Your card Attacks deal +2 damage; your cards give +2 Block. |
+| Drunk | 8–11 | Also: cards you draw get a random cost 0–3 **for this turn**. Entering Drunk re-rolls the hand. Dropping below Drunk restores the costs. |
+| Blackout | 12 | See below. |
+
+Every band change shows a full-screen banner and pops the dial.
+
+Cost randomization is "this turn only" (2026-09-12; was "until played"). The deliberate structural
+tension stands: randomized costs sabotage the brew engine, so you accumulate sober, cash out drunk,
+sober up, repeat.
+
+### Blackout
+
+**Automatic** (changed from the v0.1 "player may trigger" rule): if you are at 12 at the end of your
+turn, Blackout fires.
+
+- Plays the top **3** cards of your draw pile.
+- **Exhausts your hand** instead of discarding it.
+- Resets Intoxication to 0.
+- Applies **Hungover** for the next turn only: 1 less Energy, draw 1 fewer card, per stack.
+  Hungover is a counter, so a second Blackout in the same combat stacks it.
+
+Design note kept from v0.1: the auto-trigger risk is that every point of Intoxication becomes a step
+toward a turn you didn't want. Mitigated so far by the high threshold and by 1/turn decay; revisit if
+players start avoiding potions.
+
+---
+
+## 7. Card pool (as built, 2026-09-13)
+
+Totals: 4 Basic, 20 Common, 14 Uncommon, 11 Rare, 1 Ancient = 50 (target 88: 4 / 20 / 36 / 26 / 2).
+Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication cost.
+
+### Common (20)
+
+| Card | Type | Cost | Text |
+|---|---|---|---|
+| Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +2 for each Intoxication. |
+| Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak. |
+| Hurl | Attack | 0 + 3 Intox | Deal 14 (18) damage. |
+| Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. |
+| Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. |
+| Mash | Attack | 1 | Deal 6 (9) damage. Add a Muddle (+) into your hand. |
+| Wake-Up Call | Attack | 1 | Deal 10 (12) damage. Add a Hair of the Dog (+) into your hand. |
+| Stir the Pot | Attack | 1 | Deal 7 (10) damage. Draw 1 card for each Ingredient in your Brew. |
+| Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
+| Knock One Back | Skill | 0 | Gain 2 (3) Intoxication. Draw 1 card. |
+| Chug | Skill | 1 | Gain 5 (8) Block, +1 for each Intoxication. |
+| Cold Water | Skill | 1 + 2 Intox | Gain 9 (12) Block. |
+| Sway | Skill | 1 + 1 Intox | Gain 8 (11) Block. Draw 1 (2). |
+| Pick-Me-Up | Skill | 0 + 3 Intox | Gain 1 (2) Energy. |
+| Beer Jacket | Skill | 2 | Gain 2 (3) Intoxication, then 12 (16) Block. |
+| Nightcap | Skill | 1 | Gain 1 Intoxication. Next turn, gain 3 (4). |
+| Leftovers | Skill | 1 | Exhaust (upgrade removes). Gain 4 (7) Block. Put an Ingredient from your exhaust pile into your hand. |
+| Restock | Skill | 1 | Add 2 random (Upgraded) Ingredients into your hand. |
+| Distill | Skill | 1 (0) | Transform a card in your hand into a random Ingredient. |
+| Slip a Mickey | Skill | 1 | Apply 1 (2) Weak. Gain 5 (8) Block. Add a Wormwood into your hand. |
+
+### Uncommon (14)
+
+| Card | Type | Cost | Text |
+|---|---|---|---|
+| Boilermaker | Attack | 2 | Deal 14 (20) damage. Add a Bitters and a Wormwood into your hand. |
+| Molotov | Attack | 2 | Gain 3 Intoxication, then deal 12 (16) damage to ALL enemies. |
+| Empties | Attack | 1 | Deal 8 damage, +1 (+2) for each Ingredient in your exhaust pile. |
+| Staggering Blow | Attack | 2 | Deal 15 (20) damage. Gain 1 (2) Block for each Intoxication. |
+| Bouncer | Skill | 3 | Gain 13 (17) Block. Costs 1 less for each Ingredient played this turn. |
+| Sweat It Out | Skill | X Intox | Gain 2 (3) Block for each Intoxication spent. |
+| Line 'Em Up | Skill | 0 | Exhaust. Gain 1 Energy for each Ingredient in your hand. (Upgrade: Retain.) |
+| Bar Tab | Power | — | At the start of your turn, gain 1 (2) Intoxication. |
+| Iron Liver | Power | — | Whenever you drink a potion, gain 3 (5) Block. |
+| Steady Hands | Power | — | While Sober, whenever you play an Ingredient, draw 1 card. |
+| Beer Muscles | Power | 1 | Whenever you drink a potion, gain 1 Strength. (Upgrade: Innate.) |
+| Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
+| Stockpot | Power | — | Your Brew holds 1 more Ingredient. |
+| Shot Glass | Power | — | Your Brew holds 1 fewer Ingredient. Gain 2 (3) Strength and Dexterity. |
+
+### Rare (11)
+
+Still, Last Round (X Intox: 6 (8) damage X times), Drunken Fist (8 (10) damage, hits once more per
+band above Sober), Open Bar (fill the Brew with random Ingredients), Cellar Raid (3 (2), Exhaust:
+fill your hand with random Ingredients), Lights Out, Last Call, Chaser (next potion drunk twice),
+Dutch Courage (+1 (2) Strength whenever your band goes up), Moonshiner (+2 Energy whenever the Brew
+seals), Bottomless Cup (+1 Energy and draw 1 whenever you drink a potion).
+
+Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**
+(Lasting Candy gotcha, see DEV_NOTES). No Harmony patches on base-game relics — fix content instead.
+
+### Ancient (1)
+
+Top Shelf (Power, 2 (1), Innate): your Ingredients are Upgraded. Required: Darv's Ancient event
+crashes without an Ancient-rarity card in the pool.
+
+---
+
+## 8. Benchmarks to build against
+
+Decompiled from 0.111. Every base character has exactly 20 Commons, none of them Powers, none of
+them unplayable without a resource.
+
+- 1-cost Common attack: **8–10 damage** single-target with a rider, ~6–9 AoE. Basic Strike is 6.
+- 1-cost Common block: **6–9** with a rider. Basic Defend is 5.
+- Common attack share: Ironclad 13/20, Defect 12, Necrobinder 12, Silent 9, Regent 9.
+- Every base pool has 3–5 Common draw cards.
+- Upgrade deltas: attacks +2/+3 at 1 cost; block +3 almost universally.
+- Full pool: 4 Basic + 20 Common + 36–38 Uncommon + 27 Rare + 2 Ancient ≈ 90.
+- **A potion-generating character's cards should sit slightly under benchmark** — potion output is
+  entirely off the energy budget. "Slightly under" means under the Common benchmark, not under the
+  basic Strike/Defend.
+
+Review findings (2026-09-13) that drove the 2026-09-13 batch: the Common pool was 4 Attacks / 10
+Skills with 5 of 14 gated on Intoxication, one ungated single-target attack, and no draw. The batch
+added five ungated attacks (three of which brew), a draw attack, a 0-cost Intoxication source, and a
+cost-reducing block card, and raised Liquid Courage to +2 so it is net positive against decay.
+
+---
+
+## 9. Technical notes
+
+### Stack
+- Godot 4.5 (MegaDot 4.5.1-m.14) / .NET 9 / HarmonyX / first-party loader (`MegaCrit.Sts2.Core.Modding`)
+- BaseLib v3.4.7+ (`Alchyr.Sts2.BaseLib`), Workshop id 3737335127
+
+### Classes used
+| Thing | Base class |
+|---|---|
+| Character | `PlaceholderCharacterModel` |
+| Cards, Ingredient tokens | `CustomCardModel` via `DrunkenMasterCard` (carries the `[Pool]` attribute) |
+| Concoction, Dregs | `CustomPotionModel` |
+| Character potion pool | `CustomPotionPoolModel` |
+| Card pool | `CustomCardPoolModel` |
+| Tavern Rag | `CustomRelicModel` |
+| Powers (Hungover, Bar Tab, …) | `CustomPowerModel` |
+| Intoxication | `CustomResource` (auto-registered by BaseLib) |
+| Brew zone | static `BrewSystem` keyed on `PlayerCombatState` via `SpireField`; drawn by `NBrewDisplay` |
+| Band effects, Blackout | `CustomSingletonModel(HookType.Combat)` |
+
+### Constraints
+- Registration is **reflection-based**; the ID slug derives from the class name
+  (`LiquidCourage` → `LIQUID_COURAGE`). There is no "register card" call.
+- Canonical model instances are **immutable**, guarded by `AssertMutable()`.
+- Anything numbered (Intoxication) must be a resource/power/DynamicVar with a tooltip; BaseLib
+  keywords are numberless single words.
+- `dotnet publish` (not `build`) is required for **any** change to text, images, scenes, or
+  localization.
+- `ancients.json` is required or the project won't compile.
+- Multiplayer: `affects_gameplay: true`.
+
+### Per-instance state (resolved 2026-09-12)
+
+A Concoction's Ingredient list, description and `TargetType` are composed at runtime via `SpireField`.
+Rather than round-trip that through the save file, Concoctions are **combat-scoped**: anything still in
+a slot at end of combat becomes stateless Dregs. Nothing with per-instance data crosses a save.
+Co-op sync of the composed description is untested.
+
+---
+
+## 10. Open questions (do not guess — flag and ask)
+
+1. **Sober band bonus.** Still none. Sober should be actively *better* at brewing so both ends of the
+   dial are somewhere you want to be. Candidates: generated Ingredients offered as "choose 1 of 2"
+   while Sober (answers Q4 too), pot capacity +1, Ingredients draw. Unresolved.
+2. **Full-slot overflow.** The Brew holds and blocks. Consider a softening effect (e.g. gain Block
+   instead of stalling) since sitting at full slots will be a common state. Unresolved.
+3. **Matching-ingredient bonus.** Three of the same Ingredient producing an amplified potion. This is
+   what makes mixed potions a consolation prize rather than a design failure. Decide before the pool
+   grows further.
+4. **Ingredient selection.** Partly answered: Free Pour+ and Dregs are choose-1-of-3; Hard Liquor,
+   Slip a Mickey, Sour Punch, Mash, Wake-Up Call and Boilermaker grant specific Ingredients. The
+   random generators (Rag, Restock, Still, Open Bar, Cellar Raid) stay random.
+5. **Blackout card source.** Decided: draw pile.
+6. **Decay vs. gain math.** Decided: direct sources grant 2–3 (Liquid Courage 2, Beer Jacket 2,
+   Knock One Back 2, Molotov 3, Nightcap 1 + 3). Bar Tab at 1/turn is net zero and probably needs
+   to be 2 base.
+7. **Potion slot count.** Decided: relic fallback (Tavern Rag +2 on pickup). A Harmony patch on
+   `Player` construction is the alternative if Neow relic swaps prove awkward.
+8. **Band thresholds.** Decided: 4 / 8 / 12. Drunk and Blackout are rarely reached before Act 2
+   under the current Common economy; that is accepted for now, revisit only with playtest data.
+9. **Tavern Rag cadence.** Decided: once per combat (§3).
+10. **Bouncer's rarity.** Decided: Uncommon (2026-09-13).
+
+---
+
+## 11. Milestones
+
+1. ~~Playable run on vanilla art with the starter deck, Rag, Ingredients, Brew, Intoxication, Concoction.~~
+2. ~~Persistence spike.~~ Resolved by combat-scoped Concoctions.
+3. **Current:** fill the pool toward 20 / 36 / 26 / 2 with the §8 benchmarks; gated cards
+   (Sober-only / Tipsy+ / Drunk+ / Hungover-only); a real Intoxication icon; card art for the
+   2026-09-12 and 2026-09-13 batches.
+4. Resolve §10 items 1, 3, 8 and 9 through playtesting.
