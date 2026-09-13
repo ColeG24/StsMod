@@ -167,6 +167,8 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     {
         if (card.EnergyCost.Canonical < 0) return;   // X-cost / no cost
         int cost = player.RunState.Rng.CombatEnergyCosts.NextInt(4);
+        // Tolerance (Rare Power): the roll can only match or lower the card's current cost.
+        if (player.Creature?.HasPower<Powers.TolerancePower>() == true) cost = Math.Min(cost, card.EnergyCost.GetResolved());
         card.EnergyCost.SetThisTurn(cost);
         Get(player)?._randomizedThisTurn.Add(card);
         NCard.FindOnTable(card)?.PlayRandomizeCostAnim();

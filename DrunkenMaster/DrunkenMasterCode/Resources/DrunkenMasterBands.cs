@@ -21,6 +21,12 @@ namespace DrunkenMaster.DrunkenMasterCode.Resources;
 /// </summary>
 public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
 {
+    /// <summary>Powers on the player's creature that react to a Blackout resolving (Dutch Courage).</summary>
+    public interface IBlackoutListener
+    {
+        Task OnBlackout(PlayerChoiceContext choiceContext);
+    }
+
     private static bool IsDrunkenMaster(Player? player) => player?.Character is Character.DrunkenMaster;
 
     private static IntoxicationResource.Band BandOf(Player player) =>
@@ -106,5 +112,11 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
         resource.Amount = 0;
         var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, player.Creature, 1, player.Creature, null);
         if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now
+
+        foreach (var listener in player.Creature.Powers.OfType<IBlackoutListener>().ToList())
+        {
+            if (CombatManager.Instance.IsOverOrEnding) return;
+            await listener.OnBlackout(choiceContext);
+        }
     }
 }

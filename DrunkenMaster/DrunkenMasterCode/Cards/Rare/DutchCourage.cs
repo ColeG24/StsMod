@@ -10,10 +10,10 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Rare Power, 2 cost. Whenever your Intoxication band goes up, gain 1 Strength. Upgraded: 2.</summary>
+/// <summary>Rare Power, 2 cost. Whenever you Blackout (end a turn at 12 Intoxication), gain 3 Strength. Upgraded: 4. (2026-09-13: was +1/2 per band raised.)</summary>
 public class DutchCourage() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DutchCouragePower>(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DutchCouragePower>(3)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<DutchCouragePower>(),

@@ -7,8 +7,8 @@ using MegaCrit.Sts2.Core.Models.Powers;
 
 namespace DrunkenMaster.DrunkenMasterCode.Powers;
 
-/// <summary>Whenever your Intoxication band goes up, gain Amount Strength.</summary>
-public class DutchCouragePower : DrunkenMasterPower, IntoxicationResource.IBandRaisedListener
+/// <summary>Whenever you Blackout (end a turn at 12 Intoxication), gain Amount Strength. 2026-09-13: was "whenever your band goes up".</summary>
+public class DutchCouragePower : DrunkenMasterPower, DrunkenMasterBands.IBlackoutListener
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
@@ -19,7 +19,7 @@ public class DutchCouragePower : DrunkenMasterPower, IntoxicationResource.IBandR
         IntoxicationResource.Tip
     ];
 
-    public async Task OnBandRaised(PlayerChoiceContext choiceContext, IntoxicationResource.Band from, IntoxicationResource.Band to)
+    public async Task OnBlackout(PlayerChoiceContext choiceContext)
     {
         Flash();
         await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, Amount, Owner, null);

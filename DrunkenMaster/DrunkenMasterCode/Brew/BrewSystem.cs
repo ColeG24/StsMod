@@ -73,7 +73,8 @@ public static class BrewSystem
         ModelDb.Card<Ethanol>(),
         ModelDb.Card<Wormwood>(),
         ModelDb.Card<Everclear>(),
-        ModelDb.Card<Seltzer>()
+        ModelDb.Card<Seltzer>(),
+        ModelDb.Card<JungleJuice>()
     ];
 
     public static IReadOnlyList<IngredientCard> GetBrew(Player player)

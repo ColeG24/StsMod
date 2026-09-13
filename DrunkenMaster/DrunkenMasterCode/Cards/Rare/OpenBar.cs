@@ -1,6 +1,6 @@
+using MegaCrit.Sts2.Core.Entities.Cards;
 using DrunkenMaster.DrunkenMasterCode.Brew;
 using DrunkenMaster.DrunkenMasterCode.Tips;
-using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 

@@ -39,14 +39,15 @@ Base-game comparison (decompiled 0.111): Ironclad 80, Defect 75, Regent 75, Sile
 |---|---|---|---|---|---|
 | 4 | Strike | Attack | 1 | Deal 6 damage. | Deal 9 damage. |
 | 4 | Defend | Skill | 1 | Gain 5 Block. | Gain 8 Block. |
-| 1 | Free Pour | Skill | 1 | Gain 5 Block. Add a random Ingredient into your hand. | Gain 8 Block. Choose 1 of 3 Ingredients instead. |
+| 1 | Free Pour | Skill | 1 | Gain 6 Block. Add a random Ingredient into your hand. | Gain 9 Block. Choose 1 of 3 Ingredients instead. |
 | 1 | Hard Liquor | Attack | 2 | Deal 12 damage. Add an Ethanol into your hand. | Deal 16 damage. The Ethanol is Upgraded. |
 
 Notes:
 - Hard Liquor is the Bash slot. It is the starter deck's **only** Intoxication source, and only
   indirectly: the Ethanol has to be brewed and the potion drunk.
 - Liquid Courage was the starting Intoxication card until 2026-09-12; it is now a Common.
-- Free Pour's 1-of-3 choice moved to the upgrade on 2026-09-12 so the base card stays quick.
+- Free Pour's 1-of-3 choice moved to the upgrade on 2026-09-12 so the base card stays quick. Block
+  raised from 5 (8) to 6 (9) on 2026-09-13 so it sits at the Common block benchmark, not the basic.
 
 **Starting relic — Tavern Rag:** At the start of combat, add 1 random Ingredient into your hand.
 Upon pickup, gain 2 potion slots.
@@ -114,7 +115,7 @@ Ingredients are **generated token cards**, not cards you draft into your deck.
 | Generation | Only by the mod's own generators. Never by "add a random card" effects. |
 | Upgrades | Real `OnUpgrade`s. Top Shelf (Ancient Power) upgrades every Ingredient you create; Restock+ / Hard Liquor+ / Sour Punch+ / Mash+ / Wake-Up Call+ hand out Upgraded ones. |
 
-Random pool (9; the original plan was 5 "for learnability" — grew on 2026-09-12):
+Random pool (10; the original plan was 5 "for learnability" — grew on 2026-09-12, Jungle Juice added 2026-09-13):
 
 | Ingredient | Effect contributed | Upgraded | Enemy-facing |
 |---|---|---|---|
@@ -122,6 +123,7 @@ Random pool (9; the original plan was 5 "for learnability" — grew on 2026-09-1
 | Muddle | Gain 4 Block. | 7 | no |
 | Bitters | Apply 1 Vulnerable. | 2 | yes |
 | Wormwood | Apply 1 Weak. | 2 | yes |
+| Jungle Juice | Apply 1 Confusion. | 2 | yes |
 | Hair of the Dog | Draw 1 card. | 2 | no |
 | Grain Spirit | Gain 1 Energy. | 2 | no |
 | Ethanol | Gain 2 Intoxication. | 3 | no |
@@ -179,9 +181,24 @@ players start avoiding potions.
 
 ---
 
+## 6b. Confusion (enemy debuff, added 2026-09-13)
+
+A one-turn debuff the Drunken Master puts on enemies. While an enemy has N Confusion, each hit of its
+attacks deals N less damage, and the damage taken off the hit is dealt to the enemy itself instead.
+The self-hit never exceeds what the hit would have done: an enemy attacking 2x3 with 1 Confusion does
+2x2 to you and 2x1 to itself; with 5 Confusion it does 2x0 to you and 2x3 to itself.
+
+- Applied after the enemy's own modifiers (Strength, Weak) and before yours (Vulnerable), so being
+  Vulnerable raises what you take but not what the enemy takes.
+- All stacks fall off at the end of the enemy's turn, however many were applied.
+- The self-hit is Unpowered and blockable (Thorns rules).
+- Sources: Barstool Swing (1 to ALL enemies), Corkscrew, Spiked Drink, Jungle Juice Ingredient.
+
+---
+
 ## 7. Card pool (as built, 2026-09-13)
 
-Totals: 4 Basic, 20 Common, 14 Uncommon, 11 Rare, 1 Ancient = 50 (target 88: 4 / 20 / 36 / 26 / 2).
+Totals: 4 Basic, 20 Common, 30 Uncommon, 11 Rare, 1 Ancient = 66 (target 88: 4 / 20 / 36 / 26 / 2).
 Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication cost.
 
 ### Common (20)
@@ -191,50 +208,67 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +2 for each Intoxication. |
 | Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak. |
 | Hurl | Attack | 0 + 3 Intox | Deal 14 (18) damage. |
-| Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. |
+| Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
+| Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
+| Upper Deckie | Attack | 0 | Deal 3 (5) damage. Increase the damage of ALL Upper Deckie cards by your Intoxication this combat (lands after this play). |
 | Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. |
 | Mash | Attack | 1 | Deal 6 (9) damage. Add a Muddle (+) into your hand. |
 | Wake-Up Call | Attack | 1 | Deal 10 (12) damage. Add a Hair of the Dog (+) into your hand. |
 | Stir the Pot | Attack | 1 | Deal 7 (10) damage. Draw 1 card for each Ingredient in your Brew. |
-| Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
-| Knock One Back | Skill | 0 | Gain 2 (3) Intoxication. Draw 1 card. |
 | Chug | Skill | 1 | Gain 5 (8) Block, +1 for each Intoxication. |
-| Cold Water | Skill | 1 + 2 Intox | Gain 9 (12) Block. |
+| Cold Water | Skill | 0 + 2 Intox | Gain 7 (10) Block. |
 | Sway | Skill | 1 + 1 Intox | Gain 8 (11) Block. Draw 1 (2). |
-| Pick-Me-Up | Skill | 0 + 3 Intox | Gain 1 (2) Energy. |
-| Beer Jacket | Skill | 2 | Gain 2 (3) Intoxication, then 12 (16) Block. |
+| Beer Jacket | Skill | 2 | Gain 3 (4) Intoxication, then 12 (16) Block. |
 | Nightcap | Skill | 1 | Gain 1 Intoxication. Next turn, gain 3 (4). |
 | Leftovers | Skill | 1 | Exhaust (upgrade removes). Gain 4 (7) Block. Put an Ingredient from your exhaust pile into your hand. |
 | Restock | Skill | 1 | Add 2 random (Upgraded) Ingredients into your hand. |
 | Distill | Skill | 1 (0) | Transform a card in your hand into a random Ingredient. |
 | Slip a Mickey | Skill | 1 | Apply 1 (2) Weak. Gain 5 (8) Block. Add a Wormwood into your hand. |
+| Spiked Drink | Skill | 1 | Gain 7 (10) Block. Apply 1 (2) Confusion. |
 
-### Uncommon (14)
+### Uncommon (30)
 
 | Card | Type | Cost | Text |
 |---|---|---|---|
 | Boilermaker | Attack | 2 | Deal 14 (20) damage. Add a Bitters and a Wormwood into your hand. |
 | Molotov | Attack | 2 | Gain 3 Intoxication, then deal 12 (16) damage to ALL enemies. |
+| Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
 | Empties | Attack | 1 | Deal 8 damage, +1 (+2) for each Ingredient in your exhaust pile. |
 | Staggering Blow | Attack | 2 | Deal 15 (20) damage. Gain 1 (2) Block for each Intoxication. |
+| Knock One Back | Skill | 0 | Gain 2 (3) Intoxication. Draw 1 card. |
+| Pick-Me-Up | Skill | 0 + 3 Intox | Gain 1 (2) Energy. |
 | Bouncer | Skill | 3 | Gain 13 (17) Block. Costs 1 less for each Ingredient played this turn. |
 | Sweat It Out | Skill | X Intox | Gain 2 (3) Block for each Intoxication spent. |
 | Line 'Em Up | Skill | 0 | Exhaust. Gain 1 Energy for each Ingredient in your hand. (Upgrade: Retain.) |
-| Bar Tab | Power | — | At the start of your turn, gain 1 (2) Intoxication. |
+| Bar Tab | Power | 1 | At the start of your turn, gain 2 (3) Intoxication. |
 | Iron Liver | Power | — | Whenever you drink a potion, gain 3 (5) Block. |
 | Steady Hands | Power | — | While Sober, whenever you play an Ingredient, draw 1 card. |
 | Beer Muscles | Power | 1 | Whenever you drink a potion, gain 1 Strength. (Upgrade: Innate.) |
 | Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
 | Stockpot | Power | — | Your Brew holds 1 more Ingredient. |
 | Shot Glass | Power | — | Your Brew holds 1 fewer Ingredient. Gain 2 (3) Strength and Dexterity. |
+| Drunken Fist | Attack | 1 | Deal 8 (10) damage. Hits twice if you are Tipsy or above. (Was Rare.) |
+| Cheap Shot | Attack | 0 | Deal 5 (7) damage. Apply 1 (2) Confusion. |
+| Soda Gun | Attack | 1 | Deal 8 (11) damage to ALL enemies. Add a Seltzer (+) into your hand. |
+| Salt the Rim | Attack | 0 + 1 Intox | Deal 3 (5) damage. Apply 1 (2) Vulnerable. |
+| Water It Down | Attack | 0 + 1 Intox | Deal 3 (5) damage. Apply 1 (2) Weak. |
+| Stir Crazy | Attack | 1 | Deal 6 (8) damage once for each Ingredient in your Brew. |
+| Double Vision | Skill | 0 | Exhaust. Apply 6 (9) Confusion. |
+| Spin the Bottle | Skill | 0 + 3 Intox | Apply 3 (5) Confusion to ALL enemies. |
+| Pregame | Skill | 1 | Gain 4 (6) Intoxication if Sober, otherwise 2 (3). |
+| Blow Smoke | Skill | 2 | Gain 10 (13) Block. Apply 4 (6) Confusion. |
+| Order Up | Skill | 1 | Gain 7 (10) Block. Next turn, add 1 (2) random Ingredients into your hand. |
+| Numb | Skill | 1 | Gain 4 (7) Block. If Tipsy or above, take half damage from attacks until your next turn. |
+| Karaoke Night | Power | 1 | At the start of your turn, apply 1 (2) Confusion to ALL enemies. |
 
 ### Rare (11)
 
-Still, Last Round (X Intox: 6 (8) damage X times), Drunken Fist (8 (10) damage, hits once more per
-band above Sober), Open Bar (fill the Brew with random Ingredients), Cellar Raid (3 (2), Exhaust:
-fill your hand with random Ingredients), Lights Out, Last Call, Chaser (next potion drunk twice),
-Dutch Courage (+1 (2) Strength whenever your band goes up), Moonshiner (+2 Energy whenever the Brew
-seals), Bottomless Cup (+1 Energy and draw 1 whenever you drink a potion).
+Still, Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
+Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out, Last Call (0,
+Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Dutch Courage (+3 (4) Strength
+whenever you Blackout), Moonshiner (+2 Energy whenever the Brew seals), Bottomless Cup (+1 Energy and draw 1
+whenever you drink a potion), Tolerance (Power, 2: while Drunk your cards' random costs never go up; upgrade
+also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13.
 
 Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**
 (Lasting Candy gotcha, see DEV_NOTES). No Harmony patches on base-game relics — fix content instead.
@@ -283,7 +317,8 @@ cost-reducing block card, and raised Liquid Courage to +2 so it is net positive 
 | Character potion pool | `CustomPotionPoolModel` |
 | Card pool | `CustomCardPoolModel` |
 | Tavern Rag | `CustomRelicModel` |
-| Powers (Hungover, Bar Tab, …) | `CustomPowerModel` |
+| Powers (Hungover, Bar Tab, Confusion, …) | `CustomPowerModel` |
+| Confusion damage redirect | Harmony postfix on `Hook.ModifyDamage` (`Patches/ConfusionDamagePatch.cs`) |
 | Intoxication | `CustomResource` (auto-registered by BaseLib) |
 | Brew zone | static `BrewSystem` keyed on `PlayerCombatState` via `SpireField`; drawn by `NBrewDisplay` |
 | Band effects, Blackout | `CustomSingletonModel(HookType.Combat)` |
@@ -331,6 +366,8 @@ Co-op sync of the composed description is untested.
    under the current Common economy; that is accepted for now, revisit only with playtest data.
 9. **Tavern Rag cadence.** Decided: once per combat (§3).
 10. **Bouncer's rarity.** Decided: Uncommon (2026-09-13).
+11. **Cellar Raid.** Feels awkward next to Open Bar; a "fill hand" Open Bar was tried and reverted
+    on 2026-09-13 because it made Cellar Raid a strict duplicate. Candidate: cut Cellar Raid. Unresolved.
 
 ---
 

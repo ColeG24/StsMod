@@ -17,13 +17,13 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>2 Energy. Gain 2 Intoxication, then gain 12 Block. Upgraded: 3 Intoxication, 16 Block.</summary>
+/// <summary>2 Energy. Gain 3 Intoxication, then gain 12 Block. Upgraded: 4 Intoxication, 16 Block. (2026-09-13: was 2/3.)</summary>
 public class BeerJacket() : DrunkenMasterCard(2, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public override bool GainsBlock => true;
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar("Intoxication", 2),
+        new DynamicVar("Intoxication", 3),
         new BlockVar(12, ValueProp.Move)
     ];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];

@@ -10,8 +10,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Basic;
 
 /// <summary>
-/// Gain 5 Block. Add a random Ingredient into your hand.
-/// Upgraded: Gain 8 Block. Choose 1 of 3 Ingredients instead.
+/// Gain 6 Block. Add a random Ingredient into your hand.
+/// Upgraded: Gain 9 Block. Choose 1 of 3 Ingredients instead. (Block 5/8 -> 6/9 on 2026-09-13.)
 /// (2026-09-12: the choice moved to the upgrade so the base card stays quick; spec §9.4.)
 /// </summary>
 public class FreePour() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
@@ -19,7 +19,7 @@ public class FreePour() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Basic,
     public const int Picks = 1;
     public const int Offer = 3;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(5, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new BlockVar(6, ValueProp.Move)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [

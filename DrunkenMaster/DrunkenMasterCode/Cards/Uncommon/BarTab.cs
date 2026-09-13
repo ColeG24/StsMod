@@ -9,10 +9,10 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
-/// <summary>Uncommon Power, 1 cost. At the start of your turn, gain 1 Intoxication. Upgraded: 2.</summary>
+/// <summary>Uncommon Power, 1 cost. At the start of your turn, gain 2 Intoxication. Upgraded: 3. (2026-09-13: was 1/2, net zero against the decay.)</summary>
 public class BarTab() : DrunkenMasterCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<BarTabPower>(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<BarTabPower>(2)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [

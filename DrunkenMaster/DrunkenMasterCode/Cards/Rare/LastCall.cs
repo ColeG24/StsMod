@@ -9,9 +9,9 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
 /// <summary>
 /// Placeholder Rare so reward rolls always have a card for every rarity.
-/// Skill, 1 cost, Exhaust. Gain 3 Intoxication. Draw 2 cards. Upgraded: draw 3.
+/// Skill, 0 cost (2026-09-13: was 1), Exhaust. Gain 3 Intoxication. Draw 2 cards. Upgraded: draw 3.
 /// </summary>
-public class LastCall() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
+public class LastCall() : DrunkenMasterCard(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
 

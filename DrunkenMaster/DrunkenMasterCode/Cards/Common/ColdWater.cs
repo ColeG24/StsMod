@@ -9,12 +9,12 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>1 Energy + 2 Intoxication. Gain 9 Block. Upgraded: 12. Unplayable below 2 Intoxication.</summary>
+/// <summary>0 Energy + 2 Intoxication. Gain 7 Block. Upgraded: 10. Unplayable below 2 Intoxication. (2026-09-13: was 1 Energy for 9/12.)</summary>
 public class ColdWater : DrunkenMasterCard
 {
     public const int IntoxicationCost = 2;
 
-    public ColdWater() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+    public ColdWater() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
         CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
     }
@@ -23,7 +23,7 @@ public class ColdWater : DrunkenMasterCard
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new BlockVar(9, ValueProp.Move),
+        new BlockVar(7, ValueProp.Move),
         new DynamicVar("IntoxicationCost", IntoxicationCost)
     ];
 
