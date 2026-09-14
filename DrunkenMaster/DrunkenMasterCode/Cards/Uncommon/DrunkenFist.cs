@@ -15,7 +15,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 public class DrunkenFist() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(8, ValueProp.Move)];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Tipsy)];
 
     private bool TipsyOrAbove => IntoxicationResource.BandFor(IntoxicationResource.AmountOf(Owner)) >= IntoxicationResource.Band.Tipsy;
     protected override bool ShouldGlowGoldInternal => TipsyOrAbove;

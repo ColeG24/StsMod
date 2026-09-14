@@ -18,7 +18,7 @@ public class Tolerance() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare,
 {
     public const string IntoxicationKey = "Intoxication";
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 0)];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<TolerancePower>(), IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<TolerancePower>(), IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Drunk)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

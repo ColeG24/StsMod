@@ -20,7 +20,7 @@ public class Mash() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Common, T
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Muddle>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

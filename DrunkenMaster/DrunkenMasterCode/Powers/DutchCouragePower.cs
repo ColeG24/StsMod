@@ -16,7 +16,9 @@ public class DutchCouragePower : DrunkenMasterPower, DrunkenMasterBands.IBlackou
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<StrengthPower>(),
-        IntoxicationResource.Tip
+        IntoxicationResource.Tip,
+        IntoxicationResource.BandTip(IntoxicationResource.Band.Blackout),
+        HoverTipFactory.FromPower<HungoverPower>()
     ];
 
     public async Task OnBlackout(PlayerChoiceContext choiceContext)

@@ -20,7 +20,7 @@ public class Pregame() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommo
         new DynamicVar(SoberKey, 4),
         new DynamicVar(OtherwiseKey, 2)
     ];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Sober)];
 
     private bool IsSober => IntoxicationResource.BandFor(IntoxicationResource.AmountOf(Owner)) == IntoxicationResource.Band.Sober;
     protected override bool ShouldGlowGoldInternal => IsSober;

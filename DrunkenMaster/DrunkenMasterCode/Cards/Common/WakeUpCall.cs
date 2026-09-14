@@ -20,7 +20,7 @@ public class WakeUpCall() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Com
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<HairOfTheDog>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

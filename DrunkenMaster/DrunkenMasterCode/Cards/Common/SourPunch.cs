@@ -21,7 +21,7 @@ public class SourPunch() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Comm
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Bitters>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

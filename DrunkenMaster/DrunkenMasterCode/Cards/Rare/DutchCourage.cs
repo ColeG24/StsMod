@@ -18,7 +18,9 @@ public class DutchCourage() : DrunkenMasterCard(2, CardType.Power, CardRarity.Ra
     [
         HoverTipFactory.FromPower<DutchCouragePower>(),
         HoverTipFactory.FromPower<StrengthPower>(),
-        IntoxicationResource.Tip
+        IntoxicationResource.Tip,
+        IntoxicationResource.BandTip(IntoxicationResource.Band.Blackout),
+        HoverTipFactory.FromPower<HungoverPower>()
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

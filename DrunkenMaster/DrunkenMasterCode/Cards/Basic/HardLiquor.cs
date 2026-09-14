@@ -20,7 +20,7 @@ public class HardLiquor() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Bas
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(12, ValueProp.Move)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Ethanol>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

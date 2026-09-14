@@ -12,5 +12,5 @@ public class TolerancePower : DrunkenMasterPower
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Drunk)];
 }

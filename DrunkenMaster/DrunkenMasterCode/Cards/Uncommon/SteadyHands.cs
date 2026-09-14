@@ -1,3 +1,4 @@
+using DrunkenMaster.DrunkenMasterCode.Resources;
 using DrunkenMaster.DrunkenMasterCode.Powers;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
@@ -13,7 +14,7 @@ public class SteadyHands() : DrunkenMasterCard(1, CardType.Power, CardRarity.Unc
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<SteadyHandsPower>(1)];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<SteadyHandsPower>()];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<SteadyHandsPower>(), IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Sober)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

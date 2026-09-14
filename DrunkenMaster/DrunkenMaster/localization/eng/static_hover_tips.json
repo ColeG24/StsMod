@@ -1,8 +1,16 @@
 {
   "DRUNKENMASTER-INGREDIENT.title": "Ingredient",
-  "DRUNKENMASTER-INGREDIENT.description": "A 0-cost token that [gold]Exhausts[/gold] when played. Playing it adds its effect to your [gold]Brew[/gold] instead of resolving immediately. Unplayed Ingredients vanish at end of turn.",
+  "DRUNKENMASTER-INGREDIENT.description": "Playing it adds its effect to your [gold]Brew[/gold] instead of doing it now.",
   "DRUNKENMASTER-BREW.title": "Brew",
-  "DRUNKENMASTER-BREW.description": "A 3-slot pot. When 3 [gold]Ingredients[/gold] are in it, it seals into a [gold]Concoction[/gold] potion in a free potion slot. If no slot is free it holds until one opens. The pot empties at the end of combat.",
+  "DRUNKENMASTER-BREW.description": "Your pot of [gold]Ingredients[/gold]. When it is full it seals into a [gold]Concoction[/gold] potion. The pot empties at the end of combat.",
   "DRUNKENMASTER-INTOXICATION.title": "Intoxication",
-  "DRUNKENMASTER-INTOXICATION.description": "Gained by brewing [gold]Ethanol[/gold] into a potion and drinking it, and from some cards. Decreases by [blue]1[/blue] at the start of your turn. Some cards cost Intoxication.\\n[b]Sober[/b] 0-3: no effect.\\n[b]Tipsy[/b] 4-7: your Attacks deal [blue]2[/blue] more damage and your cards give [blue]2[/blue] more [gold]Block[/gold].\\n[b]Drunk[/b] 8-11: also, your hand and the cards you draw get a random cost of 0-3 this turn (sobering up restores them).\\n[b]Blackout[/b] 12: at the end of your turn, play the top [blue]3[/blue] cards of your draw pile, [gold]Exhaust[/gold] your hand, reset to 0, and become [gold]Hungover[/gold]."
+  "DRUNKENMASTER-INTOXICATION.description": "Builds as you drink and fades a little each turn. The more you have, the drunker you get: [gold]Sober[/gold], [gold]Tipsy[/gold], [gold]Drunk[/gold], [gold]Blackout[/gold].",
+  "DRUNKENMASTER-SOBER.title": "Sober",
+  "DRUNKENMASTER-SOBER.description": "Below [blue]4[/blue] [gold]Intoxication[/gold]. Nothing changes yet.",
+  "DRUNKENMASTER-TIPSY.title": "Tipsy",
+  "DRUNKENMASTER-TIPSY.description": "[blue]4[/blue] or more [gold]Intoxication[/gold]. You have [blue]2[/blue] [gold]Strength[/gold] and [blue]2[/blue] [gold]Dexterity[/gold] while Tipsy or above.",
+  "DRUNKENMASTER-DRUNK.title": "Drunk",
+  "DRUNKENMASTER-DRUNK.description": "[blue]8[/blue] or more [gold]Intoxication[/gold]. Still Tipsy, and your cards get random costs each turn.",
+  "DRUNKENMASTER-BLACKOUT.title": "Blackout",
+  "DRUNKENMASTER-BLACKOUT.description": "[blue]12[/blue] [gold]Intoxication[/gold]. At the end of your turn: play cards off the top of your draw pile, [gold]Exhaust[/gold] your hand, sober up, and wake [gold]Hungover[/gold]."
 }

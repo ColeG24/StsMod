@@ -25,7 +25,7 @@ public class SlipAMickey() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Com
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<WeakPower>(),
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Wormwood>(),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

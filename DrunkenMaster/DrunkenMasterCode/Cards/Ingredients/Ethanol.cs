@@ -8,13 +8,13 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 
 /// <summary>
-/// Contributes: Gain 2 Intoxication (Upgraded: 3). Since 2026-09-12 this is the ONLY default way drinking makes you
+/// Contributes: Gain 3 Intoxication (Upgraded: 4; was 2 / 3 until 2026-09-14). Since 2026-09-12 this is the ONLY default way drinking makes you
 /// drunk; Concoctions grant nothing on their own. Getting drunk is a brewing decision.
 /// </summary>
 public class Ethanol : IngredientCard
 {
     public const string IntoxicationKey = "Intoxication";
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 2)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 3)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [.. base.ExtraHoverTips, IntoxicationResource.Tip];
     public override bool TargetsEnemy => false;
 

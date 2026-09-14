@@ -145,7 +145,7 @@ ones are greyed out and the cost badge shows the price.
 
 | Rule | Value |
 |---|---|
-| Gain | Ethanol (+2, +3 upgraded, when the potion containing it is drunk) and specific cards. **Drinking a potion grants nothing by itself** (2026-09-12). |
+| Gain | Ethanol (+3, +4 upgraded, when the potion containing it is drunk; was +2 / +3 until 2026-09-14) and specific cards. **Drinking a potion grants nothing by itself** (2026-09-12). |
 | Decay | 1 at the start of your turn. Decay and per-turn sources (Bar Tab, Nightcap) are summed and applied as **one** change after the energy reset and before the draw, so the band never flickers and drawn cards see the real band. |
 | Persistence | Resets at end of combat. |
 | Max | 12 (Blackout). |
@@ -155,7 +155,7 @@ ones are greyed out and the cost badge shows the price.
 | Band | Range | Effect |
 |---|---|---|
 | Sober | 0–3 | No effect. (Steady Hands is the only Sober-gated card.) |
-| Tipsy | 4–7 | Your card Attacks deal +2 damage; your cards give +2 Block. |
+| Tipsy | 4–7 | You have 2 Strength and 2 Dexterity (real powers, granted on entering Tipsy and removed on dropping below it; 2026-09-14, was hidden +2 damage / +2 Block). |
 | Drunk | 8–11 | Also: cards you draw get a random cost 0–3 **for this turn**. Entering Drunk re-rolls the hand. Dropping below Drunk restores the costs. |
 | Blackout | 12 | See below. |
 

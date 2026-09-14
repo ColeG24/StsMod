@@ -1,3 +1,5 @@
+using MegaCrit.Sts2.Core.Nodes.HoverTips;
+using MegaCrit.Sts2.Core.HoverTips;
 using BaseLib.Abstracts;
 using BaseLib.BaseLibScenes;
 using DrunkenMaster.DrunkenMasterCode.Resources;
@@ -73,6 +75,33 @@ public partial class NIntoxicationDial : NAdditionalResourceDisplay
         PivotOffset = Size / 2f;
         Visible = true;
     }
+
+    /// <summary>
+    /// The BaseLib base shows a single tip built from the resource's title/description. The dial instead shows the
+    /// short Intoxication tip followed by one tip per band (2026-09-14), so we blank the base tip and hang our own
+    /// handlers on the same signals.
+    /// </summary>
+    public override void _Ready()
+    {
+        base._Ready();
+        _hoverTip = null;
+        MouseEntered += ShowTips;
+        MouseExited += HideTips;
+    }
+
+    private void ShowTips()
+    {
+        var set = NHoverTipSet.CreateAndShow(this, IntoxicationResource.AllTips, HoverTipAlignment.None);
+        if (set == null) return;
+        // The set grows its text column as tips are added, so the stack height is known here. Anchor the bottom of
+        // the stack just above the dial and keep the top on screen; the base class's fixed -300 offset cut off the
+        // five-tip stack (2026-09-14).
+        float height = set.GetNodeOrNull<Control>("textHoverTipContainer")?.Size.Y ?? 300f;
+        float y = Mathf.Max(12f, GlobalPosition.Y - height - 8f);
+        set.GlobalPosition = new Vector2(GlobalPosition.X - 34f, y);
+    }
+
+    private void HideTips() => NHoverTipSet.Remove(this);
 
     public override void _ExitTree()
     {
@@ -176,6 +205,12 @@ public partial class NDialGauge : Control
         var pip = center + Vector2.FromAngle(pipAngle) * radius;
         DrawCircle(pip, width * 0.7f, IntoxicationResource.BandColor(IntoxicationResource.Band.Blackout) * (_amount >= max ? 1f : 0.45f));
 
+        // Band thresholds: a tick across the ring and the number just outside it, so the tooltip can stay wordless
+        // about numbers (2026-09-14).
+        DrawThreshold(center, radius, width, IntoxicationResource.TipsyMin, IntoxicationResource.Band.Tipsy);
+        DrawThreshold(center, radius, width, IntoxicationResource.DrunkMin, IntoxicationResource.Band.Drunk);
+        DrawThreshold(center, radius, width, IntoxicationResource.BlackoutAt, IntoxicationResource.Band.Blackout);
+
         // Ghost of next turn: a thin arc from now to then (green up, red down) and a faint needle.
         if (_projected >= 0 && _projected != _amount)
         {
@@ -193,6 +228,22 @@ public partial class NDialGauge : Control
         var tip = center + Vector2.FromAngle(needleAngle) * (radius - width);
         DrawLine(center, tip, new Color("FFF6E2"), 3f, true);
         DrawCircle(center, 4f, new Color("FFF6E2"));
+    }
+
+    private void DrawThreshold(Vector2 center, float radius, float width, int at, IntoxicationResource.Band band)
+    {
+        float angle = StartAngle + Sweep * ((float)at / IntoxicationResource.Max);
+        var dir = Vector2.FromAngle(angle);
+        var c = IntoxicationResource.BandColor(band);
+        DrawLine(center + dir * (radius - width * 0.5f - 1f), center + dir * (radius + width * 0.5f + 1f), new Color(0, 0, 0, 0.8f), 2f, true);
+        var font = ThemeDB.FallbackFont;
+        const int fontSize = 10;
+        string text = at.ToString();
+        var textSize = font.GetStringSize(text, HorizontalAlignment.Left, -1, fontSize);
+        // Baseline-positioned: shift so the glyph box is centred on the point just outside the ring.
+        var pos = center + dir * (radius + width * 0.5f + 8f) + new Vector2(-textSize.X / 2f, textSize.Y / 2f - 2f);
+        DrawStringOutline(font, pos, text, HorizontalAlignment.Left, -1, fontSize, 4, new Color(0, 0, 0, 0.9f));
+        DrawString(font, pos, text, HorizontalAlignment.Left, -1, fontSize, c);
     }
 
     private void DrawBand(Vector2 center, float radius, float width, int from, int to, IntoxicationResource.Band band, float alpha)

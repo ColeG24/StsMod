@@ -11,4 +11,9 @@ public static class DrunkenMasterTips
 {
     [CustomEnum] public static StaticHoverTip Ingredient;
     [CustomEnum] public static StaticHoverTip Brew;
+    // One tip per Intoxication band (2026-09-14). Cards show only the band they check.
+    [CustomEnum] public static StaticHoverTip Sober;
+    [CustomEnum] public static StaticHoverTip Tipsy;
+    [CustomEnum] public static StaticHoverTip Drunk;
+    [CustomEnum] public static StaticHoverTip Blackout;
 }

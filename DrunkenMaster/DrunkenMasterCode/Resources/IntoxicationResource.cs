@@ -1,3 +1,6 @@
+using MegaCrit.Sts2.Core.Models.Powers;
+using MegaCrit.Sts2.Core.Commands;
+using DrunkenMaster.DrunkenMasterCode.Tips;
 using BaseLib.Abstracts;
 using BaseLib.BaseLibScenes;
 using BaseLib.Patches.UI;
@@ -79,6 +82,7 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         }
         if (next > current) await GainAsync(choiceContext, player, next - current);
         else if (next < current) Lose(player, current - next);
+        await res.FlushBandPowers(choiceContext);
         if (player.Creature != null)
         {
             foreach (var source in player.Creature.Powers.OfType<IPerTurnSource>().ToList())
@@ -150,6 +154,8 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     private void OnBandChanged(Band from, Band to)
     {
         var owner = Owner;
+        bool wasTipsy = from >= Band.Tipsy, isTipsy = to >= Band.Tipsy;
+        if (wasTipsy != isTipsy) _pendingTipsy += isTipsy ? 1 : -1;
         if (owner != null && from < Band.Drunk && to >= Band.Drunk) RandomizeHandCosts(owner);
         if (owner != null && from >= Band.Drunk && to < Band.Drunk) ResetRandomizedCosts();
         BandChanged?.Invoke(from, to);
@@ -193,9 +199,40 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         foreach (var card in hand.Cards.ToList()) RandomizeCost(player, card);
     }
 
-    public const int TipsyDamageBonus = 2;
-    public const int TipsyBlockBonus = 2;
+    /// <summary>Tipsy and above grant real Strength and Dexterity (2026-09-14; was hidden +2 damage / +2 Block hooks).</summary>
+    public const int TipsyStrength = 2;
+    public const int TipsyDexterity = 2;
     public const int BlackoutCardsPlayed = 3;
+
+    /// <summary>
+    /// Band transitions are noticed in the sync Amount setter, but granting a power is a command. Crossing the
+    /// Tipsy line queues +1 / -1 here and every async write path (GainAsync, ApplyTurnStart, Spend, the Blackout
+    /// reset) calls <see cref="FlushBandPowers"/> straight after, so the powers land in the action stream on
+    /// every machine. Removal is a plain -2 like Flex: Strength stolen in between can leave you below where you
+    /// started, which is the base game's own precedent.
+    /// </summary>
+    private int _pendingTipsy;
+
+    public async Task FlushBandPowers(PlayerChoiceContext choiceContext)
+    {
+        var creature = Owner?.Creature;
+        while (_pendingTipsy != 0 && creature != null && !creature.IsDead)
+        {
+            int sign = Math.Sign(_pendingTipsy);
+            _pendingTipsy -= sign;
+            await PowerCmd.Apply<StrengthPower>(choiceContext, creature, sign * TipsyStrength, creature, null);
+            await PowerCmd.Apply<DexterityPower>(choiceContext, creature, sign * TipsyDexterity, creature, null);
+        }
+        _pendingTipsy = 0;
+    }
+
+    /// <summary>Cards that cost Intoxication spend through here; dropping below Tipsy must take the powers away.</summary>
+    public override async Task<bool> Spend<T>(ICombatState combatState, AbstractModel? spender, int amount, bool optional)
+    {
+        bool ok = await base.Spend<T>(combatState, spender, amount, optional);
+        await FlushBandPowers(new ThrowingPlayerChoiceContext());
+        return ok;
+    }
 
     public override Color MainColor => new("8a4b12");
     public override string IconPath => MainFile.ResPath + "/images/ui/intoxication.png";
@@ -269,6 +306,7 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         var from = res.CurrentBand;
         Gain(player, amount);
         var to = res.CurrentBand;
+        await res.FlushBandPowers(choiceContext);
         if (to <= from || player.Creature == null) return;
         foreach (var listener in player.Creature.Powers.OfType<IBandRaisedListener>().ToList())
         {
@@ -283,8 +321,20 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         res.Amount = Math.Max(0, res.Amount - amount);
     }
 
-    /// <summary>Hover tip for card/relic tooltips.</summary>
+    /// <summary>The short Intoxication tip: what it is and the four band names. Cards add <see cref="BandTip"/> for the band they check.</summary>
     public static IHoverTip Tip => new HoverTip(
         new LocString("static_hover_tips", $"{ResourceId}.title"),
         new LocString("static_hover_tips", $"{ResourceId}.description"));
+
+    public static IHoverTip BandTip(Band band) => HoverTipFactory.Static(band switch
+    {
+        Band.Sober => DrunkenMasterTips.Sober,
+        Band.Tipsy => DrunkenMasterTips.Tipsy,
+        Band.Drunk => DrunkenMasterTips.Drunk,
+        _ => DrunkenMasterTips.Blackout
+    });
+
+    /// <summary>What the dial shows on hover: the resource tip followed by every band.</summary>
+    public static IEnumerable<IHoverTip> AllTips =>
+        [Tip, BandTip(Band.Sober), BandTip(Band.Tipsy), BandTip(Band.Drunk), BandTip(Band.Blackout)];
 }

@@ -21,7 +21,8 @@ public class Boilermaker() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Un
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Bitters>(),
+        HoverTipFactory.FromCard<Wormwood>(),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

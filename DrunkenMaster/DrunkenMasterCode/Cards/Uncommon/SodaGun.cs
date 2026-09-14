@@ -19,7 +19,7 @@ public class SodaGun() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncomm
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(8, ValueProp.Move)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<Seltzer>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

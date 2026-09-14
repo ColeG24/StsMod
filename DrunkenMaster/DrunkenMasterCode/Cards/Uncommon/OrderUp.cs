@@ -1,4 +1,5 @@
 using DrunkenMaster.DrunkenMasterCode.Tips;
+using DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 using DrunkenMaster.DrunkenMasterCode.Powers;
 using DrunkenMaster.DrunkenMasterCode.Resources;
 using MegaCrit.Sts2.Core.Commands;
@@ -18,7 +19,7 @@ public class OrderUp() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommo
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<OrderUpPower>(),
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient),
+        HoverTipFactory.FromCard<GrainSpirit>(),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 

@@ -14,7 +14,7 @@ public class SteadyHandsPower : DrunkenMasterPower
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Sober)];
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

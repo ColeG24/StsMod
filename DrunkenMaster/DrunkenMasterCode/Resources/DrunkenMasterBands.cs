@@ -13,7 +13,8 @@ namespace DrunkenMaster.DrunkenMasterCode.Resources;
 
 /// <summary>
 /// Passive combat hooks that give the Intoxication bands their teeth.
-///   Tipsy+ : card attacks deal +2, card block gives +2.
+///   Tipsy+ : 2 Strength and 2 Dexterity, granted/removed by IntoxicationResource.FlushBandPowers
+///            (2026-09-14; was hidden +2 damage / +2 Block hooks here).
 ///   Drunk+ : cards you draw get a random cost 0–3 until played (Confused / Snecko precedent).
 ///            Entering Drunk also re-rolls the hand (see IntoxicationResource.OnBandChanged).
 ///   Blackout (12): at the end of that turn, play the top 3 cards of your draw pile, Exhaust your
@@ -31,20 +32,6 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
 
     private static IntoxicationResource.Band BandOf(Player player) =>
         IntoxicationResource.BandFor(IntoxicationResource.AmountOf(player));
-
-    public override decimal ModifyDamageAdditive(Creature? target, decimal amount, ValueProp props, Creature? dealer, CardModel? cardSource, CardPlay? cardPlay)
-    {
-        var player = dealer?.Player;
-        if (cardSource == null || !IsDrunkenMaster(player) || !props.IsPoweredAttack()) return 0m;
-        return BandOf(player!) >= IntoxicationResource.Band.Tipsy ? IntoxicationResource.TipsyDamageBonus : 0m;
-    }
-
-    public override decimal ModifyBlockAdditive(Creature target, decimal block, ValueProp props, CardModel? cardSource, CardPlay? cardPlay)
-    {
-        var player = target.Player;
-        if (cardSource == null || !IsDrunkenMaster(player)) return 0m;
-        return BandOf(player!) >= IntoxicationResource.Band.Tipsy ? IntoxicationResource.TipsyBlockBonus : 0m;
-    }
 
     /// <summary>Put the band status icon under every Drunken Master at the start of combat.</summary>
     public override async Task AfterSideTurnStart(CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
@@ -110,6 +97,7 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
         }
 
         resource.Amount = 0;
+        await resource.FlushBandPowers(choiceContext);
         var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, player.Creature, 1, player.Creature, null);
         if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now
 
