@@ -61,6 +61,12 @@ public abstract class IngredientCard() : DrunkenMasterCard(0, CardType.Skill, Ca
     /// </summary>
     public abstract Task ApplyBrewedEffect(PlayerChoiceContext choiceContext, Player drinker, Creature? enemyTarget);
 
+    /// <summary>
+    /// Greyed out while the pot is full and no potion slot is free (2026-09-14). Playing one then would only exhaust
+    /// it; drink or discard a potion first. The pot seals itself the moment a slot opens (BrewSealPatch).
+    /// </summary>
+    protected override bool IsPlayable => Owner == null || !BrewSystem.IsBlocked(Owner);
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await BrewSystem.AddIngredient(choiceContext, this);

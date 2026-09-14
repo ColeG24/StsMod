@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Power card applying BottomlessCupPower.</summary>
+/// <summary>Rare Power, 2 cost. The first potion you drink each turn: gain 1 Energy and draw 1 card. Upgraded: costs 1. (Every drink until 2026-09-14.)</summary>
 public class BottomlessCup() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<BottomlessCupPower>(1)];

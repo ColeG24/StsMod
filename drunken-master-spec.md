@@ -69,8 +69,9 @@ not a Rag change.
 2. Playing an Ingredient card adds its effect to the Brew. Ingredients have **no immediate effect**.
 3. When the pot reaches capacity it **automatically seals** into a Concoction and empties.
 4. The Concoction goes into a free potion slot. **If there is no free slot, the Brew holds at
-   capacity and refuses further Ingredients** until a slot frees up. The refused Ingredient is still
-   played (and Exhausts). The blocked state is logged; there is no dedicated UI for it yet.
+   capacity** and Ingredients are unplayable (greyed out) until a slot frees up. The pot seals itself
+   the moment a potion is drunk or discarded, after every "whenever you drink" power has run (so Chaser
+   gets its slot back first). Entropic Brew refills its own slot, so the pot keeps waiting.
 5. The Brew **does not survive combat.** Unsealed Ingredients are lost at end of combat.
 6. There is no manual seal/bottle command.
 
@@ -246,7 +247,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Beer Muscles | Power | 1 | Whenever you drink a potion, gain 1 Strength. (Upgrade: Innate.) |
 | Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
 | Stockpot | Power | — | Your Brew holds 1 more Ingredient. |
-| Shot Glass | Power | — | Your Brew holds 1 fewer Ingredient. Gain 2 (3) Strength and Dexterity. |
+| Shot Glass | Power | 1 | Your Brew holds 1 fewer Ingredient. Whenever you drink a Concoction, gain 1 (2) Intoxication. |
 | Drunken Fist | Attack | 1 | Deal 8 (10) damage. Hits twice if you are Tipsy or above. (Was Rare.) |
 | Cheap Shot | Attack | 0 | Deal 5 (7) damage. Apply 1 (2) Confusion. |
 | Soda Gun | Attack | 1 | Deal 8 (11) damage to ALL enemies. Add a Seltzer (+) into your hand. |
@@ -257,7 +258,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Spin the Bottle | Skill | 0 + 3 Intox | Apply 3 (5) Confusion to ALL enemies. |
 | Pregame | Skill | 1 | Gain 4 (6) Intoxication if Sober, otherwise 2 (3). |
 | Blow Smoke | Skill | 2 | Gain 10 (13) Block. Apply 4 (6) Confusion. |
-| Order Up | Skill | 1 | Gain 7 (10) Block. Next turn, add 1 (2) random Ingredients into your hand. |
+| Order Up | Skill | 1 | Gain 7 (10) Block. Next turn, add a Grain Spirit into your hand. |
 | Numb | Skill | 1 | Gain 4 (7) Block. If Tipsy or above, take half damage from attacks until your next turn. |
 | Karaoke Night | Power | 1 | At the start of your turn, apply 1 (2) Confusion to ALL enemies. |
 
@@ -266,8 +267,8 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 Still, Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out, Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Dutch Courage (+3 (4) Strength
-whenever you Blackout), Moonshiner (+2 Energy whenever the Brew seals), Bottomless Cup (+1 Energy and draw 1
-whenever you drink a potion), Tolerance (Power, 2: while Drunk your cards' random costs never go up; upgrade
+whenever you Blackout), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
+in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: while Drunk your cards' random costs never go up; upgrade
 also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13.
 
 Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**

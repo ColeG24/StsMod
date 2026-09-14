@@ -10,7 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
-/// <summary>Uncommon Skill, 1 Energy. Gain 7 Block. Next turn, add 1 random Ingredient into your hand. Upgraded: 10 / 2.</summary>
+/// <summary>Uncommon Skill, 1 Energy. Gain 7 Block. Next turn, add a Grain Spirit into your hand. Upgraded: 10 Block (2026-09-14: was a random Ingredient, and the upgrade added a second).</summary>
 public class OrderUp() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public override bool GainsBlock => true;
@@ -28,9 +28,5 @@ public class OrderUp() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommo
         await PowerCmd.Apply<OrderUpPower>(choiceContext, Owner.Creature, DynamicVars[nameof(OrderUpPower)].BaseValue, Owner.Creature, this);
     }
 
-    protected override void OnUpgrade()
-    {
-        DynamicVars.Block.UpgradeValueBy(3m);
-        DynamicVars[nameof(OrderUpPower)].UpgradeValueBy(1m);
-    }
+    protected override void OnUpgrade() => DynamicVars.Block.UpgradeValueBy(3m);
 }

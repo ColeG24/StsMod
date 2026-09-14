@@ -48,6 +48,14 @@ public static class BrewSystem
         await TrySeal(owner);
     }
 
+    /// <summary>True while the pot is full and every potion slot is taken: an Ingredient played now would be refused.</summary>
+    public static bool IsBlocked(Player owner)
+    {
+        var state = owner.PlayerCombatState;
+        if (state == null) return false;
+        return Brews[state].Count >= CapacityFor(owner) && !owner.HasOpenPotionSlots;
+    }
+
     /// <summary>Powers that react when a full pot seals into a Concoction (Moonshiner).</summary>
     public interface IBrewSealedListener
     {
@@ -94,10 +102,15 @@ public static class BrewSystem
         var brew = Brews[state];
         if (brew.Count >= CapacityFor(owner))
         {
-            // Spec rule 4: pot is full and blocked on a potion slot. Refuse the ingredient.
-            MainFile.Logger.Info("Brew is full and no potion slot is free; ingredient refused.");
+            // The pot was full and blocked on a potion slot. Seal first (a slot may have opened since), and only
+            // refuse the Ingredient if it still cannot seal. Before 2026-09-14 the seal happened but the played
+            // Ingredient was thrown away with it.
             await TrySeal(owner);
-            return;
+            if (brew.Count >= CapacityFor(owner))
+            {
+                MainFile.Logger.Info("Brew is full and no potion slot is free; ingredient refused.");
+                return;
+            }
         }
 
         // Keep a fresh, owned copy of the ingredient (the played card is about to be exhausted).

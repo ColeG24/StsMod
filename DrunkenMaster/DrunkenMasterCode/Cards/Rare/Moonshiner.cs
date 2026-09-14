@@ -9,10 +9,10 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Rare Power, 2 cost. Whenever your Brew seals into a Concoction, gain 2 Energy. Upgraded: costs 1.</summary>
+/// <summary>Rare Power, 2 cost. Whenever your Brew seals into a Concoction, deal 3 damage to ALL enemies for each Ingredient in it. Upgraded: 4. (Was +2 Energy per seal, upgrade cost 1, until 2026-09-14.)</summary>
 public class Moonshiner() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<MoonshinerPower>(2)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<MoonshinerPower>(3)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<MoonshinerPower>(),
@@ -26,5 +26,5 @@ public class Moonshiner() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare
             DynamicVars[nameof(MoonshinerPower)].BaseValue, Owner.Creature, this);
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade() => DynamicVars[nameof(MoonshinerPower)].UpgradeValueBy(1m);
 }
