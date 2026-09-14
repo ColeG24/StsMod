@@ -1,4 +1,5 @@
 using DrunkenMaster.DrunkenMasterCode.Brew;
+using DrunkenMaster.DrunkenMasterCode.Powers;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -13,9 +14,10 @@ namespace DrunkenMaster.DrunkenMasterCode.Patches;
 /// Ingredient play, so a full pot sat unsealed after you drank, and that next Ingredient was lost.
 ///
 /// Both patches wrap the returned Task of the game's hook fan-out (Hook.AfterPotionUsed / Hook.AfterPotionDiscarded)
-/// so the seal runs AFTER every power and relic listener. That order matters for Chaser, which puts the used potion
-/// back into a slot from its own AfterPotionUsed: it must get the slot first, and the pot takes whatever is left.
-/// Entropic Brew fills its own old slot inside its use, so the pot stays full and waits for the next opening.
+/// so the seal runs AFTER every power and relic listener. While a Chaser stack is pending the seal is skipped: the
+/// re-drink (<see cref="ChaserPatch"/>, which runs after the whole use wrapper) needs the freed slot, and its own use
+/// triggers this patch again once the stacks are spent. Entropic Brew fills its own old slot inside its use, so the pot
+/// stays full and waits for the next opening.
 ///
 /// Skipped once combat is over or ending: Concoction.AfterCombatEnd discards potions into Dregs, and a Concoction
 /// sealed at that point would outlive the fight with per-instance state (the spec §8 save problem).
@@ -29,6 +31,8 @@ public static class BrewSealPatch
         if (owner == null) return;
         if (owner.Creature?.CombatState == null) return;
         if (CombatManager.Instance.IsOverOrEnding) return;
+        var chaser = owner.Creature.GetPower<ChaserPower>();
+        if (chaser != null && chaser.Amount > 0) return;   // ChaserPatch seals after the re-drink (or when it cannot happen)
         await BrewSystem.TrySeal(owner);
     }
 

@@ -56,6 +56,8 @@ dotnet publish    # ANY text/image/localization change → also regenerates the 
 
 ## Gotchas learned
 
+- **Never enqueue a GameAction from a hook or power.** Hooks run on every machine; `RequestEnqueue` enqueues locally on the host but sends a request on a client, so the host ends up with the action twice and the client with none (Chaser + Block Potion + Beer Muscles desync, 2026-09-14: host Block 24 / Str 5, client Block 12 / Str 4). Do the work inside the action already running: Chaser now re-runs `PotionModel.OnUseWrapper` from a postfix that wraps the wrapper's Task (`Patches/ChaserPatch.cs`).
+
 - Lasting Candy swaps a reward card for a Power *not already offered*, reusing the reward's rarity odds. If the
   candidates are a single rarity the game throws and the rewards screen soft-locks. With no Common Powers this
   means the pool needs at least four Rare Powers (a boss shows three Rares). Don't let it drop below that.
