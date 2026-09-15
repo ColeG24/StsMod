@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 
 namespace DrunkenMaster.DrunkenMasterCode.Relics;
 
@@ -41,6 +42,22 @@ public class TavernRag : DrunkenMasterRelic
     {
         await PlayerCmd.GainMaxPotionCount(DynamicVars[PotionSlotsKey].IntValue, Owner);
     }
+
+    /// <summary>
+    /// The slots are NOT taken back when the Rag leaves (Touch of Orobas, Neow swap): shrinking the belt would discard
+    /// potions sitting in the top slots. Instead the count is parked here so the upgrade (Tavern Apron) can grant only
+    /// the difference. In-memory only; the swap happens inside one command, so it never crosses a save.
+    /// </summary>
+    public static readonly Dictionary<Player, int> LingeringSlots = new();
+
+    public override Task AfterRemoved()
+    {
+        LingeringSlots[Owner] = DynamicVars[PotionSlotsKey].IntValue;
+        return Task.CompletedTask;
+    }
+
+    /// <summary>Touch of Orobas (via BaseLib's StarterUpgradePatches) swaps the Rag for this.</summary>
+    public override RelicModel? GetUpgradeReplacement() => ModelDb.Relic<TavernApron>();
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {

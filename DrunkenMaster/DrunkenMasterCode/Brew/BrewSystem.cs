@@ -25,19 +25,20 @@ public static class BrewSystem
     public const int MinCapacity = 1;
     public const int MaxCapacity = 5;
 
-    /// <summary>Powers that change the pot size (Stockpot +1 per stack, Shot Glass -1).</summary>
+    /// <summary>Powers and relics that change the pot size (Stockpot +1 per stack, Shot Glass -1, Copper Kettle +1).</summary>
     public interface IPotCapacityModifier
     {
         int PotCapacityDelta(Player player);
     }
 
-    /// <summary>Pot size for this player right now: 3 plus every capacity power, clamped to 1..5.</summary>
+    /// <summary>Pot size for this player right now: 3 plus every capacity power and relic, clamped to 1..5.</summary>
     public static int CapacityFor(Player player)
     {
         int cap = BaseCapacity;
         var creature = player.Creature;
         if (creature != null)
             foreach (var mod in creature.Powers.OfType<IPotCapacityModifier>()) cap += mod.PotCapacityDelta(player);
+        foreach (var mod in player.Relics.OfType<IPotCapacityModifier>()) cap += mod.PotCapacityDelta(player);
         return Math.Clamp(cap, MinCapacity, MaxCapacity);
     }
 
@@ -56,7 +57,7 @@ public static class BrewSystem
         return Brews[state].Count >= CapacityFor(owner) && !owner.HasOpenPotionSlots;
     }
 
-    /// <summary>Powers that react when a full pot seals into a Concoction (Moonshiner).</summary>
+    /// <summary>Powers and cards that react when a full pot seals into a Concoction (Moonshiner, Wake-Up Call).</summary>
     public interface IBrewSealedListener
     {
         Task OnBrewSealed(Player owner, Concoction potion);
@@ -190,6 +191,11 @@ public static class BrewSystem
             brew.Clear();
             Changed?.Invoke(owner);
             foreach (var listener in owner.Creature.Powers.OfType<IBrewSealedListener>().ToList())
+            {
+                await listener.OnBrewSealed(owner, (Concoction)potion);
+            }
+            // Cards in this combat can listen too (Wake-Up Call's until-played discount).
+            foreach (var listener in state.AllCards.OfType<IBrewSealedListener>().ToList())
             {
                 await listener.OnBrewSealed(owner, (Concoction)potion);
             }

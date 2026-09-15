@@ -1,5 +1,26 @@
 {
   "DRUNKENMASTER-TAVERN_RAG.title": "Tavern Rag",
   "DRUNKENMASTER-TAVERN_RAG.description": "At the start of combat, add [blue]{Ingredients}[/blue] random [gold]Ingredient[/gold] into your [gold]Hand[/gold].\\nUpon pickup, gain [blue]{PotionSlots}[/blue] potion slots.",
-  "DRUNKENMASTER-TAVERN_RAG.flavor": "It has never once been washed. That's the secret."
+  "DRUNKENMASTER-TAVERN_RAG.flavor": "It has never once been washed. That's the secret.",
+  "DRUNKENMASTER-TAVERN_APRON.title": "Tavern Apron",
+  "DRUNKENMASTER-TAVERN_APRON.description": "At the start of combat, add [blue]{Ingredients}[/blue] random [gold]Ingredients[/gold] into your [gold]Hand[/gold].\\nYou have [blue]{PotionSlots}[/blue] extra potion slots.",
+  "DRUNKENMASTER-TAVERN_APRON.flavor": "Washed exactly once, for the occasion.",
+  "DRUNKENMASTER-BANDOLIER.title": "Bandolier",
+  "DRUNKENMASTER-BANDOLIER.description": "At the start of combat, if at least half of your potion slots are full, gain [blue]{StrengthPower}[/blue] [gold]Strength[/gold].",
+  "DRUNKENMASTER-BANDOLIER.flavor": "A bottle for every occasion, and an occasion for every bottle.",
+  "DRUNKENMASTER-MUDDLER.title": "Muddler",
+  "DRUNKENMASTER-MUDDLER.description": "Whenever you play an [gold]Ingredient[/gold], deal [blue]{Damage}[/blue] damage to ALL enemies.",
+  "DRUNKENMASTER-MUDDLER.flavor": "Crush the mint. Crush the lime. Crush whatever's in front of you.",
+  "DRUNKENMASTER-HIP_FLASK.title": "Hip Flask",
+  "DRUNKENMASTER-HIP_FLASK.description": "Start each combat with [blue]{Intoxication}[/blue] [gold]Intoxication[/gold].",
+  "DRUNKENMASTER-HIP_FLASK.flavor": "A little something for the road. Every road.",
+  "DRUNKENMASTER-ABSINTHE_SPOON.title": "Absinthe Spoon",
+  "DRUNKENMASTER-ABSINTHE_SPOON.description": "Whenever you apply [gold]Confusion[/gold], apply [blue]{Extra}[/blue] more.",
+  "DRUNKENMASTER-ABSINTHE_SPOON.flavor": "The green fairy sends her regards.",
+  "DRUNKENMASTER-CHAMPIONS_TANKARD.title": "Champion's Tankard",
+  "DRUNKENMASTER-CHAMPIONS_TANKARD.description": "[gold]Tipsy[/gold] grants [blue]{Total}[/blue] [gold]Strength[/gold] and [blue]{Total}[/blue] [gold]Dexterity[/gold] instead of [blue]2[/blue].",
+  "DRUNKENMASTER-CHAMPIONS_TANKARD.flavor": "First prize, three years running. Nobody remembers the contest.",
+  "DRUNKENMASTER-COPPER_KETTLE.title": "Copper Kettle",
+  "DRUNKENMASTER-COPPER_KETTLE.description": "Your [gold]Brew[/gold] holds [blue]{Slots}[/blue] more [gold]Ingredient[/gold].",
+  "DRUNKENMASTER-COPPER_KETTLE.flavor": "Bigger pot, bigger problems, bigger potions."
 }

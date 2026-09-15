@@ -166,12 +166,13 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     private readonly HashSet<CardModel> _randomizedThisTurn = [];
 
     /// <summary>
-    /// Drunk: give a card a random cost 0–3 for THIS TURN only (2026-09-12; was until played). The game
+    /// Drunk: give a card a random cost 0–3 for THIS TURN only (2026-09-12; was until played). Poised cards are skipped. The game
     /// clears the modifier at end of turn; sobering up below Drunk clears it early.
     /// </summary>
     public static void RandomizeCost(Player player, CardModel card)
     {
         if (card.EnergyCost.Canonical < 0) return;   // X-cost / no cost
+        if (card.Keywords.Contains(DrunkenMasterKeywords.Poised)) return;   // Intoxication-cost cards (2026-09-14)
         int cost = player.RunState.Rng.CombatEnergyCosts.NextInt(4);
         // Tolerance (Rare Power): the roll can only match or lower the card's current cost.
         if (player.Creature?.HasPower<Powers.TolerancePower>() == true) cost = Math.Min(cost, card.EnergyCost.GetResolved());
@@ -204,6 +205,21 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     public const int TipsyDexterity = 2;
     public const int BlackoutCardsPlayed = 3;
 
+    /// <summary>Relics that raise the Tipsy buff (Champion's Tankard: +1 / +1).</summary>
+    public interface ITipsyBonus
+    {
+        int ExtraTipsyStrength(Player player);
+        int ExtraTipsyDexterity(Player player);
+    }
+
+    public static int TipsyStrengthFor(Player player) =>
+        TipsyStrength + player.Relics.OfType<ITipsyBonus>().Sum(r => r.ExtraTipsyStrength(player));
+    public static int TipsyDexterityFor(Player player) =>
+        TipsyDexterity + player.Relics.OfType<ITipsyBonus>().Sum(r => r.ExtraTipsyDexterity(player));
+
+    /// <summary>What crossing the Tipsy line actually granted, so leaving it takes back exactly that much.</summary>
+    private int _grantedStrength, _grantedDexterity;
+
     /// <summary>
     /// Band transitions are noticed in the sync Amount setter, but granting a power is a command. Crossing the
     /// Tipsy line queues +1 / -1 here and every async write path (GainAsync, ApplyTurnStart, Spend, the Blackout
@@ -216,12 +232,24 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     public async Task FlushBandPowers(PlayerChoiceContext choiceContext)
     {
         var creature = Owner?.Creature;
-        while (_pendingTipsy != 0 && creature != null && !creature.IsDead)
+        var owner = Owner;
+        while (_pendingTipsy != 0 && creature != null && owner != null && !creature.IsDead)
         {
             int sign = Math.Sign(_pendingTipsy);
             _pendingTipsy -= sign;
-            await PowerCmd.Apply<StrengthPower>(choiceContext, creature, sign * TipsyStrength, creature, null);
-            await PowerCmd.Apply<DexterityPower>(choiceContext, creature, sign * TipsyDexterity, creature, null);
+            int str, dex;
+            if (sign > 0)
+            {
+                str = TipsyStrengthFor(owner); dex = TipsyDexterityFor(owner);
+                _grantedStrength += str; _grantedDexterity += dex;
+            }
+            else
+            {
+                str = -_grantedStrength; dex = -_grantedDexterity;
+                _grantedStrength = 0; _grantedDexterity = 0;
+            }
+            if (str != 0) await PowerCmd.Apply<StrengthPower>(choiceContext, creature, str, creature, null);
+            if (dex != 0) await PowerCmd.Apply<DexterityPower>(choiceContext, creature, dex, creature, null);
         }
         _pendingTipsy = 0;
     }

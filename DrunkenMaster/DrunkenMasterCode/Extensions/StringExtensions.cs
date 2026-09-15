@@ -55,6 +55,16 @@ public static class StringExtensions
         return Path.Join(MainFile.ResPath, "images", "relics", "relic.png");
     }
 
+    /// <summary>Outline fallback is the white template outline, not the coloured template icon.</summary>
+    public static string RelicOutlineImagePath(this string path)
+    {
+        path = Path.Join(MainFile.ResPath, "images", "relics", path);
+        if (ResourceLoader.Exists(path)) return path;
+
+        MainFile.Logger.Info("Could not find relic outline image path: " + path);
+        return Path.Join(MainFile.ResPath, "images", "relics", "relic_outline.png");
+    }
+
     public static string BigRelicImagePath(this string path)
     {
         path = Path.Join(MainFile.ResPath, "images", "relics", "big", path);

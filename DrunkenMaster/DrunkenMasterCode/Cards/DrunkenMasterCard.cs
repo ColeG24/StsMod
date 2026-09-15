@@ -3,6 +3,8 @@ using BaseLib.Extensions;
 using BaseLib.Utils;
 using DrunkenMaster.DrunkenMasterCode.Character;
 using DrunkenMaster.DrunkenMasterCode.Extensions;
+using DrunkenMaster.DrunkenMasterCode.Resources;
+using DrunkenMaster.DrunkenMasterCode.Tips;
 using MegaCrit.Sts2.Core.Entities.Cards;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards;
@@ -29,4 +31,13 @@ public abstract class DrunkenMasterCard(int cost, CardType type, CardRarity rari
     //Uses card_portraits/card_name.png as image path. These should be smaller images.
     public override string PortraitPath => $"{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".CardImagePath();
     public override string BetaPortraitPath => $"beta/{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".CardImagePath();
+
+    /// <summary>
+    /// Every card that costs Intoxication is Poised: Drunk never re-rolls its cost. Subclasses that override this
+    /// (Ingredients, Chaser) have no Intoxication cost, so nothing is lost.
+    /// </summary>
+    public override IEnumerable<CardKeyword> CanonicalKeywords =>
+        CustomResources<IntoxicationResource>.Cost(this) != null
+            ? new[] { DrunkenMasterKeywords.Poised }
+            : Array.Empty<CardKeyword>();
 }

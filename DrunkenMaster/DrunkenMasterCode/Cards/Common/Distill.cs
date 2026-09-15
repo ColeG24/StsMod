@@ -17,18 +17,25 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>1 Energy. Choose a card in your hand: it is removed from combat and replaced by a random Ingredient. Upgraded: costs 0.</summary>
+/// <summary>1 Energy. Choose a card in your hand: it is removed from combat and replaced by a random Ingredient. Gain 2 Intoxication (2026-09-14). Upgraded: costs 0.</summary>
 public class Distill() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(DrunkenMasterTips.Ingredient)];
+    public const string IntoxicationKey = "Intoxication";
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 2)];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(DrunkenMasterTips.Ingredient), IntoxicationResource.Tip];
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var hand = PileType.Hand.GetPile(Owner);
-        if (hand.Cards.Count == 0) return;
-        var picked = (await CardSelectCmd.FromHand(choiceContext, Owner, new CardSelectorPrefs(SelectionScreenPrompt, 1), null, this)).FirstOrDefault();
-        if (picked == null) return;
-        await CardPileCmd.RemoveFromCombat(picked);
-        await BrewSystem.AddRandomIngredientsToHand(Owner, 1);
+        if (hand.Cards.Count > 0)
+        {
+            var picked = (await CardSelectCmd.FromHand(choiceContext, Owner, new CardSelectorPrefs(SelectionScreenPrompt, 1), null, this)).FirstOrDefault();
+            if (picked != null)
+            {
+                await CardPileCmd.RemoveFromCombat(picked);
+                await BrewSystem.AddRandomIngredientsToHand(Owner, 1);
+            }
+        }
+        await IntoxicationResource.GainAsync(choiceContext, Owner, DynamicVars[IntoxicationKey].IntValue);
     }
     protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
 }
