@@ -1,4 +1,5 @@
 using DrunkenMaster.DrunkenMasterCode.Resources;
+using DrunkenMaster.DrunkenMasterCode.Tips;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -18,6 +19,9 @@ public class UpperDeckie() : DrunkenMasterCard(0, CardType.Attack, CardRarity.Co
     private decimal _extraDamageFromPlays;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(3, ValueProp.Move)];
+
+    /// <summary>Poised (2026-09-14): a 0-cost card that scales with Intoxication should not get re-rolled to 3 while Drunk.</summary>
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [DrunkenMasterKeywords.Poised];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
 
