@@ -17,8 +17,8 @@ namespace DrunkenMaster.DrunkenMasterCode.Resources;
 ///            (2026-09-14; was hidden +2 damage / +2 Block hooks here).
 ///   Drunk+ : cards you draw get a random cost 0–3 until played (Confused / Snecko precedent).
 ///            Entering Drunk also re-rolls the hand (see IntoxicationResource.OnBandChanged).
-///   Blackout (12): at the end of that turn, play the top 3 cards of your draw pile, Exhaust your
-///                  hand, reset to 0, and apply Hungover for the next turn.
+///   Blackout (12): at the end of that turn, play the top 3 cards of your draw pile, reset to 0, and apply
+///                  Hungover for the next turn. The hand is discarded normally (2026-09-14; it used to be Exhausted).
 /// </summary>
 public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
 {
@@ -78,32 +78,40 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
         }
     }
 
+    /// <summary>
+    /// Blackout (2026-09-14 rewrite): play the top cards of the draw pile, then sober up and wake Hungover. The hand is
+    /// no longer Exhausted; the normal end-of-turn discard takes it (user decision after the 2026-09-14 co-op soft-lock).
+    ///
+    /// Written defensively because it runs inside the end-of-turn hook on every machine:
+    /// - Nothing here mutates the hand, so an auto-played card that opens a prompt (Distill, Leftovers, Free Pour+)
+    ///   sees the same hand on host and client.
+    /// - The sober-up and Hungover land in a finally block: if an auto-played card throws, the Intoxication still
+    ///   resets, so the next turn cannot fire a second Blackout off the same 12.
+    /// - Every step re-checks that combat is still running and the player is alive (a Blackout card can kill you).
+    /// </summary>
     private static async Task Blackout(PlayerChoiceContext choiceContext, Player player, IntoxicationResource resource)
     {
         MainFile.Logger.Info("Blackout!");
-        await CardPileCmd.AutoPlayFromDrawPile(choiceContext, player, IntoxicationResource.BlackoutCardsPlayed, CardPilePosition.Top, forceExhaust: false);
-        if (CombatManager.Instance.IsOverOrEnding) return;
-
-        // Whatever is left in hand is lost to the night: Exhaust it instead of letting the normal
-        // end-of-turn discard take it. This hook runs before the game's hand flush.
-        var hand = player.PlayerCombatState?.Hand;
-        if (hand != null)
+        try
         {
-            foreach (var card in hand.Cards.ToList())
+            await CardPileCmd.AutoPlayFromDrawPile(choiceContext, player, IntoxicationResource.BlackoutCardsPlayed, CardPilePosition.Top, forceExhaust: false);
+        }
+        finally
+        {
+            if (!CombatManager.Instance.IsOverOrEnding && player.Creature is { IsDead: false })
             {
-                if (CombatManager.Instance.IsOverOrEnding) return;
-                await CardCmd.Exhaust(choiceContext, card);
+                resource.Amount = 0;
+                await resource.FlushBandPowers(choiceContext);
             }
         }
+        if (CombatManager.Instance.IsOverOrEnding || player.Creature is not { IsDead: false } creature) return;
 
-        resource.Amount = 0;
-        await resource.FlushBandPowers(choiceContext);
-        var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, player.Creature, 1, player.Creature, null);
+        var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, creature, 1, creature, null);
         if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now
 
-        foreach (var listener in player.Creature.Powers.OfType<IBlackoutListener>().ToList())
+        foreach (var listener in creature.Powers.OfType<IBlackoutListener>().ToList())
         {
-            if (CombatManager.Instance.IsOverOrEnding) return;
+            if (CombatManager.Instance.IsOverOrEnding || creature.IsDead) return;
             await listener.OnBlackout(choiceContext);
         }
     }

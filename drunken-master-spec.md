@@ -171,7 +171,7 @@ sober up, repeat.
 turn, Blackout fires.
 
 - Plays the top **3** cards of your draw pile.
-- **Exhausts your hand** instead of discarding it.
+- Your hand is discarded as normal (2026-09-14; it used to be Exhausted).
 - Resets Intoxication to 0.
 - Applies **Hungover** for the next turn only: 1 less Energy, draw 1 fewer card, per stack.
   Hungover is a counter, so a second Blackout in the same combat stacks it.

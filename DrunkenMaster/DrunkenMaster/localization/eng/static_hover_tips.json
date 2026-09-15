@@ -12,5 +12,5 @@
   "DRUNKENMASTER-DRUNK.title": "Drunk",
   "DRUNKENMASTER-DRUNK.description": "[blue]8[/blue] or more [gold]Intoxication[/gold]. Still Tipsy, and your cards get random costs each turn.",
   "DRUNKENMASTER-BLACKOUT.title": "Blackout",
-  "DRUNKENMASTER-BLACKOUT.description": "[blue]12[/blue] [gold]Intoxication[/gold]. At the end of your turn: play cards off the top of your draw pile, [gold]Exhaust[/gold] your hand, sober up, and wake [gold]Hungover[/gold]."
+  "DRUNKENMASTER-BLACKOUT.description": "[blue]12[/blue] [gold]Intoxication[/gold]. At the end of your turn: play cards off the top of your draw pile, sober up, and wake [gold]Hungover[/gold]."
 }
