@@ -7,10 +7,10 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
+namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>Uncommon Attack, 0 Energy. Deal 5 damage. Apply 1 Confusion. Upgraded: 7 / 2.</summary>
-public class CheapShot() : DrunkenMasterCard(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+/// <summary>Common Attack (2026-09-14, was Uncommon), 0 Energy. Deal 5 damage. Apply 1 Confusion. Upgraded: 7 / 2.</summary>
+public class CheapShot() : DrunkenMasterCard(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(5, ValueProp.Move), new PowerVar<ConfusionPower>(1)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<ConfusionPower>()];

@@ -9,14 +9,14 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
+namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>Uncommon Attack, 0 Energy + 1 Intoxication. Deal 3 damage. Apply 1 Weak. Upgraded: 5 / 2.</summary>
+/// <summary>Common Attack (2026-09-14, was Uncommon), 0 Energy + 1 Intoxication. Deal 3 damage. Apply 1 Weak. Upgraded: 5 / 2.</summary>
 public class WaterItDown : DrunkenMasterCard
 {
     public const int IntoxicationCost = 1;
 
-    public WaterItDown() : base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+    public WaterItDown() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
         CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
     }
