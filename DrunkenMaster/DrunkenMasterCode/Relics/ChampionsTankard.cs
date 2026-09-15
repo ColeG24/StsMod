@@ -9,29 +9,29 @@ using MegaCrit.Sts2.Core.Models.Powers;
 namespace DrunkenMaster.DrunkenMasterCode.Relics;
 
 /// <summary>
-/// Rare. Tipsy grants 3 Strength and 3 Dexterity instead of 2. Read by <see cref="IntoxicationResource.TipsyStrengthFor"/>
-/// when the Tipsy line is crossed; the resource remembers what it granted so sobering up takes back the same amount.
+/// Rare. While Tipsy or Drunk you have 1 more Strength and 1 more Dexterity than the band grants (2026-09-15; was
+/// "Tipsy = 3 / 3 instead of 2"). Read by <see cref="IntoxicationResource.BandPowersFor"/> whenever the band powers are
+/// flushed; the resource remembers what it granted so a band change applies exactly the difference.
 /// </summary>
-public class ChampionsTankard : DrunkenMasterRelic, IntoxicationResource.ITipsyBonus
+public class ChampionsTankard : DrunkenMasterRelic, IntoxicationResource.IBandBonus
 {
     public const string BonusKey = "Bonus";
-    public const string TotalKey = "Total";
 
     public override RelicRarity Rarity => RelicRarity.Rare;
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new DynamicVar(BonusKey, 1),
-        new DynamicVar(TotalKey, IntoxicationResource.TipsyStrength + 1)
-    ];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(BonusKey, 1)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         IntoxicationResource.BandTip(IntoxicationResource.Band.Tipsy),
+        IntoxicationResource.BandTip(IntoxicationResource.Band.Drunk),
         HoverTipFactory.FromPower<StrengthPower>(),
         HoverTipFactory.FromPower<DexterityPower>()
     ];
 
-    public int ExtraTipsyStrength(Player player) => player == Owner ? DynamicVars[BonusKey].IntValue : 0;
-    public int ExtraTipsyDexterity(Player player) => player == Owner ? DynamicVars[BonusKey].IntValue : 0;
+    private int BonusFor(Player player, IntoxicationResource.Band band) =>
+        player == Owner && band >= IntoxicationResource.Band.Tipsy ? DynamicVars[BonusKey].IntValue : 0;
+
+    public int ExtraBandStrength(Player player, IntoxicationResource.Band band) => BonusFor(player, band);
+    public int ExtraBandDexterity(Player player, IntoxicationResource.Band band) => BonusFor(player, band);
 }

@@ -13,10 +13,13 @@ namespace DrunkenMaster.DrunkenMasterCode.Resources;
 
 /// <summary>
 /// Passive combat hooks that give the Intoxication bands their teeth.
-///   Tipsy+ : 2 Strength and 2 Dexterity, granted/removed by IntoxicationResource.FlushBandPowers
-///            (2026-09-14; was hidden +2 damage / +2 Block hooks here).
-///   Drunk+ : cards you draw get a random cost 0–3 until played (Confused / Snecko precedent).
-///            Entering Drunk also re-rolls the hand (see IntoxicationResource.OnBandChanged).
+///   Start  : every combat opens at 3 Intoxication, the top of Sober (2026-09-15).
+///   Decay  : 0 / 1 / 2 per turn while Sober / Tipsy / Drunk (2026-09-15; was a flat 1).
+///   Tipsy  : 1 Strength and 1 Dexterity, granted/removed by IntoxicationResource.FlushBandPowers
+///            (2026-09-15; was 2 / 2 since 2026-09-14, hidden +2 damage / +2 Block hooks before that).
+///   Drunk  : 2 Strength and -1 Dexterity as the band total (2026-09-15), and cards you draw get a random
+///            cost 0–3 this turn (Confused / Snecko precedent). Entering Drunk also re-rolls the hand
+///            (see IntoxicationResource.OnBandChanged).
 ///   Blackout (12): at the end of that turn, play the top 3 cards of your draw pile, reset to 0, and apply
 ///                  Hungover for the next turn. The hand is discarded normally (2026-09-14; it used to be Exhausted).
 /// </summary>
@@ -26,6 +29,12 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
     public interface IBlackoutListener
     {
         Task OnBlackout(PlayerChoiceContext choiceContext);
+    }
+
+    /// <summary>Powers that make a Blackout auto-play more cards than the usual 3 (Bender).</summary>
+    public interface IBlackoutCardBonus
+    {
+        int ExtraBlackoutCards();
     }
 
     private static bool IsDrunkenMaster(Player? player) => player?.Character is Character.DrunkenMaster;
@@ -53,7 +62,9 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
     public override async Task AfterEnergyReset(Player player)
     {
         if (!IsDrunkenMaster(player)) return;
-        await IntoxicationResource.ApplyTurnStart(new ThrowingPlayerChoiceContext(), player);
+        var context = new ThrowingPlayerChoiceContext();
+        await IntoxicationResource.EnsureStarted(context, player);   // turn 1 only: open at 3
+        await IntoxicationResource.ApplyTurnStart(context, player);
     }
 
     public override Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
@@ -95,9 +106,13 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
     private static async Task Blackout(PlayerChoiceContext choiceContext, Player player, IntoxicationResource resource)
     {
         MainFile.Logger.Info("Blackout!");
+        resource.RecordBlackout();   // before the auto-play, so a Rude Awakening played by this Blackout counts it
+        int before = resource.Amount;
+        int count = IntoxicationResource.BlackoutCardsPlayed
+                    + (player.Creature?.Powers.OfType<IBlackoutCardBonus>().Sum(p => p.ExtraBlackoutCards()) ?? 0);
         try
         {
-            await CardPileCmd.AutoPlayFromDrawPile(choiceContext, player, IntoxicationResource.BlackoutCardsPlayed, CardPilePosition.Top, forceExhaust: false);
+            await CardPileCmd.AutoPlayFromDrawPile(choiceContext, player, count, CardPilePosition.Top, forceExhaust: false);
         }
         finally
         {
@@ -108,6 +123,8 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
             }
         }
         if (CombatManager.Instance.IsOverOrEnding || player.Creature is not { IsDead: false } creature) return;
+        await IntoxicationResource.NotifyLost(choiceContext, player, before - resource.Amount);
+        if (CombatManager.Instance.IsOverOrEnding || creature.IsDead) return;
 
         var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, creature, 1, creature, null);
         if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now

@@ -21,7 +21,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Resources;
 
 /// <summary>
 /// Spec §6. Intoxication as a first-class per-combat resource (BaseLib CustomResource) instead of a
-/// power icon. Shown as a dial above the draw pile. Decays 1 at the start of your turn. Resets each combat.
+/// power icon. Shown as a dial above the draw pile. Starts each combat at 3; decays 0 / 1 / 2 per turn while Sober / Tipsy / Drunk.
 ///
 /// Discovered and registered by BaseLib automatically (parameterless ctor). One instance per
 /// PlayerCombatState; use the static helpers from cards/relics.
@@ -38,7 +38,33 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         Task AfterTurnStartApplied(PlayerChoiceContext choiceContext) => Task.CompletedTask;
     }
 
-    public const int DecayPerTurn = 1;
+    /// <summary>Every combat opens at 3 Intoxication, the top of Sober (2026-09-15; was 0).</summary>
+    public const int StartingIntoxication = 3;
+
+    /// <summary>
+    /// Turn-start decay depends on the band you wake up in (2026-09-15; was a flat 1): Sober holds, Tipsy loses 1,
+    /// Drunk loses 2. Sober is the resting state and 3 is where the dial settles when nothing pushes it.
+    /// </summary>
+    public static int DecayFor(Band band) => band switch
+    {
+        Band.Sober => 0,
+        Band.Tipsy => 1,
+        _ => 2
+    };
+
+    private bool _started;
+
+    /// <summary>
+    /// First turn of combat only: put the dial at <see cref="StartingIntoxication"/> before the turn-start change and
+    /// the hand draw, so the opening hand already sees the real amount. Called from DrunkenMasterBands.AfterEnergyReset.
+    /// </summary>
+    public static async Task EnsureStarted(PlayerChoiceContext choiceContext, Player player)
+    {
+        var res = Get(player);
+        if (res == null || res._started) return;
+        res._started = true;
+        if (res.Amount < StartingIntoxication) await GainAsync(choiceContext, player, StartingIntoxication - res.Amount);
+    }
 
     /// <summary>
     /// The amount after a turn start from <paramref name="current"/>: decay and every per-turn source
@@ -47,7 +73,7 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     /// </summary>
     private static int NextFrom(int current, Player player)
     {
-        int next = current - DecayPerTurn;
+        int next = current - DecayFor(BandFor(current));
         var creature = player.Creature;
         if (creature != null)
         {
@@ -83,6 +109,7 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         if (next > current) await GainAsync(choiceContext, player, next - current);
         else if (next < current) Lose(player, current - next);
         await res.FlushBandPowers(choiceContext);
+        if (next < current) await NotifyLost(choiceContext, player, current - next);
         if (player.Creature != null)
         {
             foreach (var source in player.Creature.Powers.OfType<IPerTurnSource>().ToList())
@@ -95,6 +122,30 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     {
         Task OnBandRaised(PlayerChoiceContext choiceContext, Band from, Band to);
     }
+
+    /// <summary>
+    /// Powers that react to the owner losing Intoxication (Walk It Off). Fired once per loss event with the amount
+    /// actually lost: the turn-start decay, an Intoxication cost being paid, and the Blackout reset.
+    /// </summary>
+    public interface ILossListener
+    {
+        Task OnIntoxicationLost(PlayerChoiceContext choiceContext, int amount);
+    }
+
+    /// <summary>Tell the owner's <see cref="ILossListener"/> powers that <paramref name="amount"/> Intoxication was just lost.</summary>
+    public static async Task NotifyLost(PlayerChoiceContext choiceContext, Player player, int amount)
+    {
+        if (amount <= 0 || player.Creature is not { IsDead: false } creature) return;
+        foreach (var listener in creature.Powers.OfType<ILossListener>().ToList())
+        {
+            if (creature.IsDead) return;
+            await listener.OnIntoxicationLost(choiceContext, amount);
+        }
+    }
+
+    /// <summary>How many times the owner has Blacked Out this combat (Rude Awakening). Combat-scoped like the resource itself.</summary>
+    public int Blackouts { get; private set; }
+    public void RecordBlackout() => Blackouts++;
 
     public const string ResourceId = "DRUNKENMASTER-INTOXICATION";
 
@@ -154,8 +205,6 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     private void OnBandChanged(Band from, Band to)
     {
         var owner = Owner;
-        bool wasTipsy = from >= Band.Tipsy, isTipsy = to >= Band.Tipsy;
-        if (wasTipsy != isTipsy) _pendingTipsy += isTipsy ? 1 : -1;
         if (owner != null && from < Band.Drunk && to >= Band.Drunk) RandomizeHandCosts(owner);
         if (owner != null && from >= Band.Drunk && to < Band.Drunk) ResetRandomizedCosts();
         BandChanged?.Invoke(from, to);
@@ -200,65 +249,79 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         foreach (var card in hand.Cards.ToList()) RandomizeCost(player, card);
     }
 
-    /// <summary>Tipsy and above grant real Strength and Dexterity (2026-09-14; was hidden +2 damage / +2 Block hooks).</summary>
-    public const int TipsyStrength = 2;
-    public const int TipsyDexterity = 2;
+    /// <summary>
+    /// Band bonuses as real powers (2026-09-14), sized per band (2026-09-15). The numbers are the band's TOTAL, not a
+    /// step on top of the band below: Tipsy is 1 Strength and 1 Dexterity, Drunk (and Blackout, until it resolves) is
+    /// 2 Strength and -1 Dexterity. Sober grants nothing.
+    /// </summary>
+    public const int TipsyStrength = 1;
+    public const int TipsyDexterity = 1;
+    public const int DrunkStrength = 2;
+    public const int DrunkDexterity = -1;
     public const int BlackoutCardsPlayed = 3;
 
-    /// <summary>Relics that raise the Tipsy buff (Champion's Tankard: +1 / +1).</summary>
-    public interface ITipsyBonus
+    /// <summary>Relics that add to a band's Strength / Dexterity (Champion's Tankard: +1 / +1 while Tipsy or Drunk).</summary>
+    public interface IBandBonus
     {
-        int ExtraTipsyStrength(Player player);
-        int ExtraTipsyDexterity(Player player);
+        int ExtraBandStrength(Player player, Band band);
+        int ExtraBandDexterity(Player player, Band band);
     }
 
-    public static int TipsyStrengthFor(Player player) =>
-        TipsyStrength + player.Relics.OfType<ITipsyBonus>().Sum(r => r.ExtraTipsyStrength(player));
-    public static int TipsyDexterityFor(Player player) =>
-        TipsyDexterity + player.Relics.OfType<ITipsyBonus>().Sum(r => r.ExtraTipsyDexterity(player));
+    private static (int str, int dex) BaseBandPowers(Band band) => band switch
+    {
+        Band.Sober => (0, 0),
+        Band.Tipsy => (TipsyStrength, TipsyDexterity),
+        _ => (DrunkStrength, DrunkDexterity)
+    };
 
-    /// <summary>What crossing the Tipsy line actually granted, so leaving it takes back exactly that much.</summary>
+    /// <summary>The Strength and Dexterity <paramref name="band"/> grants this player, relics included.</summary>
+    public static (int str, int dex) BandPowersFor(Player player, Band band)
+    {
+        var (str, dex) = BaseBandPowers(band);
+        if (band == Band.Sober) return (0, 0);
+        foreach (var relic in player.Relics.OfType<IBandBonus>())
+        {
+            str += relic.ExtraBandStrength(player, band);
+            dex += relic.ExtraBandDexterity(player, band);
+        }
+        return (str, dex);
+    }
+
+    /// <summary>What the bands have granted so far, so a band change applies exactly the difference.</summary>
     private int _grantedStrength, _grantedDexterity;
 
     /// <summary>
-    /// Band transitions are noticed in the sync Amount setter, but granting a power is a command. Crossing the
-    /// Tipsy line queues +1 / -1 here and every async write path (GainAsync, ApplyTurnStart, Spend, the Blackout
-    /// reset) calls <see cref="FlushBandPowers"/> straight after, so the powers land in the action stream on
-    /// every machine. Removal is a plain -2 like Flex: Strength stolen in between can leave you below where you
-    /// started, which is the base game's own precedent.
+    /// Band transitions are noticed in the sync Amount setter, but granting a power is a command. Every async write
+    /// path (GainAsync, ApplyTurnStart, Spend, the Blackout reset) calls this straight after: it compares what the
+    /// current band should grant with what has been granted and applies the delta via PowerCmd, so the powers land in
+    /// the action stream on every machine. Removal is a plain negative apply like Flex: Strength stolen in between can
+    /// leave you below where you started, which is the base game's own precedent.
     /// </summary>
-    private int _pendingTipsy;
-
     public async Task FlushBandPowers(PlayerChoiceContext choiceContext)
     {
-        var creature = Owner?.Creature;
         var owner = Owner;
-        while (_pendingTipsy != 0 && creature != null && owner != null && !creature.IsDead)
-        {
-            int sign = Math.Sign(_pendingTipsy);
-            _pendingTipsy -= sign;
-            int str, dex;
-            if (sign > 0)
-            {
-                str = TipsyStrengthFor(owner); dex = TipsyDexterityFor(owner);
-                _grantedStrength += str; _grantedDexterity += dex;
-            }
-            else
-            {
-                str = -_grantedStrength; dex = -_grantedDexterity;
-                _grantedStrength = 0; _grantedDexterity = 0;
-            }
-            if (str != 0) await PowerCmd.Apply<StrengthPower>(choiceContext, creature, str, creature, null);
-            if (dex != 0) await PowerCmd.Apply<DexterityPower>(choiceContext, creature, dex, creature, null);
-        }
-        _pendingTipsy = 0;
+        var creature = owner?.Creature;
+        if (owner == null || creature == null || creature.IsDead) return;
+        var (str, dex) = BandPowersFor(owner, CurrentBand);
+        int dStr = str - _grantedStrength, dDex = dex - _grantedDexterity;
+        if (dStr == 0 && dDex == 0) return;
+        _grantedStrength = str; _grantedDexterity = dex;
+        if (dStr != 0) await PowerCmd.Apply<StrengthPower>(choiceContext, creature, dStr, creature, null);
+        if (dDex != 0) await PowerCmd.Apply<DexterityPower>(choiceContext, creature, dDex, creature, null);
     }
 
-    /// <summary>Cards that cost Intoxication spend through here; dropping below Tipsy must take the powers away.</summary>
+    /// <summary>
+    /// Cards that cost Intoxication spend through here; dropping below Tipsy must take the powers away, and loss
+    /// listeners hear about what was actually spent (X costs spend a different amount than they were asked for).
+    /// </summary>
     public override async Task<bool> Spend<T>(ICombatState combatState, AbstractModel? spender, int amount, bool optional)
     {
+        int before = Amount;
         bool ok = await base.Spend<T>(combatState, spender, amount, optional);
-        await FlushBandPowers(new ThrowingPlayerChoiceContext());
+        var context = new ThrowingPlayerChoiceContext();
+        await FlushBandPowers(context);
+        var owner = Owner;
+        if (owner != null && Amount < before) await NotifyLost(context, owner, before - Amount);
         return ok;
     }
 

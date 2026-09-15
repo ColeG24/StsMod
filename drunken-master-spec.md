@@ -145,8 +145,9 @@ ones are greyed out and the cost badge shows the price.
 
 | Rule | Value |
 |---|---|
+| Start | **3** at the start of every combat, the top of Sober (2026-09-15; was 0). |
 | Gain | Ethanol (+3, +4 upgraded, when the potion containing it is drunk; was +2 / +3 until 2026-09-14) and specific cards. **Drinking a potion grants nothing by itself** (2026-09-12). |
-| Decay | 1 at the start of your turn. Decay and per-turn sources (Bar Tab, Nightcap) are summed and applied as **one** change after the energy reset and before the draw, so the band never flickers and drawn cards see the real band. |
+| Decay | By band, at the start of your turn (2026-09-15; was a flat 1): **Sober 0, Tipsy 1, Drunk 2**. Sober is the resting state and 3 is where the dial settles. Decay and per-turn sources (Bar Tab, Nightcap) are summed and applied as **one** change after the energy reset and before the draw, so the band never flickers and drawn cards see the real band. Bar Tab (2/turn) therefore pins you at exactly 8; Bar Tab+ climbs 1/turn and Blackouts about every 4 turns. |
 | Persistence | Resets at end of combat. |
 | Max | 12 (Blackout). |
 
@@ -154,9 +155,9 @@ ones are greyed out and the cost badge shows the price.
 
 | Band | Range | Effect |
 |---|---|---|
-| Sober | 0–3 | No effect. (Steady Hands is the only Sober-gated card.) |
-| Tipsy | 4–7 | You have 2 Strength and 2 Dexterity (real powers, granted on entering Tipsy and removed on dropping below it; 2026-09-14, was hidden +2 damage / +2 Block). |
-| Drunk | 8–11 | Also: cards you draw get a random cost 0–3 **for this turn**. Entering Drunk re-rolls the hand. Dropping below Drunk restores the costs. |
+| Sober | 0–3 | No bonus; Intoxication does not fade. Sober-gated: Steady Hands, Pregame, Sober Strike. |
+| Tipsy | 4–7 | You have 1 Strength and 1 Dexterity (real powers; 2026-09-15, was 2 / 2 from 2026-09-14, hidden +2 damage / +2 Block before that). |
+| Drunk | 8–11 | You have 2 Strength and **-1** Dexterity as the band total, not on top of Tipsy (2026-09-15). Cards you draw get a random cost 0–3 **for this turn**. Entering Drunk re-rolls the hand. Dropping below Drunk restores the costs. |
 | Blackout | 12 | See below. |
 
 Every band change shows a full-screen banner and pops the dial.
@@ -199,7 +200,7 @@ The self-hit never exceeds what the hit would have done: an enemy attacking 2x3 
 
 ## 7. Card pool (as built, 2026-09-13)
 
-Totals: 4 Basic, 20 Common, 30 Uncommon, 11 Rare, 1 Ancient = 66 (target 88: 4 / 20 / 36 / 26 / 2).
+Totals as of 2026-09-15: 4 Basic, 20 Common (11 Attacks / 9 Skills), 37 Uncommon, 15 Rare, 1 Ancient = 77 (target 88: 4 / 20 / 36 / 26 / 2). The tables below are the 2026-09-13 snapshot plus the rows touched since; DEV_NOTES.md lists the later batches.
 Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication cost.
 
 ### Common (20)
@@ -207,7 +208,6 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Card | Type | Cost | Text |
 |---|---|---|---|
 | Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +2 for each Intoxication. |
-| Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak. |
 | Hurl | Attack | 0 + 3 Intox | Deal 14 (18) damage. |
 | Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
 | Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
@@ -215,7 +215,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. |
 | Mash | Attack | 1 | Deal 6 (9) damage. Add a Muddle (+) into your hand. |
 | Wake-Up Call | Attack | 1 | Deal 10 (12) damage. Add a Hair of the Dog (+) into your hand. |
-| Stir the Pot | Attack | 1 | Deal 7 (10) damage. Draw 1 card for each Ingredient in your Brew. |
+| Sober Strike | Attack | 1 | Deal 9 (11) damage. If you are Sober, draw 1 (2) cards. Carries the Strike tag. (2026-09-15) |
 | Chug | Skill | 1 | Gain 5 (8) Block, +1 for each Intoxication. |
 | Cold Water | Skill | 0 + 2 Intox | Gain 7 (10) Block. |
 | Sway | Skill | 1 + 1 Intox | Gain 8 (11) Block. Draw 1 (2). |
@@ -232,6 +232,8 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Card | Type | Cost | Text |
 |---|---|---|---|
 | Boilermaker | Attack | 2 | Deal 14 (20) damage. Add a Bitters and a Wormwood into your hand. |
+| Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak and 1 (2) Confusion. (Common until 2026-09-15.) |
+| Stir the Pot | Attack | 1 | Deal 10 (13) damage. Draw 1 (2) cards for each Concoction you brewed this turn. (Common, 7 (10) + draw per Ingredient in the Brew, until 2026-09-15.) |
 | Molotov | Attack | 2 | Gain 3 Intoxication, then deal 12 (16) damage to ALL enemies. |
 | Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
 | Empties | Attack | 1 | Deal 8 damage, +1 (+2) for each Ingredient in your exhaust pile. |
@@ -346,9 +348,9 @@ Co-op sync of the composed description is untested.
 
 ## 10. Open questions (do not guess — flag and ask)
 
-1. **Sober band bonus.** Still none. Sober should be actively *better* at brewing so both ends of the
-   dial are somewhere you want to be. Candidates: generated Ingredients offered as "choose 1 of 2"
-   while Sober (answers Q4 too), pot capacity +1, Ingredients draw. Unresolved.
+1. **Sober band bonus.** Partly answered 2026-09-15: combat opens at 3, Intoxication does not fade while Sober, and
+   Sober Strike (9 damage, draw 1 while Sober) is the first Sober payoff. A brewing-side bonus (choose 1 of 2
+   Ingredients, pot capacity +1) is still open.
 2. **Full-slot overflow.** The Brew holds and blocks. Consider a softening effect (e.g. gain Block
    instead of stalling) since sitting at full slots will be a common state. Unresolved.
 3. **Matching-ingredient bonus.** Three of the same Ingredient producing an amplified potion. This is
@@ -358,9 +360,10 @@ Co-op sync of the composed description is untested.
    Slip a Mickey, Sour Punch, Mash, Wake-Up Call and Boilermaker grant specific Ingredients. The
    random generators (Rag, Restock, Still, Open Bar, Cellar Raid) stay random.
 5. **Blackout card source.** Decided: draw pile.
-6. **Decay vs. gain math.** Decided: direct sources grant 2–3 (Liquid Courage 2, Beer Jacket 2,
-   Knock One Back 2, Molotov 3, Nightcap 1 + 3). Bar Tab at 1/turn is net zero and probably needs
-   to be 2 base.
+6. **Decay vs. gain math.** Decided: direct sources grant 2–3 (Liquid Courage 2, Beer Jacket 3,
+   Knock One Back 2, Molotov 3, Nightcap 1 + 3); Bar Tab is 2 base. Decay is now per band (0 / 1 / 2), so holding
+   Tipsy costs 1/turn and holding Drunk 2/turn. Liquid Courage from the new start of 3 is 14 on its first play and
+   Chug is 16 Block at Tipsy; both were flagged in the 2026-09-15 balance review and deliberately left alone for now.
 7. **Potion slot count.** Decided: relic fallback (Tavern Rag +2 on pickup). A Harmony patch on
    `Player` construction is the alternative if Neow relic swaps prove awkward.
 8. **Band thresholds.** Decided: 4 / 8 / 12. Drunk and Blackout are rarely reached before Act 2

@@ -18,7 +18,7 @@
   "DRUNKENMASTER-ABSINTHE_SPOON.description": "Whenever you apply [gold]Confusion[/gold], apply [blue]{Extra}[/blue] more.",
   "DRUNKENMASTER-ABSINTHE_SPOON.flavor": "The green fairy sends her regards.",
   "DRUNKENMASTER-CHAMPIONS_TANKARD.title": "Champion's Tankard",
-  "DRUNKENMASTER-CHAMPIONS_TANKARD.description": "[gold]Tipsy[/gold] grants [blue]{Total}[/blue] [gold]Strength[/gold] and [blue]{Total}[/blue] [gold]Dexterity[/gold] instead of [blue]2[/blue].",
+  "DRUNKENMASTER-CHAMPIONS_TANKARD.description": "While [gold]Tipsy[/gold] or [gold]Drunk[/gold], you have [blue]{Bonus}[/blue] additional [gold]Strength[/gold] and [gold]Dexterity[/gold].",
   "DRUNKENMASTER-CHAMPIONS_TANKARD.flavor": "First prize, three years running. Nobody remembers the contest.",
   "DRUNKENMASTER-COPPER_KETTLE.title": "Copper Kettle",
   "DRUNKENMASTER-COPPER_KETTLE.description": "Your [gold]Brew[/gold] holds [blue]{Slots}[/blue] more [gold]Ingredient[/gold].",

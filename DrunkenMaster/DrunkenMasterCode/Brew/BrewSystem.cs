@@ -167,6 +167,26 @@ public static class BrewSystem
         return shuffled.Take(Math.Min(count, shuffled.Count)).Select(c => (CardModel)CreateIngredient(owner, c, upgraded)).ToList();
     }
 
+    /// <summary>Concoctions sealed this turn, stamped with the turn they belong to so no per-turn reset hook is needed (Stir the Pot).</summary>
+    private sealed class SealCount { public int Turn; public int Count; }
+    private static readonly NotNullSpireField<PlayerCombatState, SealCount> Seals = new(() => new SealCount());
+
+    /// <summary>How many Concoctions <paramref name="owner"/> has brewed so far this turn. Combat-scoped like the pot.</summary>
+    public static int SealsThisTurn(Player owner)
+    {
+        var state = owner.PlayerCombatState;
+        if (state == null) return 0;
+        var seals = Seals[state];
+        return seals.Turn == state.TurnNumber ? seals.Count : 0;
+    }
+
+    private static void RecordSeal(PlayerCombatState state)
+    {
+        var seals = Seals[state];
+        if (seals.Turn != state.TurnNumber) { seals.Turn = state.TurnNumber; seals.Count = 0; }
+        seals.Count++;
+    }
+
     /// <summary>Seal the full pot into a Concoction if a potion slot is free. Leaves the pot intact otherwise.</summary>
     public static async Task TrySeal(Player owner)
     {
@@ -189,6 +209,7 @@ public static class BrewSystem
         {
             MainFile.Logger.Info($"Brew sealed into Concoction: {string.Join(", ", brew.Select(i => i.Id.Entry))}");
             brew.Clear();
+            RecordSeal(state);
             Changed?.Invoke(owner);
             foreach (var listener in owner.Creature.Powers.OfType<IBrewSealedListener>().ToList())
             {

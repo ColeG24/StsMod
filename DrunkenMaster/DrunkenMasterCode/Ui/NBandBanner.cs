@@ -49,9 +49,9 @@ public partial class NBandBanner : Control
     private static string Subtitle(Band band) => band switch
     {
         Band.Sober => "Brew while you can",
-        Band.Tipsy => "+2 damage, +2 Block",
-        Band.Drunk => "Card costs are random",
-        _ => $"End of turn: play {IntoxicationResource.BlackoutCardsPlayed} from draw pile, Exhaust hand",
+        Band.Tipsy => $"+{IntoxicationResource.TipsyStrength} Strength, +{IntoxicationResource.TipsyDexterity} Dexterity",
+        Band.Drunk => $"+{IntoxicationResource.DrunkStrength} Strength, {IntoxicationResource.DrunkDexterity} Dexterity, random card costs",
+        _ => $"End of turn: play {IntoxicationResource.BlackoutCardsPlayed} from draw pile",
     };
 
     public override void _Ready()
