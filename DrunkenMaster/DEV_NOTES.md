@@ -11,7 +11,7 @@ dotnet build      # .cs changes only → copies .dll to the game's mods folder
 dotnet publish    # ANY text/image/localization change → also regenerates the .pck via MegaDot
 ```
 
-`dotnet publish` also bumps the patch version in `DrunkenMaster.json` (v0.1.7 -> v0.1.8; target `BumpModVersionOnPublish` in the csproj, gated on `_IsPublishing`) so co-op partners on different builds can see it in the mods list. Commit the bumped manifest with the change. `dotnet build` never bumps. Added 2026-09-14 after a co-op divergence that was just a stale client build.
+Both `dotnet build` and `dotnet publish` stamp the manifest copied to the mods folder with a git-derived version: `v0.1.<commit count>`, plus `-dirty` if there are uncommitted changes (csproj target `StampModVersion`, feeding `CopyToModsFolderOnBuild`). The repo's `DrunkenMaster.json` stays at the base `v0.1.0`; only its major.minor is used. Two machines on the same clean commit therefore show the same version in the mods list, and a `-dirty` or differing number means someone is on different code. (2026-09-14: a per-publish bump was tried first and counted up separately on each player's machine.)
 
 - MegaDot 4.5.1-m.12 (matches the game's engine build) lives at `~/dev/StsMod/tools/MegaDot.app`.
   `Directory.Build.props` points at it. Move it if you like, then update `<GodotPath>`.

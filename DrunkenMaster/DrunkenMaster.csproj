@@ -97,28 +97,35 @@
                  Importance="high" />
     </Target>
     
-    <!-- Every `dotnet publish` bumps the manifest's patch version (v0.1.7 -> v0.1.8) so two players on different
-         builds can see it in the mods list. Plain `dotnet build` does not bump. Runs before the build so the bumped
-         manifest is what CopyToModsFolderOnBuild copies; skipped inside MegaDot's nested export build. -->
-    <Target Name="BumpModVersionOnPublish" BeforeTargets="BeforeBuild" Condition="'$(_IsPublishing)' == 'true' and '$(IsInnerGodotExport)' != 'true'">
+    <!-- The deployed manifest's version is derived from git so two machines building the same commit show the same
+         version: v<major>.<minor>.<commit count>, plus "-dirty" when there are uncommitted changes. The repo manifest
+         keeps a plain base version (its major.minor is what is used); only the copy in the mods folder is stamped.
+         (A per-publish bump was tried first on 2026-09-14; it counted up separately on each player's machine.) -->
+    <Target Name="StampModVersion" BeforeTargets="CopyToModsFolderOnBuild">
+        <Exec Command="git rev-list --count HEAD" ConsoleToMsBuild="true" ContinueOnError="true" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low">
+            <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitCount" />
+        </Exec>
+        <Exec Command="git status --porcelain --untracked-files=no" ConsoleToMsBuild="true" ContinueOnError="true" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low">
+            <Output TaskParameter="ConsoleOutput" PropertyName="GitDirtyLines" />
+        </Exec>
         <PropertyGroup>
             <ManifestPath>$(MSBuildProjectName).json</ManifestPath>
             <ManifestContent>$([System.IO.File]::ReadAllText($(ManifestPath)))</ManifestContent>
-            <VersionPrefix>$([System.Text.RegularExpressions.Regex]::Match($(ManifestContent), '"version":\s*"(v?\d+\.\d+\.)(\d+)"').Result('$1'))</VersionPrefix>
-            <VersionPatch>$([System.Text.RegularExpressions.Regex]::Match($(ManifestContent), '"version":\s*"(v?\d+\.\d+\.)(\d+)"').Result('$2'))</VersionPatch>
-            <NewVersionPatch Condition="'$(VersionPatch)' != ''">$([MSBuild]::Add($(VersionPatch), 1))</NewVersionPatch>
-            <NewModVersion Condition="'$(VersionPatch)' != ''">$(VersionPrefix)$(NewVersionPatch)</NewModVersion>
-            <BumpedManifest Condition="'$(VersionPatch)' != ''">$([System.Text.RegularExpressions.Regex]::Replace($(ManifestContent), '("version":\s*")[^"]*"', '${1}$(NewModVersion)"'))</BumpedManifest>
+            <ManifestVersionPrefix>$([System.Text.RegularExpressions.Regex]::Match($(ManifestContent), '"version":\s*"(v?\d+\.\d+\.)\d+"').Result('$1'))</ManifestVersionPrefix>
+            <GitCommitCount>$(GitCommitCount.Trim())</GitCommitCount>
+            <StampedModVersion Condition="'$(ManifestVersionPrefix)' != '' and '$(GitCommitCount)' != ''">$(ManifestVersionPrefix)$(GitCommitCount)</StampedModVersion>
+            <StampedModVersion Condition="'$(StampedModVersion)' != '' and '$(GitDirtyLines)' != ''">$(StampedModVersion)-dirty</StampedModVersion>
+            <StampedManifest Condition="'$(StampedModVersion)' != ''">$([System.Text.RegularExpressions.Regex]::Replace($(ManifestContent), '("version":\s*")[^"]*"', '${1}$(StampedModVersion)"'))</StampedManifest>
+            <StampedManifest Condition="'$(StampedModVersion)' == ''">$(ManifestContent)</StampedManifest>
         </PropertyGroup>
-        <WriteLinesToFile Condition="'$(VersionPatch)' != ''" File="$(ManifestPath)" Lines="$(BumpedManifest)" Overwrite="true" Encoding="UTF-8" />
-        <Message Condition="'$(VersionPatch)' != ''" Text="Bumped mod version to $(NewModVersion) for publish." Importance="high" />
-        <Warning Condition="'$(VersionPatch)' == ''" Text="Could not find a v#.#.# version in $(ManifestPath); mod version not bumped." />
+        <Message Condition="'$(StampedModVersion)' != ''" Text="Mod version for this build: $(StampedModVersion)" Importance="high" />
+        <Warning Condition="'$(StampedModVersion)' == ''" Text="Could not derive a mod version from git; deploying the manifest version as written." />
     </Target>
 
     <Target Name="CopyToModsFolderOnBuild" AfterTargets="PostBuildEvent">
         <Message Text="Copying .dll .pdb and .json to mods folder." Importance="high" />
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/" />
-        <Copy SourceFiles="$(AssemblyName).json" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/" />
+        <WriteLinesToFile File="$(ModsPath)$(MSBuildProjectName)/$(AssemblyName).json" Lines="$(StampedManifest)" Overwrite="true" Encoding="UTF-8" />
         <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ModsPath)$(MSBuildProjectName)/" />
     </Target>
 
