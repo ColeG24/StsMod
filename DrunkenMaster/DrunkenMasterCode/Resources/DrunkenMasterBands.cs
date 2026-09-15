@@ -64,25 +64,28 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
         return Task.CompletedTask;
     }
 
-    public override async Task BeforeSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+    /// <summary>
+    /// Blackout trigger. This is the engine's per-player "auto-play at end of turn" hook (Stampede uses it), and it
+    /// arrives with a HookPlayerChoiceContext OWNED BY THIS PLAYER. That matters in co-op: a hook context can carry
+    /// exactly one synchronized hook action, and every player choice must happen inside it. The previous home,
+    /// BeforeSideTurnEnd, gives a singleton like this ONE context for the whole side, owned by the first player, and
+    /// running two Blackouts (or one Blackout with two prompts) through it made the second choice skip
+    /// synchronization ("Tried to interrupt action ... but the currently running action is ...") and desynced a
+    /// 2-player game on 2026-09-14 (Free Pour+ resolved on the host only).
+    /// </summary>
+    public override async Task AfterAutoPostPlayPhaseEntered(PlayerChoiceContext choiceContext, Player player)
     {
-        if (side != CombatSide.Player) return;
-        foreach (var creature in participants.ToList())
-        {
-            var player = creature.Player;
-            if (!IsDrunkenMaster(player) || creature.IsDead) continue;
-            var resource = IntoxicationResource.Get(player!);
-            if (resource == null || resource.Amount < IntoxicationResource.BlackoutAt) continue;
-
-            await Blackout(choiceContext, player!, resource);
-        }
+        if (!IsDrunkenMaster(player) || player.Creature is not { IsDead: false }) return;
+        var resource = IntoxicationResource.Get(player);
+        if (resource == null || resource.Amount < IntoxicationResource.BlackoutAt) return;
+        await Blackout(choiceContext, player, resource);
     }
 
     /// <summary>
     /// Blackout (2026-09-14 rewrite): play the top cards of the draw pile, then sober up and wake Hungover. The hand is
     /// no longer Exhausted; the normal end-of-turn discard takes it (user decision after the 2026-09-14 co-op soft-lock).
     ///
-    /// Written defensively because it runs inside the end-of-turn hook on every machine:
+    /// Written defensively because it runs inside an end-of-turn hook on every machine:
     /// - Nothing here mutates the hand, so an auto-played card that opens a prompt (Distill, Leftovers, Free Pour+)
     ///   sees the same hand on host and client.
     /// - The sober-up and Hungover land in a finally block: if an auto-played card throws, the Intoxication still
