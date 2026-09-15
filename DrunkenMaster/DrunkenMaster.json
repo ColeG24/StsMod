@@ -3,7 +3,7 @@
   "name": "The Drunken Master",
   "author": "Cole",
   "description": "A brewer who fights by mixing drinks mid-combat and drinking them. Vertical slice: starter deck, Tavern Rag, Ingredients, Brew, Intoxication.",
-  "version": "v0.1.0",
+  "version": "v0.1.1",
   "min_game_version": "0.107.0",
   "has_pck": true,
   "has_dll": true,

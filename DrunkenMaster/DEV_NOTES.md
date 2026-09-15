@@ -11,6 +11,8 @@ dotnet build      # .cs changes only → copies .dll to the game's mods folder
 dotnet publish    # ANY text/image/localization change → also regenerates the .pck via MegaDot
 ```
 
+`dotnet publish` also bumps the patch version in `DrunkenMaster.json` (v0.1.7 -> v0.1.8; target `BumpModVersionOnPublish` in the csproj, gated on `_IsPublishing`) so co-op partners on different builds can see it in the mods list. Commit the bumped manifest with the change. `dotnet build` never bumps. Added 2026-09-14 after a co-op divergence that was just a stale client build.
+
 - MegaDot 4.5.1-m.12 (matches the game's engine build) lives at `~/dev/StsMod/tools/MegaDot.app`.
   `Directory.Build.props` points at it. Move it if you like, then update `<GodotPath>`.
 - Mods folder: `Steam/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/DrunkenMaster/`
