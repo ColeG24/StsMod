@@ -33,11 +33,19 @@ if (( DO_PUBLISH )); then
   (cd "$PROJ" && dotnet publish)
 fi
 
+# Sync the build from the game's mods folder. With --no-publish and no local copy (deleted after
+# subscribing to the Workshop item), reuse whatever is already staged in content/.
+if [[ -f "$MODS_DIR/DrunkenMaster.pck" ]]; then
+  rm -rf "$WS/content"; mkdir -p "$WS/content/DrunkenMaster"
+  cp "$MODS_DIR"/DrunkenMaster.{json,dll,pck} "$WS/content/DrunkenMaster/"
+elif (( DO_PUBLISH )); then
+  echo "publish did not produce $MODS_DIR/DrunkenMaster.pck" >&2; exit 1
+else
+  echo ">> no local mods copy; reusing the build already staged in content/"
+fi
 for f in DrunkenMaster.json DrunkenMaster.dll DrunkenMaster.pck; do
-  [[ -f "$MODS_DIR/$f" ]] || { echo "missing $MODS_DIR/$f" >&2; exit 1; }
+  [[ -f "$WS/content/DrunkenMaster/$f" ]] || { echo "missing $WS/content/DrunkenMaster/$f" >&2; exit 1; }
 done
-rm -rf "$WS/content"; mkdir -p "$WS/content/DrunkenMaster"
-cp "$MODS_DIR"/DrunkenMaster.{json,dll,pck} "$WS/content/DrunkenMaster/"
 echo ">> content:"; ls -la "$WS/content/DrunkenMaster"
 grep -o '"version": *"[^"]*"' "$WS/content/DrunkenMaster/DrunkenMaster.json"
 
