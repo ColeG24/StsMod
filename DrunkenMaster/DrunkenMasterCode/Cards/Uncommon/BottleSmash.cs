@@ -20,7 +20,7 @@ public class BottleSmash : DrunkenMasterCard
     public const int IntoxicationCost = 1;
     public BottleSmash() : base(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

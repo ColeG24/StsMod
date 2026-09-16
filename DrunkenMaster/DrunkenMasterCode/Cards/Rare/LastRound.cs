@@ -14,7 +14,7 @@ public class LastRound : DrunkenMasterCard
 {
     public LastRound() : base(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
     {
-        CustomResources<IntoxicationResource>.SetXCost(this);
+        SetIntoxicationXCost();
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6, ValueProp.Move)];

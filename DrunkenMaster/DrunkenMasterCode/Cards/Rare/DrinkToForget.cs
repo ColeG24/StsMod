@@ -18,7 +18,7 @@ public class DrinkToForget : DrunkenMasterCard
     public const int IntoxicationCost = 5;
     public DrinkToForget() : base(0, CardType.Skill, CardRarity.Rare, TargetType.Self)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [DrunkenMasterKeywords.Poised, CardKeyword.Exhaust];

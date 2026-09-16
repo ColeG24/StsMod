@@ -16,7 +16,7 @@ public class SweatItOut : DrunkenMasterCard
 
     public SweatItOut() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
-        CustomResources<IntoxicationResource>.SetXCost(this);
+        SetIntoxicationXCost();
     }
 
     public override bool GainsBlock => true;

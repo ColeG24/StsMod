@@ -17,7 +17,7 @@ public class SpinTheBottle : DrunkenMasterCard
 
     public SpinTheBottle() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.AllEnemies)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>

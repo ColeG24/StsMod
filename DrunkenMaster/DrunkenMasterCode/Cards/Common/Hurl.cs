@@ -16,7 +16,7 @@ public class Hurl : DrunkenMasterCard
 
     public Hurl() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>

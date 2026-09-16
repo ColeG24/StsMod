@@ -16,7 +16,7 @@ public class ColdWater : DrunkenMasterCard
 
     public ColdWater() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
 
     public override bool GainsBlock => true;

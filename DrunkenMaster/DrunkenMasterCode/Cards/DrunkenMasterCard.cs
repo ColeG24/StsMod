@@ -1,4 +1,4 @@
-﻿using BaseLib.Abstracts;
+using BaseLib.Abstracts;
 using BaseLib.Extensions;
 using BaseLib.Utils;
 using DrunkenMaster.DrunkenMasterCode.Character;
@@ -33,11 +33,32 @@ public abstract class DrunkenMasterCard(int cost, CardType type, CardRarity rari
     public override string BetaPortraitPath => $"beta/{Id.Entry.RemovePrefix().ToLowerInvariant()}.png".CardImagePath();
 
     /// <summary>
+    /// Whether the constructor gave this card an Intoxication cost. Plain model state on purpose (2026-09-15 co-op fix):
+    /// CardModel.DeepCloneFields builds the clone's keyword list DURING the clone, before BaseLib's SpireField copy has run,
+    /// so reading CustomResources.Cost(this) there returned null and the clone was cached without Poised whenever the
+    /// canonical card's keywords had not been computed yet on that machine. Two players' Rimshots then hashed differently.
+    /// A field is copied by MemberwiseClone first, so the keyword list is the same on every machine and every copy.
+    /// </summary>
+    private bool _hasIntoxicationCost;
+
+    /// <summary>Give the card a fixed Intoxication cost. Call from the constructor instead of CustomResources directly.</summary>
+    protected void SetIntoxicationCost(int cost)
+    {
+        CustomResources<IntoxicationResource>.SetCanonicalCost(this, cost);
+        _hasIntoxicationCost = true;
+    }
+
+    /// <summary>Give the card an X Intoxication cost. Call from the constructor instead of CustomResources directly.</summary>
+    protected void SetIntoxicationXCost()
+    {
+        CustomResources<IntoxicationResource>.SetXCost(this);
+        _hasIntoxicationCost = true;
+    }
+
+    /// <summary>
     /// Every card that costs Intoxication is Poised: Drunk never re-rolls its cost. Subclasses that override this
-    /// (Ingredients, Chaser) have no Intoxication cost, so nothing is lost.
+    /// (Ingredients, Chaser, Upper Deckie, Chug, Drink to Forget) list their keywords explicitly.
     /// </summary>
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
-        CustomResources<IntoxicationResource>.Cost(this) != null
-            ? new[] { DrunkenMasterKeywords.Poised }
-            : Array.Empty<CardKeyword>();
+        _hasIntoxicationCost ? new[] { DrunkenMasterKeywords.Poised } : Array.Empty<CardKeyword>();
 }

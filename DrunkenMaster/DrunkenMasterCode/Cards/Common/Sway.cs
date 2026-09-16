@@ -23,7 +23,7 @@ public class Sway : DrunkenMasterCard
     public const int IntoxicationCost = 1;
     public Sway() : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
     public override bool GainsBlock => true;
     protected override IEnumerable<DynamicVar> CanonicalVars =>

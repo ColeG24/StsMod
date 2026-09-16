@@ -21,7 +21,7 @@ public class Rimshot : DrunkenMasterCard
     public const int IntoxicationCost = 3;
     public Rimshot() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

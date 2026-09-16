@@ -23,7 +23,7 @@ public class PickMeUp : DrunkenMasterCard
     public const int IntoxicationCost = 3;
     public PickMeUp() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [

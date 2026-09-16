@@ -18,7 +18,7 @@ public class SpitTake : DrunkenMasterCard
     public const int IntoxicationCost = 2;
     public SpitTake() : base(0, CardType.Attack, CardRarity.Common, TargetType.AllEnemies)
     {
-        CustomResources<IntoxicationResource>.SetCanonicalCost(this, IntoxicationCost);
+        SetIntoxicationCost(IntoxicationCost);
     }
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
