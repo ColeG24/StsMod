@@ -10,10 +10,12 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
 /// <summary>
 /// Uncommon Attack, 1 Energy. Deal 8 damage. Hits twice if you are Tipsy or above. Upgraded: 10.
+/// 2026-09-15: renamed from Drunken Fist and given the Strike tag so it counts for Strike synergies (user wants to build on those).
 /// 2026-09-13: was Rare and hit once more per band above Sober (judged confusing).
 /// </summary>
-public class DrunkenFist() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public class DrunkenStrike() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
+    protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(8, ValueProp.Move)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip, IntoxicationResource.BandTip(IntoxicationResource.Band.Tipsy)];
 

@@ -9,16 +9,16 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
+namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Uncommon Attack, 3 Energy. Deal 22 damage. Add 2 Muddles into your hand. Upgraded: 27 damage (the Muddles stay unupgraded).</summary>
-public class BarBrawl() : DrunkenMasterCard(3, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+/// <summary>Rare Attack (2026-09-15 late; was Uncommon at 22/27), 3 Energy. Deal 23 damage. Add 2 Muddles into your hand. Upgraded: 28 damage (the Muddles stay unupgraded).</summary>
+public class BarBrawl() : DrunkenMasterCard(3, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     public const string MuddlesKey = "Muddles";
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(22, ValueProp.Move),
+        new DamageVar(23, ValueProp.Move),
         new DynamicVar(MuddlesKey, 2)
     ];
 

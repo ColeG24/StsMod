@@ -1,7 +1,6 @@
 using DrunkenMaster.DrunkenMasterCode.Brew;
 using DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 using DrunkenMaster.DrunkenMasterCode.Powers;
-using DrunkenMaster.DrunkenMasterCode.Resources;
 using DrunkenMaster.DrunkenMasterCode.Tips;
 using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.CardSelection;
@@ -17,12 +16,13 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>1 Energy. Choose a card in your hand: it is removed from combat and replaced by a random Ingredient. Gain 2 Intoxication (2026-09-14). Upgraded: costs 0.</summary>
+/// <summary>
+/// 1 Energy. Choose a card in your hand: it is removed from combat and replaced by a random Ingredient. Upgraded: the
+/// Ingredient is Upgraded. 2026-09-15: the +2 Intoxication (added 2026-09-14) is gone and the upgrade no longer cuts the cost.
+/// </summary>
 public class Distill() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    public const string IntoxicationKey = "Intoxication";
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 2)];
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(DrunkenMasterTips.Ingredient), IntoxicationResource.Tip];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.Static(DrunkenMasterTips.Ingredient), HoverTipFactory.Static(DrunkenMasterTips.Brew)];
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         var hand = PileType.Hand.GetPile(Owner);
@@ -32,10 +32,12 @@ public class Distill() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Common,
             if (picked != null)
             {
                 await CardPileCmd.RemoveFromCombat(picked);
-                await BrewSystem.AddRandomIngredientsToHand(Owner, 1);
+                await BrewSystem.AddRandomIngredientsToHand(Owner, 1, upgraded: IsUpgraded);
             }
         }
-        await IntoxicationResource.GainAsync(choiceContext, Owner, DynamicVars[IntoxicationKey].IntValue);
     }
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade()
+    {
+        // The upgrade is "the Ingredient comes Upgraded"; see OnPlay and the {IfUpgraded} text.
+    }
 }

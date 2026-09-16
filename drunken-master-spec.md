@@ -200,7 +200,7 @@ The self-hit never exceeds what the hit would have done: an enemy attacking 2x3 
 
 ## 7. Card pool (as built, 2026-09-13)
 
-Totals as of 2026-09-15: 4 Basic, 20 Common (11 Attacks / 9 Skills), 37 Uncommon, 15 Rare, 1 Ancient = 77 (target 88: 4 / 20 / 36 / 26 / 2). The tables below are the 2026-09-13 snapshot plus the rows touched since; DEV_NOTES.md lists the later batches.
+Totals as of 2026-09-15 late: 4 Basic, 20 Common (11 Attacks / 9 Skills), 35 Uncommon, 21 Rare (7 Attacks / 8 Skills / 6 Powers), 1 Ancient = 81 (target 88: 4 / 20 / 36 / 26 / 2). The tables below are the 2026-09-13 snapshot plus the rows touched since; DEV_NOTES.md lists the later batches.
 Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication cost.
 
 ### Common (20)
@@ -212,18 +212,20 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
 | Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
 | Upper Deckie | Attack | 0 | Deal 3 (5) damage. Increase the damage of ALL Upper Deckie cards by your Intoxication this combat (lands after this play). |
-| Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. |
+| Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. (Uncommon with a fixed 1 Vulnerable from 2026-09-14 to 2026-09-15.) |
 | Mash | Attack | 1 | Deal 6 (9) damage. Add a Muddle (+) into your hand. |
 | Wake-Up Call | Attack | 1 | Deal 10 (12) damage. Add a Hair of the Dog (+) into your hand. |
 | Sober Strike | Attack | 1 | Deal 9 (11) damage. If you are Sober, draw 1 (2) cards. Carries the Strike tag. (2026-09-15) |
-| Chug | Skill | 1 | Gain 5 (8) Block, +1 for each Intoxication. |
+| Rimshot | Attack | 0 + 3 Intox | Deal 8 (12) damage. Apply 1 Weak and 1 Vulnerable. (2026-09-15; merges Salt the Rim and Water It Down, priced off Regent's Falling Star at 1 Star = 1.5 Intoxication.) |
+| Spit Take | Attack | 0 + 2 Intox | Deal 9 (12) damage to ALL enemies. (2026-09-15) |
+| Coaster | Skill | 1 | Gain 7 (10) Block. Add a Rotgut (+) into your hand. (2026-09-15) |
 | Cold Water | Skill | 0 + 2 Intox | Gain 7 (10) Block. |
 | Sway | Skill | 1 + 1 Intox | Gain 8 (11) Block. Draw 1 (2). |
 | Beer Jacket | Skill | 2 | Gain 3 (4) Intoxication, then 12 (16) Block. |
 | Nightcap | Skill | 1 | Gain 1 Intoxication. Next turn, gain 3 (4). |
 | Leftovers | Skill | 1 | Exhaust (upgrade removes). Gain 4 (7) Block. Put an Ingredient from your exhaust pile into your hand. |
 | Restock | Skill | 1 | Add 2 random (Upgraded) Ingredients into your hand. |
-| Distill | Skill | 1 (0) | Transform a card in your hand into a random Ingredient. |
+| Distill | Skill | 1 | Transform a card in your hand into a random Ingredient (Upgraded: an Upgraded one). (2026-09-15; the upgrade used to cut the cost and the card briefly gave 2 Intoxication.) |
 | Slip a Mickey | Skill | 1 | Apply 1 (2) Weak. Gain 5 (8) Block. Add a Wormwood into your hand. |
 | Spiked Drink | Skill | 1 | Gain 7 (10) Block. Apply 1 (2) Confusion. |
 
@@ -250,11 +252,9 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
 | Stockpot | Power | — | Your Brew holds 1 more Ingredient. |
 | Shot Glass | Power | 1 | Your Brew holds 1 fewer Ingredient. Whenever you drink a Concoction, gain 1 (2) Intoxication. |
-| Drunken Fist | Attack | 1 | Deal 8 (10) damage. Hits twice if you are Tipsy or above. (Was Rare.) |
+| Drunken Strike | Attack | 1 | Deal 8 (10) damage. Hits twice if you are Tipsy or above. Strike tag. (Was Rare; was "Drunken Fist" until 2026-09-15.) |
 | Cheap Shot | Attack | 0 | Deal 5 (7) damage. Apply 1 (2) Confusion. |
 | Soda Gun | Attack | 1 | Deal 8 (11) damage to ALL enemies. Add a Seltzer (+) into your hand. |
-| Salt the Rim | Attack | 0 + 1 Intox | Deal 3 (5) damage. Apply 1 (2) Vulnerable. |
-| Water It Down | Attack | 0 + 1 Intox | Deal 3 (5) damage. Apply 1 (2) Weak. |
 | Stir Crazy | Attack | 1 | Deal 6 (8) damage once for each Ingredient in your Brew. |
 | Double Vision | Skill | 0 | Exhaust. Apply 6 (9) Confusion. |
 | Spin the Bottle | Skill | 0 + 3 Intox | Apply 3 (5) Confusion to ALL enemies. |
@@ -266,12 +266,15 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 ### Rare (11)
 
-Still, Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
-Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out, Last Call (0,
+Still, Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
+Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Dutch Courage (+3 (4) Strength
 whenever you Blackout), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: while Drunk your cards' random costs never go up; upgrade
-also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13.
+also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
+Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 2 Muddles; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
+Ingredient played this turn), Clear the Bar (Attack 0: can only be played by a Blackout; 50 (65) to ALL), Haymaker (Attack 1: 8 (11),
+triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)). Rare is 21.
 
 Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**
 (Lasting Candy gotcha, see DEV_NOTES). No Harmony patches on base-game relics — fix content instead.
@@ -363,7 +366,10 @@ Co-op sync of the composed description is untested.
 6. **Decay vs. gain math.** Decided: direct sources grant 2–3 (Liquid Courage 2, Beer Jacket 3,
    Knock One Back 2, Molotov 3, Nightcap 1 + 3); Bar Tab is 2 base. Decay is now per band (0 / 1 / 2), so holding
    Tipsy costs 1/turn and holding Drunk 2/turn. Liquid Courage from the new start of 3 is 14 on its first play and
-   Chug is 16 Block at Tipsy; both were flagged in the 2026-09-15 balance review and deliberately left alone for now.
+   Chug went to Rare the same evening (5 (7), x2 Tipsy, x4 Drunk); Liquid Courage is still untouched.
+   Pricing rule for Intoxication-cost cards (2026-09-15): compare to Regent's Star cards at 1 Star = 1.5 Intoxication,
+   because Intoxication comes in at about twice the rate per card (Liquid Courage 2 vs Solar Strike 1, Knock One Back
+   2 for 0 Energy vs Glow 1 for 1, Bar Tab at Uncommon vs Genesis at Rare) and decay only bites above 3.
 7. **Potion slot count.** Decided: relic fallback (Tavern Rag +2 on pickup). A Harmony patch on
    `Player` construction is the alternative if Neow relic swaps prove awkward.
 8. **Band thresholds.** Decided: 4 / 8 / 12. Drunk and Blackout are rarely reached before Act 2
