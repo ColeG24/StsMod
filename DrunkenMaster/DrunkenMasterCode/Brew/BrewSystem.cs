@@ -71,7 +71,7 @@ public static class BrewSystem
 
     private static readonly NotNullSpireField<PlayerCombatState, List<IngredientCard>> Brews = new(() => new List<IngredientCard>());
 
-    /// <summary>Canonical ingredient models eligible for random generation (spec §5 starting pool).</summary>
+    /// <summary>Canonical ingredient models eligible for random generation in every run (spec §5 pool).</summary>
     public static IReadOnlyList<IngredientCard> IngredientPool =>
     [
         ModelDb.Card<Rotgut>(),
@@ -85,6 +85,16 @@ public static class BrewSystem
         ModelDb.Card<Seltzer>(),
         ModelDb.Card<JungleJuice>()
     ];
+
+    /// <summary>
+    /// The random pool for <paramref name="owner"/>'s run: the base pool, plus Punch Bowl when the run has more than one
+    /// player (2026-09-15). Player count is shared run state, so every machine builds the same list.
+    /// </summary>
+    public static IReadOnlyList<IngredientCard> IngredientPoolFor(Player owner)
+    {
+        if (owner.RunState.Players.Count <= 1) return IngredientPool;
+        return [.. IngredientPool, ModelDb.Card<PunchBowl>()];
+    }
 
     public static IReadOnlyList<IngredientCard> GetBrew(Player player)
     {
@@ -158,7 +168,7 @@ public static class BrewSystem
     private static List<CardModel> RandomDistinctIngredients(Player owner, int count, bool upgraded = false)
     {
         var rng = owner.RunState.Rng.CombatCardGeneration;
-        var shuffled = IngredientPool.ToList();
+        var shuffled = IngredientPoolFor(owner).ToList();
         for (int i = shuffled.Count - 1; i > 0; i--)
         {
             int j = rng.NextInt(i + 1);
@@ -238,7 +248,7 @@ public static class BrewSystem
         if (state == null || combatState == null) return;
         var brew = Brews[state];
         var rng = owner.RunState.Rng.CombatCardGeneration;
-        var pool = IngredientPool;
+        var pool = IngredientPoolFor(owner);
         int cap = CapacityFor(owner);
         while (brew.Count < cap)
         {
@@ -278,7 +288,7 @@ public static class BrewSystem
         if (combatState == null || count <= 0) return;
 
         var rng = owner.RunState.Rng.CombatCardGeneration;
-        var pool = IngredientPool;
+        var pool = IngredientPoolFor(owner);
         var cards = new List<CardModel>(count);
         for (int i = 0; i < count; i++)
         {

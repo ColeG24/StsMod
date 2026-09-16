@@ -1,3 +1,4 @@
+using DrunkenMaster.DrunkenMasterCode.Character;
 using DrunkenMaster.DrunkenMasterCode.Resources;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
@@ -20,6 +21,7 @@ public class Ethanol : IngredientCard
 
     public override async Task ApplyBrewedEffect(PlayerChoiceContext choiceContext, Player drinker, Creature? enemyTarget)
     {
+        if (drinker.Character is not Character.DrunkenMaster) return;   // Punch Bowl: allies without the dial gain nothing
         await IntoxicationResource.GainAsync(choiceContext, drinker, DynamicVars[IntoxicationKey].IntValue);
     }
     protected override void OnUpgrade() => DynamicVars[IntoxicationKey].UpgradeValueBy(1m);

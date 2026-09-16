@@ -6,11 +6,12 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 
 /// <summary>
-/// Contributes nothing itself; the Concoction's enemy effects hit ALL enemies.
-/// Upgraded (2026-09-15 night): loses Ethereal and gains Retain so it can wait for a pot with enemy effects in it. Until
-/// then the upgrade splashed self effects to allies; that job now belongs to the co-op-only <see cref="PunchBowl"/>.
+/// Co-op only (2026-09-15 night). Contributes nothing itself; the Concoction's self effects (Block, cards, Energy) reach
+/// every living ally as well as the drinker. Ethanol is the exception: it only lands on Drunken Masters. Only in the random
+/// pool when the run has more than one player (<see cref="Brew.BrewSystem.IngredientPoolFor"/>), so a singleplayer run
+/// never sees it. Upgraded: Retain instead of Ethereal, like Everclear+ and Seltzer+.
 /// </summary>
-public class Seltzer : IngredientCard
+public class PunchBowl : IngredientCard
 {
     public override bool TargetsEnemy => false;
     public override Task ApplyBrewedEffect(PlayerChoiceContext choiceContext, Player drinker, Creature? enemyTarget) => Task.CompletedTask;

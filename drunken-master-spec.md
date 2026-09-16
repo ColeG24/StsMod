@@ -88,8 +88,10 @@ description is the Ingredient brew texts stacked, with duplicates collapsed by (
 Rotgut + Rotgut + Muddle reads *"Deal 10 damage. Gain 4 Block."*
 
 Two Ingredients modify the others instead of adding an effect:
-- **Everclear**: the other Ingredients trigger twice (Upgraded: three times). Stacks additively.
-- **Seltzer**: enemy-facing effects hit ALL enemies. Upgraded: self-facing buffs also reach every ally.
+- **Everclear**: the other Ingredients trigger twice. Stacks additively. Upgraded: still twice, but Retain instead of
+  Ethereal (2026-09-15; tripled until then).
+- **Seltzer**: enemy-facing effects hit ALL enemies. Upgraded: Retain instead of Ethereal (2026-09-15; the ally splash
+  it used to add did nothing in singleplayer and is gone).
 
 ### Targeting
 
@@ -116,7 +118,7 @@ Ingredients are **generated token cards**, not cards you draft into your deck.
 | Generation | Only by the mod's own generators. Never by "add a random card" effects. |
 | Upgrades | Real `OnUpgrade`s. Top Shelf (Ancient Power) upgrades every Ingredient you create; Restock+ / Hard Liquor+ / Sour Punch+ / Mash+ / Wake-Up Call+ hand out Upgraded ones. |
 
-Random pool (10; the original plan was 5 "for learnability" — grew on 2026-09-12, Jungle Juice added 2026-09-13):
+Random pool (10 in singleplayer, 11 in co-op; the original plan was 5 "for learnability" — grew on 2026-09-12, Jungle Juice added 2026-09-13, Punch Bowl 2026-09-15):
 
 | Ingredient | Effect contributed | Upgraded | Enemy-facing |
 |---|---|---|---|
@@ -128,8 +130,9 @@ Random pool (10; the original plan was 5 "for learnability" — grew on 2026-09-
 | Hair of the Dog | Draw 1 card. | 2 | no |
 | Grain Spirit | Gain 1 Energy. | 2 | no |
 | Ethanol | Gain 2 Intoxication. | 3 | no |
-| Everclear | Other Ingredients trigger twice. | three times | — |
-| Seltzer | Brew hits ALL enemies. | also buffs reach allies | — |
+| Everclear | Other Ingredients trigger twice. | Retain, not Ethereal | — |
+| Seltzer | Brew hits ALL enemies. | Retain, not Ethereal | — |
+| Punch Bowl | Brew's buffs reach every ally. Co-op only: in the random pool only when the run has 2+ players. | Retain, not Ethereal | — |
 
 Because they're free tokens, they can be pure pot-fillers with no immediate payoff — the usual
 "cards that do nothing on play are a tempo hole" rule doesn't apply to cards that cost no energy

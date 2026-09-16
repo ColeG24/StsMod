@@ -37,10 +37,10 @@ public class Concoction : DrunkenMasterPotion
 
     private List<IngredientCard> MyIngredients => Ingredients[this];
 
-    private static bool IsModifier(IngredientCard i) => i is Everclear or Seltzer;
+    private static bool IsModifier(IngredientCard i) => i is Everclear or Seltzer or PunchBowl;
     private int Multiplier => 1 + MyIngredients.OfType<Everclear>().Sum(e => e.ExtraTriggers);
     private bool SplashEnemies => MyIngredients.Any(i => i is Seltzer);
-    private bool SplashAllies => MyIngredients.OfType<Seltzer>().Any(s => s.ReachesAllies);
+    private bool SplashAllies => MyIngredients.Any(i => i is PunchBowl);
     private bool TargetsEnemies => MyIngredients.Any(i => i.TargetsEnemy);
 
     /// <summary>
