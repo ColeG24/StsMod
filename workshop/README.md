@@ -4,6 +4,7 @@ Layout expected by Mega Crit's [sts2-mod-uploader](https://github.com/megacrit/s
 
 - `workshop.json` — title, description (Steam BBCode), visibility, tags, `changeNote`, Workshop dependencies (BaseLib = 3737335127).
 - `image.png` — preview shown on the Workshop page, must be under 1 MB. Regenerate with `make-preview.sh`.
+- `previews/` — additional store-page images (each under 1 MB). The uploader mirrors this folder: files here are added or updated by name, and any additional preview on Steam not present here is removed. Edit previews here, not on the Steam website, or the next upload undoes it.
 - `content/DrunkenMaster/` — the `.json`, `.dll` and `.pck` to upload. Gitignored; `upload.sh` fills it from a fresh publish.
 - `mod_id.txt` — written by the uploader after the first upload. Commit it: later uploads update the same item.
 
