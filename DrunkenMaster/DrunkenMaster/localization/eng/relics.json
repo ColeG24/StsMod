@@ -22,5 +22,8 @@
   "DRUNKENMASTER-CHAMPIONS_TANKARD.flavor": "First prize, three years running. Nobody remembers the contest.",
   "DRUNKENMASTER-COPPER_KETTLE.title": "Copper Kettle",
   "DRUNKENMASTER-COPPER_KETTLE.description": "Your [gold]Brew[/gold] holds [blue]{Slots}[/blue] more [gold]Ingredient[/gold].",
-  "DRUNKENMASTER-COPPER_KETTLE.flavor": "Bigger pot, bigger problems, bigger potions."
+  "DRUNKENMASTER-COPPER_KETTLE.flavor": "Bigger pot, bigger problems, bigger potions.",
+  "DRUNKENMASTER-BEER_BELLY.title": "Beer Belly",
+  "DRUNKENMASTER-BEER_BELLY.description": "Whenever you drink a potion, gain [blue]{Block}[/blue] [gold]Block[/gold].",
+  "DRUNKENMASTER-BEER_BELLY.flavor": "Years of dedicated training."
 }
