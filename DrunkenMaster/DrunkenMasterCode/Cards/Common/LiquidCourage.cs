@@ -11,8 +11,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
 /// <summary>
-/// Gain 2 Intoxication. Deal 4 damage. Deals 2 additional damage for each Intoxication.
-/// Upgraded: base damage 6 and gain 3 Intoxication.
+/// Gain 2 Intoxication. Deal 4 damage. Deals 1 additional damage for each Intoxication (2026-09-15 night; was 2, which
+/// topped out at 28 for 1 Energy on a Common). Upgraded: base damage 6 and gain 3 Intoxication. Range is now 6 to 16, 9 to 18 upgraded.
 /// 2026-09-13: Intoxication 1 -> 2 so the card is net positive against the 1/turn decay (spec Q6).
 /// Common since 2026-09-12 (was the starting Intoxication source; a new starter takes that job).
 ///
@@ -27,7 +27,7 @@ public class LiquidCourage() : DrunkenMasterCard(1, CardType.Attack, CardRarity.
     [
         new DynamicVar(IntoxicationKey, 2),
         new CalculationBaseVar(4),
-        new ExtraDamageVar(2),
+        new ExtraDamageVar(1),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(CountIntoxicationAfterPlay)
     ];
 

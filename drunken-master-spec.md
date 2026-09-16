@@ -207,7 +207,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 | Card | Type | Cost | Text |
 |---|---|---|---|
-| Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +2 for each Intoxication. |
+| Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +1 for each Intoxication. (+2 until 2026-09-15 night.) |
 | Hurl | Attack | 0 + 3 Intox | Deal 14 (18) damage. |
 | Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
 | Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
@@ -366,7 +366,7 @@ Co-op sync of the composed description is untested.
 6. **Decay vs. gain math.** Decided: direct sources grant 2–3 (Liquid Courage 2, Beer Jacket 3,
    Knock One Back 2, Molotov 3, Nightcap 1 + 3); Bar Tab is 2 base. Decay is now per band (0 / 1 / 2), so holding
    Tipsy costs 1/turn and holding Drunk 2/turn. Liquid Courage from the new start of 3 is 14 on its first play and
-   Chug went to Rare the same evening (5 (7), x2 Tipsy, x4 Drunk); Liquid Courage is still untouched.
+   Chug went to Rare the same evening (5 (7), x2 Tipsy, x4 Drunk); Liquid Courage went to +1 per Intoxication that night (6 to 16).
    Pricing rule for Intoxication-cost cards (2026-09-15): compare to Regent's Star cards at 1 Star = 1.5 Intoxication,
    because Intoxication comes in at about twice the rate per card (Liquid Courage 2 vs Solar Strike 1, Knock One Back
    2 for 0 Energy vs Glow 1 for 1, Bar Tab at Uncommon vs Genesis at Rare) and decay only bites above 3.
