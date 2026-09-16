@@ -222,7 +222,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Cold Water | Skill | 0 + 2 Intox | Gain 7 (10) Block. |
 | Sway | Skill | 1 + 1 Intox | Gain 8 (11) Block. Draw 1 (2). |
 | Beer Jacket | Skill | 2 | Gain 3 (4) Intoxication, then 12 (16) Block. |
-| Nightcap | Skill | 1 | Gain 1 Intoxication. Next turn, gain 3 (4). |
+| Nightcap | Skill | 1 | Gain 2 Intoxication. Next turn, gain 3 (4). (1 now until 2026-09-15 night.) |
 | Leftovers | Skill | 1 | Exhaust (upgrade removes). Gain 4 (7) Block. Put an Ingredient from your exhaust pile into your hand. |
 | Restock | Skill | 1 | Add 2 random (Upgraded) Ingredients into your hand. |
 | Distill | Skill | 1 | Transform a card in your hand into a random Ingredient (Upgraded: an Upgraded one). (2026-09-15; the upgrade used to cut the cost and the card briefly gave 2 Intoxication.) |

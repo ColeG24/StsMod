@@ -8,14 +8,17 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
-/// <summary>1 Energy. Gain 1 Intoxication. Next turn, gain 3 Intoxication. Upgraded: 4.</summary>
+/// <summary>
+/// 1 Energy. Gain 2 Intoxication. Next turn, gain 3 Intoxication. Upgraded: 4. (2026-09-15 night; was 1 now. From the combat
+/// start of 3 the base card is Tipsy now and 7 next turn; the upgrade lands on 8, Drunk next turn.)
+/// </summary>
 public class Nightcap() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     public const string NowKey = "Intoxication";
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DynamicVar(NowKey, 1),
+        new DynamicVar(NowKey, 2),
         new PowerVar<NightcapPower>(3)
     ];
 
