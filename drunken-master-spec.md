@@ -200,7 +200,7 @@ The self-hit never exceeds what the hit would have done: an enemy attacking 2x3 
 
 ## 7. Card pool (as built, 2026-09-13)
 
-Totals as of 2026-09-15 late: 4 Basic, 20 Common (11 Attacks / 9 Skills), 35 Uncommon, 21 Rare (7 Attacks / 8 Skills / 6 Powers), 1 Ancient = 81 (target 88: 4 / 20 / 36 / 26 / 2). The tables below are the 2026-09-13 snapshot plus the rows touched since; DEV_NOTES.md lists the later batches.
+Totals as of 2026-09-15 late: 4 Basic, 20 Common (11 Attacks / 9 Skills), 35 Uncommon, 22 Rare (7 Attacks / 9 Skills / 6 Powers), 1 Ancient = 82 (target 88: 4 / 20 / 36 / 26 / 2). The tables below are the 2026-09-13 snapshot plus the rows touched since; DEV_NOTES.md lists the later batches.
 Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication cost.
 
 ### Common (20)
@@ -274,7 +274,8 @@ in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 E
 also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
 Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 2 Muddles; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
 Ingredient played this turn), Clear the Bar (Attack 0: can only be played by a Blackout; 50 (65) to ALL), Haymaker (Attack 1: 8 (11),
-triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)). Rare is 21.
+triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)), Muddle Through (Skill 2, Exhaust: transform any number of cards in
+your hand into Muddles (+)). Rare is 22.
 
 Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**
 (Lasting Candy gotcha, see DEV_NOTES). No Harmony patches on base-game relics — fix content instead.

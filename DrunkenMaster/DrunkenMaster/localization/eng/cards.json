@@ -192,5 +192,8 @@
   "DRUNKENMASTER-HAYMAKER.title": "Haymaker",
   "DRUNKENMASTER-HAYMAKER.description": "Deal {CalculatedDamage:diff()} damage.\nDeals triple damage while [gold]Drunk[/gold].",
   "DRUNKENMASTER-DRINK_TO_FORGET.title": "Drink to Forget",
-  "DRUNKENMASTER-DRINK_TO_FORGET.description": "Discard your [gold]Hand[/gold].\nDraw {Cards:diff()} cards."
+  "DRUNKENMASTER-DRINK_TO_FORGET.description": "Discard your [gold]Hand[/gold].\nDraw {Cards:diff()} cards.",
+  "DRUNKENMASTER-MUDDLE_THROUGH.title": "Muddle Through",
+  "DRUNKENMASTER-MUDDLE_THROUGH.description": "Transform any number of cards in your [gold]Hand[/gold] into {IfUpgraded:show:[gold]Muddles+[/gold]|[gold]Muddles[/gold]}.",
+  "DRUNKENMASTER-MUDDLE_THROUGH.selectionScreenPrompt": "Choose any number of cards to muddle."
 }

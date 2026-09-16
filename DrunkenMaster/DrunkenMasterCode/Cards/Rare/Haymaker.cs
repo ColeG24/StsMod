@@ -12,7 +12,9 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
 /// <summary>
 /// Rare Attack (2026-09-15), 1 Energy. Deal 8 damage. Deals triple damage while Drunk (or Blackout). Upgraded: 11
-/// (the upgrade was not specified; +3 is my pick). Calculated as 0 + 8 x (Drunk ? 3 : 1) so the card preview shows 24 while Drunk.
+/// (the upgrade was not specified; +3 is my pick). Calculated as 8 + 16 x (Drunk ? 1 : 0): outside combat a CalculatedVar
+/// shows only its base, so the first version (0 + 8 x 3) read "0 damage" in the compendium. The in-combat preview still
+/// reads 24 while Drunk.
 /// </summary>
 public class Haymaker() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
@@ -20,10 +22,9 @@ public class Haymaker() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Rare,
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CalculationBaseVar(0),
-        new ExtraDamageVar(8),
-        new CalculatedDamageVar(ValueProp.Move).WithMultiplier(Multiplier),
-        new DynamicVar("Multiplier", DrunkMultiplier)
+        new CalculationBaseVar(8),
+        new ExtraDamageVar(8 * (DrunkMultiplier - 1)),
+        new CalculatedDamageVar(ValueProp.Move).WithMultiplier(DrunkBonus)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -35,7 +36,7 @@ public class Haymaker() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Rare,
     private static bool IsDrunk(CardModel card) =>
         IntoxicationResource.BandFor(IntoxicationResource.AmountOf(card.Owner)) >= IntoxicationResource.Band.Drunk;
 
-    private static decimal Multiplier(CardModel card, Creature? _) => IsDrunk(card) ? DrunkMultiplier : 1;
+    private static decimal DrunkBonus(CardModel card, Creature? _) => IsDrunk(card) ? 1 : 0;
 
     protected override bool ShouldGlowGoldInternal => IsDrunk(this);
 
@@ -49,5 +50,9 @@ public class Haymaker() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Rare,
             .Execute(choiceContext);
     }
 
-    protected override void OnUpgrade() => DynamicVars.ExtraDamage.UpgradeValueBy(3m);
+    protected override void OnUpgrade()
+    {
+        DynamicVars.CalculationBase.UpgradeValueBy(3m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(3m * (DrunkMultiplier - 1));
+    }
 }
