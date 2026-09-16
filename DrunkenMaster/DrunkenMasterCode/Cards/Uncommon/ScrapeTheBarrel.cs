@@ -1,28 +1,28 @@
 using DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 using DrunkenMaster.DrunkenMasterCode.Tips;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
 /// <summary>
-/// 2 Energy. Deal 4 damage 4 times. Put 1 random Ingredient from your exhaust pile into your hand. Upgraded: 2 Ingredients.
+/// Uncommon Skill, 1 Energy, Exhaust (2026-09-16 rework; was a 2-Energy 4x4 Attack that pulled 1 (2) random Ingredients).
+/// Choose up to 3 Ingredients in your exhaust pile and put them into your hand. Upgraded: Retain (so it can be held until
+/// the pile is worth scraping). Exhaust keeps it a one-shot: without it the card refilled the pot every deck cycle.
 /// Ingredients Exhaust when brewed or when they fizzle at end of turn, so the barrel fills up as the fight goes on.
+/// Leftovers is the 1-Ingredient Common; Line 'Em Up / Kitchen Sink / Bouncer are the payoffs for three plays at once.
 /// </summary>
-public class ScrapeTheBarrel() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public class ScrapeTheBarrel() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
     public const string IngredientsKey = "Ingredients";
 
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new DamageVar(4, ValueProp.Move),
-        new RepeatVar(4),
-        new DynamicVar(IngredientsKey, 1)
-    ];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IngredientsKey, 3)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
@@ -30,26 +30,20 @@ public class ScrapeTheBarrel() : DrunkenMasterCard(2, CardType.Attack, CardRarit
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 
+    protected override bool ShouldGlowGoldInternal => PileType.Exhaust.GetPile(Owner).Cards.Any(c => c is IngredientCard);
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .WithHitCount(DynamicVars.Repeat.IntValue)
-            .WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
-            .Execute(choiceContext);
-
         var pile = PileType.Exhaust.GetPile(Owner);
-        var rng = Owner.RunState.Rng.CombatCardGeneration;
-        for (int i = 0; i < DynamicVars[IngredientsKey].IntValue; i++)
+        int available = pile.Cards.Count(c => c is IngredientCard);
+        if (available == 0) return;
+        int max = Math.Min(available, DynamicVars[IngredientsKey].IntValue);
+        var picked = await CardSelectCmd.FromCombatPile(choiceContext, pile, Owner, new CardSelectorPrefs(SelectionScreenPrompt, 0, max), c => c is IngredientCard);
+        foreach (var card in picked)
         {
-            var candidates = pile.Cards.OfType<IngredientCard>().ToList();
-            if (candidates.Count == 0) break;
-            var pick = candidates[rng.NextInt(candidates.Count)];
-            await CardPileCmd.Add(pick, PileType.Hand);
+            await CardPileCmd.Add(card, PileType.Hand);
         }
     }
 
-    protected override void OnUpgrade() => DynamicVars[IngredientsKey].UpgradeValueBy(1m);
+    protected override void OnUpgrade() => AddKeyword(CardKeyword.Retain);
 }

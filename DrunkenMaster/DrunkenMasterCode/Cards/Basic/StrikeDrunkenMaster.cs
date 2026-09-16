@@ -1,7 +1,6 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -10,11 +9,6 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Basic;
 /// <summary>Deal 6 damage. Upgraded: 9.</summary>
 public class StrikeDrunkenMaster() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
-    // Reuse the base-game Ironclad art until the character has its own.
-    public override string PortraitPath => ImageHelper.GetImagePath("atlases/card_atlas.sprites/ironclad/strike_ironclad.tres");
-    public override string BetaPortraitPath => ImageHelper.GetImagePath("atlases/card_atlas.sprites/ironclad/beta/strike_ironclad.tres");
-    public override string CustomPortraitPath => ImageHelper.GetImagePath("packed/card_portraits/ironclad/strike_ironclad.png");
-
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6, ValueProp.Move)];

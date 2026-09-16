@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3o8ishh5jdr1"
-path="res://.godot/imported/open_bar.png-fa6b5225ec2c23c9bcce756d6d9a7058.ctex"
+uid="uid://bjobq58njifyg"
+path="res://.godot/imported/strike_drunken_master.png-c57e6ae921319cdb7498e88993c8ee85.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://DrunkenMaster/images/card_portraits/big/open_bar.png"
-dest_files=["res://.godot/imported/open_bar.png-fa6b5225ec2c23c9bcce756d6d9a7058.ctex"]
+source_file="res://DrunkenMaster/images/card_portraits/big/strike_drunken_master.png"
+dest_files=["res://.godot/imported/strike_drunken_master.png-c57e6ae921319cdb7498e88993c8ee85.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bu70u6nh8e76s"
-path="res://.godot/imported/last_call.png-c8a7d0f62e4811ea8e7b99dab7956257.ctex"
+uid="uid://tgf8rxdui2r"
+path="res://.godot/imported/contact_buzz_power.png-e218ac2e3c11cd2bb26bdb2d17c416c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://DrunkenMaster/images/card_portraits/big/last_call.png"
-dest_files=["res://.godot/imported/last_call.png-c8a7d0f62e4811ea8e7b99dab7956257.ctex"]
+source_file="res://DrunkenMaster/images/powers/contact_buzz_power.png"
+dest_files=["res://.godot/imported/contact_buzz_power.png-e218ac2e3c11cd2bb26bdb2d17c416c3.ctex"]
 
 [params]
 

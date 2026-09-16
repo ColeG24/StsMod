@@ -380,8 +380,7 @@ Co-op sync of the composed description is untested.
    under the current Common economy; that is accepted for now, revisit only with playtest data.
 9. **Tavern Rag cadence.** Decided: once per combat (§3).
 10. **Bouncer's rarity.** Decided: Uncommon (2026-09-13).
-11. **Cellar Raid.** Feels awkward next to Open Bar; a "fill hand" Open Bar was tried and reverted
-    on 2026-09-13 because it made Cellar Raid a strict duplicate. Candidate: cut Cellar Raid. Unresolved.
+11. **Cellar Raid.** Resolved 2026-09-16 the other way: Open Bar was cut, Cellar Raid stays (judged the more interesting of the two).
 
 ---
 

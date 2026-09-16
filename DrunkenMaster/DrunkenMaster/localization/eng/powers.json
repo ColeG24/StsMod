@@ -24,8 +24,8 @@
   "DRUNKENMASTER-DRUNKENNESS_POWER.blackout.description": "At the end of this turn: play cards off the top of your draw pile, sober up, and wake [gold]Hungover[/gold].",
   "DRUNKENMASTER-DRUNKENNESS_POWER.blackout.smartDescription": "At the end of this turn: play cards off the top of your draw pile, sober up, and wake [gold]Hungover[/gold].",
   "DRUNKENMASTER-IRON_LIVER_POWER.title": "Iron Liver",
-  "DRUNKENMASTER-IRON_LIVER_POWER.description": "Whenever you drink a potion, gain [blue]3[/blue] [gold]Block[/gold].",
-  "DRUNKENMASTER-IRON_LIVER_POWER.smartDescription": "Whenever you drink a potion, gain [blue]{Amount}[/blue] [gold]Block[/gold].",
+  "DRUNKENMASTER-IRON_LIVER_POWER.description": "Whenever you drink a potion, gain [blue]2[/blue] [gold]Vigor[/gold].",
+  "DRUNKENMASTER-IRON_LIVER_POWER.smartDescription": "Whenever you drink a potion, gain [blue]{Amount}[/blue] [gold]Vigor[/gold].",
   "DRUNKENMASTER-STEADY_HANDS_POWER.title": "Steady Hands",
   "DRUNKENMASTER-STEADY_HANDS_POWER.description": "While [gold]Sober[/gold], whenever you play an [gold]Ingredient[/gold], draw [blue]1[/blue] card.",
   "DRUNKENMASTER-STEADY_HANDS_POWER.smartDescription": "While [gold]Sober[/gold], whenever you play an [gold]Ingredient[/gold], draw [blue]{Amount}[/blue] {Amount:plural:card|cards}.",
@@ -82,5 +82,11 @@
   "DRUNKENMASTER-WALK_IT_OFF_POWER.smartDescription": "Whenever you lose [gold]Intoxication[/gold], gain [blue]{Amount}[/blue] [gold]Block[/gold].",
   "DRUNKENMASTER-BENDER_POWER.title": "Bender",
   "DRUNKENMASTER-BENDER_POWER.description": "Whenever you [gold]Blackout[/gold], play [blue]1[/blue] additional card.",
-  "DRUNKENMASTER-BENDER_POWER.smartDescription": "Whenever you [gold]Blackout[/gold], play [blue]{Amount}[/blue] additional cards."
+  "DRUNKENMASTER-BENDER_POWER.smartDescription": "Whenever you [gold]Blackout[/gold], play [blue]{Amount}[/blue] additional cards.",
+  "DRUNKENMASTER-CONTACT_BUZZ_POWER.title": "Contact Buzz",
+  "DRUNKENMASTER-CONTACT_BUZZ_POWER.description": "Whenever you attack an enemy, apply [blue]1[/blue] [gold]Confusion[/gold].",
+  "DRUNKENMASTER-CONTACT_BUZZ_POWER.smartDescription": "Whenever you attack an enemy, apply [blue]{Amount}[/blue] [gold]Confusion[/gold].",
+  "DRUNKENMASTER-EASY_MARK_POWER.title": "Easy Mark",
+  "DRUNKENMASTER-EASY_MARK_POWER.description": "Your Attacks deal [blue]50[/blue]% more damage to enemies with [gold]Confusion[/gold].",
+  "DRUNKENMASTER-EASY_MARK_POWER.smartDescription": "Your Attacks deal [blue]{Amount}[/blue]% more damage to enemies with [gold]Confusion[/gold]."
 }
