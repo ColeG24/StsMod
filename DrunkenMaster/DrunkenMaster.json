@@ -2,9 +2,9 @@
   "id": "DrunkenMaster",
   "name": "The Drunken Master",
   "author": "Cole",
-  "description": "A brewer who fights by mixing drinks mid-combat and drinking them. Vertical slice: starter deck, Tavern Rag, Ingredients, Brew, Intoxication.",
+  "description": "A brewer who mixes drinks mid-combat and drinks them. Play Ingredients to fill a Brew, seal it into a Concoction potion, and get Intoxicated for Strength at the cost of control. 80+ cards, 9 relics, 3 potions. Requires BaseLib and the public-beta branch (v0.111.0+).",
   "version": "v0.1.0",
-  "min_game_version": "0.107.0",
+  "min_game_version": "0.111.0",
   "has_pck": true,
   "has_dll": true,
   "dependencies": [
