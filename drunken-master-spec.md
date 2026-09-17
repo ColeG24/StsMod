@@ -45,6 +45,8 @@ Base-game comparison (decompiled 0.111): Ironclad 80, Defect 75, Regent 75, Sile
 Notes:
 - Hard Liquor is the Bash slot. It is the starter deck's **only** Intoxication source, and only
   indirectly: the Ethanol has to be brewed and the potion drunk.
+- Archaic Tooth turns Hard Liquor into **Cask Strength** (Ancient Attack, 1 Energy: deal 20 (30) damage, add 2
+  Ethanol (+) into your hand; 2026-09-16, the Bash -> Break pattern). Dusty Tome still gives Top Shelf.
 - Liquid Courage was the starting Intoxication card until 2026-09-12; it is now a Common.
 - Free Pour's 1-of-3 choice moved to the upgrade on 2026-09-12 so the base card stays quick. Block
   raised from 5 (8) to 6 (9) on 2026-09-13 so it sits at the Common block benchmark, not the basic.
@@ -216,8 +218,8 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
 | Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
 | Upper Deckie | Attack | 0 | Deal 3 (5) damage. Increase the damage of ALL Upper Deckie cards by your Intoxication this combat (lands after this play). |
-| Sour Punch | Attack | 1 | Deal 8 (11) damage. Add a Bitters (+) into your hand. (Uncommon with a fixed 1 Vulnerable from 2026-09-14 to 2026-09-15.) |
-| Mash | Attack | 1 | Deal 6 (9) damage. Add a Muddle (+) into your hand. |
+| Sour Punch | Attack | 1 | Deal 9 (12) damage. Add a Bitters (+) into your hand. (Uncommon with a fixed 1 Vulnerable from 2026-09-14 to 2026-09-15.) |
+| Mash | Attack | 1 | Deal 7 (10) damage. Add a Muddle (+) into your hand. |
 | Wake-Up Call | Attack | 1 | Deal 10 (12) damage. Add a Hair of the Dog (+) into your hand. |
 | Sober Strike | Attack | 1 | Deal 9 (11) damage. If you are Sober, draw 1 (2) cards. Carries the Strike tag. (2026-09-15) |
 | Rimshot | Attack | 0 + 3 Intox | Deal 8 (12) damage. Apply 1 Weak and 1 Vulnerable. (2026-09-15; merges Salt the Rim and Water It Down, priced off Regent's Falling Star at 1 Star = 1.5 Intoxication.) |

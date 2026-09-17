@@ -12,11 +12,11 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
 /// <summary>
-/// 1 Energy. Deal 6 damage. Add a Muddle into your hand. Upgraded: 9 damage and the Muddle is Upgraded.
+/// 1 Energy. Deal 7 damage (6 until 2026-09-16; under the base 1-Energy Common rate). Add a Muddle into your hand. Upgraded: 10 damage and the Muddle is Upgraded.
 /// </summary>
 public class Mash() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(7, ValueProp.Move)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [

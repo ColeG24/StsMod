@@ -107,6 +107,8 @@
   "DRUNKENMASTER-LINE_EM_UP.description": "Gain {Energy} Energy for each [gold]Ingredient[/gold] in your hand.",
   "DRUNKENMASTER-BEER_MUSCLES.title": "Beer Muscles",
   "DRUNKENMASTER-BEER_MUSCLES.description": "Whenever you drink a potion, gain {BeerMusclesPower} [gold]Strength[/gold].",
+  "DRUNKENMASTER-CASK_STRENGTH.title": "Cask Strength",
+  "DRUNKENMASTER-CASK_STRENGTH.description": "Deal {Damage:diff()} damage.\nAdd [blue]{Ethanols}[/blue] {IfUpgraded:show:[gold]Ethanol+[/gold]|[gold]Ethanol[/gold]} into your [gold]Hand[/gold].",
   "DRUNKENMASTER-TOP_SHELF.title": "Top Shelf",
   "DRUNKENMASTER-TOP_SHELF.description": "Your [gold]Ingredients[/gold] are [gold]Upgraded[/gold].",
   "DRUNKENMASTER-NIGHTCAP.title": "Nightcap",

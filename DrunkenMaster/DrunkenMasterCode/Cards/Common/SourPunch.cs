@@ -14,13 +14,13 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
 /// <summary>
 /// Common Attack, 1 Energy (back from Uncommon 2026-09-15 evening; the fixed 1 Vulnerable it carried at Uncommon is gone,
-/// the Bitters is the Vulnerable). Deal 8 damage. Add a Bitters into your hand. Upgraded: 11 and the Bitters is Upgraded.
+/// the Bitters is the Vulnerable). Deal 9 damage (8 until 2026-09-16). Add a Bitters into your hand. Upgraded: 12 and the Bitters is Upgraded.
 /// </summary>
 public class SourPunch() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(8, ValueProp.Move)
+        new DamageVar(9, ValueProp.Move)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>

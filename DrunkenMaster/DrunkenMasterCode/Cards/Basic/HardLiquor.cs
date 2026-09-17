@@ -1,4 +1,6 @@
+using BaseLib.Abstracts;
 using DrunkenMaster.DrunkenMasterCode.Brew;
+using DrunkenMaster.DrunkenMasterCode.Cards.Ancient;
 using DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 using DrunkenMaster.DrunkenMasterCode.Tips;
 using MegaCrit.Sts2.Core.Commands;
@@ -14,9 +16,12 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Basic;
 /// <summary>
 /// Starter (the class's Bash). 2 Energy. Deal 12 damage. Add an Ethanol into your hand. Upgraded: 16, and the Ethanol is Upgraded.
 /// Was an Uncommon that granted Intoxication directly; since 2026-09-12 the drunkenness comes from brewing the Ethanol.
+/// Archaic Tooth transforms it into Cask Strength (2026-09-16).
 /// </summary>
-public class HardLiquor() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+public class HardLiquor() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy), ITranscendenceCard
 {
+    public CardModel GetTranscendenceTransformedCard() => ModelDb.Card<CaskStrength>();
+
     protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(12, ValueProp.Move)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
