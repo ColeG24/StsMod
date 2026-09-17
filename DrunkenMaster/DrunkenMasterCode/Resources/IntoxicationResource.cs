@@ -143,6 +143,16 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         }
     }
 
+    /// <summary>
+    /// Powers that react to the owner gaining Intoxication (Walk It Off since 2026-09-17). Fired once per gain event from
+    /// <see cref="GainAsync"/> with the amount actually gained, so a gain swallowed by the cap at 12 fires nothing, and
+    /// the netted turn-start change (decay plus Bar Tab) is one event, not two.
+    /// </summary>
+    public interface IGainListener
+    {
+        Task OnIntoxicationGained(PlayerChoiceContext choiceContext, int amount);
+    }
+
     /// <summary>How many times the owner has Blacked Out this combat (Rude Awakening). Combat-scoped like the resource itself.</summary>
     public int Blackouts { get; private set; }
     public void RecordBlackout() => Blackouts++;
@@ -223,8 +233,6 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         if (card.EnergyCost.Canonical < 0) return;   // X-cost / no cost
         if (card.Keywords.Contains(DrunkenMasterKeywords.Poised)) return;   // Intoxication-cost cards (2026-09-14)
         int cost = player.RunState.Rng.CombatEnergyCosts.NextInt(4);
-        // Tolerance (Rare Power): the roll can only match or lower the card's current cost.
-        if (player.Creature?.HasPower<Powers.TolerancePower>() == true) cost = Math.Min(cost, card.EnergyCost.GetResolved());
         card.EnergyCost.SetThisTurn(cost);
         Get(player)?._randomizedThisTurn.Add(card);
         NCard.FindOnTable(card)?.PlayRandomizeCostAnim();
@@ -395,11 +403,21 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         var res = Get(player);
         if (res == null || amount <= 0) return;
         var from = res.CurrentBand;
+        int before = res.Amount;
         Gain(player, amount);
         var to = res.CurrentBand;
         await res.FlushBandPowers(choiceContext);
-        if (to <= from || player.Creature == null) return;
-        foreach (var listener in player.Creature.Powers.OfType<IBandRaisedListener>().ToList())
+        if (player.Creature is not { IsDead: false } creature) return;
+        if (res.Amount > before)
+        {
+            foreach (var listener in creature.Powers.OfType<IGainListener>().ToList())
+            {
+                if (creature.IsDead) return;
+                await listener.OnIntoxicationGained(choiceContext, res.Amount - before);
+            }
+        }
+        if (to <= from) return;
+        foreach (var listener in creature.Powers.OfType<IBandRaisedListener>().ToList())
         {
             await listener.OnBandRaised(choiceContext, from, to);
         }

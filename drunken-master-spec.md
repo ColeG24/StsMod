@@ -213,7 +213,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 | Card | Type | Cost | Text |
 |---|---|---|---|
-| Liquid Courage | Attack | 1 | Gain 2 (3) Intoxication. Deal 4 (6) damage, +1 for each Intoxication. (+2 until 2026-09-15 night.) |
+| Liquid Courage | Attack | 1 | Gain 2 Intoxication. Deal 6 damage, +1 (2) for each Intoxication. (2026-09-17; was gain 2 (3), 4 (6) base, flat +1.) |
 | Hurl | Attack | 0 + 3 Intox | Deal 14 (18) damage. |
 | Barstool Swing | Attack | 1 | Deal 2 (3) damage 3 times to ALL enemies. Apply 1 Confusion to ALL enemies. |
 | Corkscrew | Attack | 2 | Deal 13 (16) damage. Apply 2 (3) Confusion. |
@@ -242,7 +242,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Boilermaker | Attack | 2 | Deal 14 (20) damage. Add a Bitters and a Wormwood into your hand. |
 | Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak and 1 (2) Confusion. (Common until 2026-09-15.) |
 | Stir the Pot | Attack | 1 | Deal 10 (13) damage. Draw 1 (2) cards for each Concoction you brewed this turn. (Common, 7 (10) + draw per Ingredient in the Brew, until 2026-09-15.) |
-| Molotov | Attack | 2 | Gain 3 Intoxication, then deal 12 (16) damage to ALL enemies. |
+| Molotov | Attack | 2 | Gain 3 Intoxication, then deal 14 (18) damage to ALL enemies. (12 (16) until 2026-09-17.) |
 | Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
 | Empties | Attack | 1 | Deal 8 damage, +1 (+2) for each Ingredient in your exhaust pile. |
 | Staggering Blow | Attack | 2 | Deal 15 (20) damage. Gain 1 (2) Block for each Intoxication. |
@@ -276,8 +276,8 @@ Still, Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Com
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Dutch Courage (+3 (4) Strength
 whenever you Blackout), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
-in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: while Drunk your cards' random costs never go up; upgrade
-also grants 4 Intoxication on play). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
+in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;
+2026-09-17 rework, was a clamp on random costs while Drunk). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
 Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 2 Muddles; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
 Ingredient played this turn), Clear the Bar (Attack 0: can only be played by a Blackout; 50 (65) to ALL), Haymaker (Attack 1: 8 (11),
 triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)), Muddle Through (Skill 2, Exhaust: transform any number of cards in

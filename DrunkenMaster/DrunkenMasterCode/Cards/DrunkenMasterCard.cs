@@ -56,6 +56,27 @@ public abstract class DrunkenMasterCard(int cost, CardType type, CardRarity rari
     }
 
     /// <summary>
+    /// Second lock on Intoxication costs (2026-09-17). BaseLib enforces custom resource costs with one postfix on
+    /// PlayerCombatState.HasEnoughResourcesFor, and its Spend only warns and spends what is there, so any other mod
+    /// that forces that method's result to true lets these cards be played for nothing (a playtester's log: Hurl at 0,
+    /// "Attempted to spend secondary resource IntoxicationResource with insufficient amount; Current: 0 | Required: 3").
+    /// CardModel.CanPlay checks IsPlayable separately, so the same BaseLib check is repeated here; it goes through the
+    /// card's own cost object, so free-this-turn, cost modifiers and X costs behave exactly as before. Only manual play
+    /// consults IsPlayable: a Blackout auto-play is unaffected.
+    /// </summary>
+    protected override bool IsPlayable
+    {
+        get
+        {
+            if (!_hasIntoxicationCost) return true;
+            var state = Owner?.PlayerCombatState;
+            var cost = CustomResources<IntoxicationResource>.Cost(this);
+            if (state == null || cost == null) return true;
+            return cost.ResourceCheck(state, this) == UnplayableReason.None;
+        }
+    }
+
+    /// <summary>
     /// Every card that costs Intoxication is Poised: Drunk never re-rolls its cost. Subclasses that override this
     /// (Ingredients, Chaser, Upper Deckie, Chug, Drink to Forget) list their keywords explicitly.
     /// </summary>

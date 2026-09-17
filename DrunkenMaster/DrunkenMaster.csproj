@@ -98,7 +98,7 @@
     </Target>
     
     <!-- The deployed manifest's version is derived from git so two machines building the same commit show the same
-         version: v<major>.<minor>.<commit count>, plus "-dirty" when there are uncommitted changes. The repo manifest
+         version: v<major>.<minor>.<commit count>, or v<major>.<minor>.<commit count + 1>-dirty when there are uncommitted changes. The repo manifest
          keeps a plain base version (its major.minor is what is used); only the copy in the mods folder is stamped.
          (A per-publish bump was tried first on 2026-09-14; it counted up separately on each player's machine.) -->
     <Target Name="StampModVersion" BeforeTargets="CopyToModsFolderOnBuild">
@@ -114,7 +114,11 @@
             <ManifestVersionPrefix>$([System.Text.RegularExpressions.Regex]::Match($(ManifestContent), '"version":\s*"(v?\d+\.\d+\.)\d+"').Result('$1'))</ManifestVersionPrefix>
             <GitCommitCount>$(GitCommitCount.Trim())</GitCommitCount>
             <StampedModVersion Condition="'$(ManifestVersionPrefix)' != '' and '$(GitCommitCount)' != ''">$(ManifestVersionPrefix)$(GitCommitCount)</StampedModVersion>
-            <StampedModVersion Condition="'$(StampedModVersion)' != '' and '$(GitDirtyLines)' != ''">$(StampedModVersion)-dirty</StampedModVersion>
+            <!-- A dirty tree is work towards the NEXT commit, so it stamps as <count + 1>-dirty. With plain <count>-dirty the
+                 game's SemanticVersion ranked the local build BELOW the Workshop copy of the same commit and silently
+                 loaded the Workshop one instead (2026-09-17: "Steam version (v0.1.38) is greater than local version
+                 (v0.1.38-dirty)"). Committing then lands on the same number without the suffix, which ranks above it. -->
+            <StampedModVersion Condition="'$(StampedModVersion)' != '' and '$(GitDirtyLines)' != ''">$(ManifestVersionPrefix)$([MSBuild]::Add($(GitCommitCount), 1))-dirty</StampedModVersion>
             <StampedManifest Condition="'$(StampedModVersion)' != ''">$([System.Text.RegularExpressions.Regex]::Replace($(ManifestContent), '("version":\s*")[^"]*"', '${1}$(StampedModVersion)"'))</StampedManifest>
             <StampedManifest Condition="'$(StampedModVersion)' == ''">$(ManifestContent)</StampedManifest>
         </PropertyGroup>

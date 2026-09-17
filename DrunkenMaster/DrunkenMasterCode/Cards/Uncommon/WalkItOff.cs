@@ -9,10 +9,10 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
-/// <summary>Uncommon Power, 1 Energy. Whenever you lose Intoxication, gain 1 Block. Upgraded: 2.</summary>
+/// <summary>Uncommon Power, 1 Energy. Whenever you gain, spend or lose Intoxication, gain 2 Block (once per event, not per point). Upgraded: 3 (2026-09-17; was 1 (2) on losses only).</summary>
 public class WalkItOff() : DrunkenMasterCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<WalkItOffPower>(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<WalkItOffPower>(2)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
         HoverTipFactory.FromPower<WalkItOffPower>(),

@@ -8,13 +8,13 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
-/// <summary>2 Energy. Gain 3 Intoxication, then deal 12 damage to ALL enemies. Upgraded: 16. Uncommon since 2026-09-12 (was Rare with Exhaust).</summary>
+/// <summary>2 Energy. Gain 3 Intoxication, then deal 14 damage to ALL enemies. Upgraded: 18 (2026-09-17; was 12 (16)). Uncommon since 2026-09-12 (was Rare with Exhaust).</summary>
 public class Molotov() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Uncommon, TargetType.AllEnemies)
 {
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new DamageVar(12, ValueProp.Move),
+        new DamageVar(14, ValueProp.Move),
         new DynamicVar("Intoxication", 3)
     ];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];

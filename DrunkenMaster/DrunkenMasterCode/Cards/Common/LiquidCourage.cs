@@ -11,13 +11,14 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Common;
 
 /// <summary>
-/// Gain 2 Intoxication. Deal 4 damage. Deals 1 additional damage for each Intoxication (2026-09-15 night; was 2, which
-/// topped out at 28 for 1 Energy on a Common). Upgraded: base damage 6 and gain 3 Intoxication. Range is now 6 to 16, 9 to 18 upgraded.
+/// Gain 2 Intoxication. Deal 6 damage. Deals 1 additional damage for each Intoxication. Upgraded: 2 per Intoxication;
+/// the base damage and the Intoxication gain stay put (2026-09-17; was base 4 (6) and gain 2 (3) at a flat 1 per point).
+/// Range is 8 to 18, 10 to 30 upgraded.
 /// 2026-09-13: Intoxication 1 -> 2 so the card is net positive against the 1/turn decay (spec Q6).
 /// Common since 2026-09-12 (was the starting Intoxication source; a new starter takes that job).
 ///
 /// Spec §3 says "gain Intoxication first, then compute damage". To keep the card preview honest
-/// (a first copy should read 8, not 4) the damage formula counts the Intoxication this card is
+/// (a first copy at the opening 3 should read 11, not 9) the damage formula counts the Intoxication this card is
 /// about to grant, then the attack resolves, then the power is applied. The observable result is
 /// identical to gain-then-hit.
 /// </summary>
@@ -26,7 +27,7 @@ public class LiquidCourage() : DrunkenMasterCard(1, CardType.Attack, CardRarity.
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DynamicVar(IntoxicationKey, 2),
-        new CalculationBaseVar(4),
+        new CalculationBaseVar(6),
         new ExtraDamageVar(1),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(CountIntoxicationAfterPlay)
     ];
@@ -57,7 +58,6 @@ public class LiquidCourage() : DrunkenMasterCard(1, CardType.Attack, CardRarity.
 
     protected override void OnUpgrade()
     {
-        DynamicVars.CalculationBase.UpgradeValueBy(2m);
-        DynamicVars[IntoxicationKey].UpgradeValueBy(1m);
+        DynamicVars.ExtraDamage.UpgradeValueBy(1m);
     }
 }
