@@ -52,6 +52,40 @@ grep -o '"version": *"[^"]*"' "$WS/content/DrunkenMaster/DrunkenMaster.json"
 IMG_BYTES=$(stat -f%z "$WS/image.png")
 (( IMG_BYTES < 1000000 )) || { echo "image.png is $IMG_BYTES bytes; Steam requires < 1 MB" >&2; exit 1; }
 
+# Gallery images. The uploader re-uploads every file in previews/ in place on each run, which has
+# left the store-page gallery blank, and leaves Steam's previews alone when previews/ is absent. So
+# previews/ is staged from gallery/ only when gallery/ differs from what was last uploaded
+# (gallery.sha), under fresh timestamped names so every image is removed and re-added, never updated
+# in place. Steam shows previews in the order added, and the uploader adds them in raw directory
+# order (APFS: by name hash, not by name), so the name suffix is varied until that order is sorted.
+rm -rf "$WS/previews"; trap 'rm -rf "$WS/previews"' EXIT
+GALLERY_SHA="$(cd "$WS/gallery" && shasum -a 256 -- * | shasum -a 256 | cut -c1-8)"
+if [[ "$GALLERY_SHA" != "$(cat "$WS/gallery.sha" 2>/dev/null)" ]]; then
+  echo ">> gallery changed; staging previews ($GALLERY_SHA)"
+  for f in "$WS/gallery"/*; do
+    BYTES=$(stat -f%z "$f")
+    (( BYTES < 1000000 )) || { echo "$f is $BYTES bytes; Steam requires < 1 MB" >&2; exit 1; }
+  done
+  STAMP="$(date +%Y%m%d%H%M%S)"
+  for salt in $(seq 1 2000); do
+    rm -rf "$WS/previews"; mkdir "$WS/previews"
+    for f in "$WS/gallery"/*; do
+      NAME="$(basename "$f")"
+      : > "$WS/previews/${NAME%.*}.$STAMP-$salt.${NAME##*.}"
+    done
+    ORDER="$(ls -f "$WS/previews" | grep -v '^\.\.\{0,1\}$')"
+    [[ "$ORDER" == "$(sort <<< "$ORDER")" ]] && break
+    [[ "$salt" != 2000 ]] || { echo "could not find preview names that list in gallery order" >&2; exit 1; }
+  done
+  for f in "$WS/gallery"/*; do
+    NAME="$(basename "$f")"
+    cp "$f" "$WS/previews/${NAME%.*}.$STAMP-$salt.${NAME##*.}"
+  done
+  echo ">> previews, in upload order:"; ls -f "$WS/previews" | grep -v '^\.\.\{0,1\}$'
+else
+  echo ">> gallery unchanged; leaving Steam's previews alone"
+fi
+
 if [[ ! -x "$TOOLS/ModUploader" ]]; then
   echo ">> downloading uploader $UPLOADER_VERSION ($RID) to $TOOLS"
   mkdir -p "$TOOLS"
@@ -69,6 +103,7 @@ pgrep -x steam_osx >/dev/null || { echo "Steam is not running; start it and log 
 if (( DO_UPLOAD )); then
   echo ">> uploading"
   (cd "$TOOLS" && ./ModUploader upload -w "$WS")
+  echo "$GALLERY_SHA" > "$WS/gallery.sha"
   [[ -f "$WS/mod_id.txt" ]] && echo ">> Workshop item: https://steamcommunity.com/sharedfiles/filedetails/?id=$(cat "$WS/mod_id.txt")"
 else
   echo ">> dry run: skipping upload. Would run: (cd $TOOLS && ./ModUploader upload -w $WS)"

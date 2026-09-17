@@ -1,3 +1,5 @@
 # Built mod files synced in by upload.sh; rebuilt from source
 content/
 mod-uploader.log
+# Staged from gallery/ by upload.sh only when the gallery changed
+previews/

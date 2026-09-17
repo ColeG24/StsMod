@@ -4,7 +4,9 @@ Layout expected by Mega Crit's [sts2-mod-uploader](https://github.com/megacrit/s
 
 - `workshop.json` — title, description (Steam BBCode), visibility, tags, `changeNote`, Workshop dependencies (BaseLib = 3737335127).
 - `image.png` — preview shown on the Workshop page, must be under 1 MB. Regenerate with `make-preview.sh`.
-- `previews/` — additional store-page images (each under 1 MB). The uploader mirrors this folder: files here are added or updated by name, and any additional preview on Steam not present here is removed. Edit previews here, not on the Steam website, or the next upload undoes it. Steam's page shows these in the order they were added, and shows `image.png` last as the square thumbnail, so the splash art is duplicated here as `01_splash.png` to lead the gallery.
+- `gallery/` — additional store-page images (each under 1 MB). Edit the gallery here, not on the Steam website. Steam's page shows these in the order they were added, and shows `image.png` last as the square thumbnail, so the splash art is duplicated here as `01_splash.png` to lead the gallery.
+- `gallery.sha` — hash of the `gallery/` last uploaded. Commit it. The uploader mirrors a `previews/` folder (add or update by file name, remove the rest) and leaves Steam's previews alone when that folder is absent; its in-place updates blanked the store-page gallery, so `upload.sh` stages `previews/` (gitignored, deleted afterwards) only when `gallery/` no longer matches this hash, under hash-suffixed names so every image is removed and re-added. Delete `gallery.sha` to force a gallery re-upload.
+- `PENDING_CHANGENOTE.md` — patch notes for changes committed but not yet uploaded. Condense into `changeNote` at release time, then clear it.
 - `content/DrunkenMaster/` — the `.json`, `.dll` and `.pck` to upload. Gitignored; `upload.sh` fills it from a fresh publish.
 - `mod_id.txt` — written by the uploader after the first upload. Commit it: later uploads update the same item.
 
