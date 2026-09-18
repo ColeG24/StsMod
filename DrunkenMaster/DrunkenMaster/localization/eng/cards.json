@@ -130,7 +130,8 @@
   "DRUNKENMASTER-MASH.title": "Mash",
   "DRUNKENMASTER-MASH.description": "Deal {Damage:diff()} damage.\nAdd a {IfUpgraded:show:[gold]Muddle+[/gold]|[gold]Muddle[/gold]} into your [gold]Hand[/gold].",
   "DRUNKENMASTER-STIR_THE_POT.title": "Stir the Pot",
-  "DRUNKENMASTER-STIR_THE_POT.description": "Deal {Damage:diff()} damage.\nDraw {Cards:diff()} {Cards:plural:card|cards} for each [gold]Concoction[/gold] you brewed this turn.",
+  "DRUNKENMASTER-STIR_THE_POT.description": "Gain {Intoxication:diff()} [gold]Intoxication[/gold].\n{IfUpgraded:show:Choose a [gold]Poised[/gold] card from your draw pile and add it into your [gold]Hand[/gold].|Add a random [gold]Poised[/gold] card from your draw pile into your [gold]Hand[/gold].}",
+  "DRUNKENMASTER-STIR_THE_POT.selectionScreenPrompt": "Choose a Poised card.",
   "DRUNKENMASTER-CORKSCREW.title": "Corkscrew",
   "DRUNKENMASTER-CORKSCREW.description": "Deal {Damage:diff()} damage.\nApply {ConfusionPower:diff()} [gold]Confusion[/gold].",
   "DRUNKENMASTER-SPIKED_DRINK.title": "Spiked Drink",
@@ -205,5 +206,7 @@
   "DRUNKENMASTER-EASY_MARK.title": "Easy Mark",
   "DRUNKENMASTER-EASY_MARK.description": "Your Attacks deal {EasyMarkPower:diff()}% more damage to enemies with [gold]Confusion[/gold].",
   "DRUNKENMASTER-DOUBLE_DOWN.title": "Double Down",
-  "DRUNKENMASTER-DOUBLE_DOWN.description": "Double your [gold]Intoxication[/gold].\nAdd an {IfUpgraded:show:[gold]Everclear+[/gold]|[gold]Everclear[/gold]} into your [gold]Hand[/gold]."
+  "DRUNKENMASTER-DOUBLE_DOWN.description": "Double your [gold]Intoxication[/gold].\nAdd an {IfUpgraded:show:[gold]Everclear+[/gold]|[gold]Everclear[/gold]} into your [gold]Hand[/gold].",
+  "DRUNKENMASTER-BLACKOUT_FORM.title": "Blackout Form",
+  "DRUNKENMASTER-BLACKOUT_FORM.description": "[gold]Ethereal[/gold].\nStart each turn at [blue]12[/blue] [gold]Intoxication[/gold]."
 }

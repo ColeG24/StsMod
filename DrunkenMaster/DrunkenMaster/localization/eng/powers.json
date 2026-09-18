@@ -89,5 +89,8 @@
   "DRUNKENMASTER-CONTACT_BUZZ_POWER.smartDescription": "Whenever you attack an enemy, apply [blue]{Amount}[/blue] [gold]Confusion[/gold].",
   "DRUNKENMASTER-EASY_MARK_POWER.title": "Easy Mark",
   "DRUNKENMASTER-EASY_MARK_POWER.description": "Your Attacks deal [blue]25[/blue]% more damage to enemies with [gold]Confusion[/gold].",
-  "DRUNKENMASTER-EASY_MARK_POWER.smartDescription": "Your Attacks deal [blue]{Amount}[/blue]% more damage to enemies with [gold]Confusion[/gold]."
+  "DRUNKENMASTER-EASY_MARK_POWER.smartDescription": "Your Attacks deal [blue]{Amount}[/blue]% more damage to enemies with [gold]Confusion[/gold].",
+  "DRUNKENMASTER-BLACKOUT_FORM_POWER.title": "Blackout Form",
+  "DRUNKENMASTER-BLACKOUT_FORM_POWER.description": "Start each turn at [blue]12[/blue] [gold]Intoxication[/gold].",
+  "DRUNKENMASTER-BLACKOUT_FORM_POWER.smartDescription": "Start each turn at [blue]12[/blue] [gold]Intoxication[/gold]."
 }

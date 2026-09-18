@@ -38,6 +38,13 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         Task AfterTurnStartApplied(PlayerChoiceContext choiceContext) => Task.CompletedTask;
     }
 
+    /// <summary>Powers that set a floor on the turn-start amount (Blackout Form: 12). Applied after decay and per-turn gains.</summary>
+    public interface ITurnStartFloor
+    {
+        int TurnStartMinimum(Player player);
+        void FlashTurnStart();
+    }
+
     /// <summary>Every combat opens at 3 Intoxication, the top of Sober (2026-09-15; was 0).</summary>
     public const int StartingIntoxication = 3;
 
@@ -79,6 +86,8 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         {
             foreach (var source in creature.Powers.OfType<IPerTurnSource>())
                 next += source.IntoxicationPerTurn(player);
+            foreach (var floor in creature.Powers.OfType<ITurnStartFloor>())
+                next = Math.Max(next, floor.TurnStartMinimum(player));
         }
         return Math.Clamp(next, 0, Max);
     }
@@ -105,6 +114,8 @@ public class IntoxicationResource() : CustomResource(ResourceId)
         {
             foreach (var source in player.Creature.Powers.OfType<IPerTurnSource>())
                 if (source.IntoxicationPerTurn(player) != 0) source.FlashPerTurn();
+            foreach (var floor in player.Creature.Powers.OfType<ITurnStartFloor>())
+                if (next > current && floor.TurnStartMinimum(player) >= next) floor.FlashTurnStart();
         }
         if (next > current) await GainAsync(choiceContext, player, next - current);
         else if (next < current) Lose(player, current - next);

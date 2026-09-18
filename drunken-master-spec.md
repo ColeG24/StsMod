@@ -241,7 +241,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 |---|---|---|---|
 | Boilermaker | Attack | 2 | Deal 14 (20) damage. Add a Bitters and a Wormwood into your hand. |
 | Bottle Smash | Attack | 1 + 1 Intox | Deal 10 (13) damage. Apply 1 (2) Weak and 1 (2) Confusion. (Common until 2026-09-15.) |
-| Stir the Pot | Attack | 1 | Deal 10 (13) damage. Draw 1 (2) cards for each Concoction you brewed this turn. (Common, 7 (10) + draw per Ingredient in the Brew, until 2026-09-15.) |
+| Stir the Pot | Skill | 1 | Gain 2 (3) Intoxication. Add a random Poised card from your draw pile into your hand; upgraded, you choose it. (2026-09-18 rework; was an Attack: 10 (13) + draw per Concoction brewed this turn.) |
 | Molotov | Attack | 2 | Gain 3 Intoxication, then deal 14 (18) damage to ALL enemies. (12 (16) until 2026-09-17.) |
 | Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
 | Staggering Blow | Attack | 2 | Deal 15 (20) damage. Gain 1 (2) Block for each Intoxication. |
@@ -272,7 +272,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 ### Rare (11)
 
-Empties (Attack 1: 8 damage, +2 (3) per Ingredient in your exhaust pile; Uncommon at +1 (2) until 2026-09-18), Still (Power 2 (1): draw 1 additional card each turn; at the start of your turn choose a non-Ingredient card in hand to become a random Ingredient; 2026-09-18 rework, was 1 random Ingredient per turn), Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
+Blackout Form (Power 3, Ethereal, upgrade removes Ethereal; 2026-09-18: start each turn at 12 Intoxication, so every turn ends in a Blackout), Empties (Attack 1: 8 damage, +2 (3) per Ingredient in your exhaust pile; Uncommon at +1 (2) until 2026-09-18), Still (Power 2 (1): draw 1 additional card each turn; at the start of your turn choose a non-Ingredient card in hand to become a random Ingredient; 2026-09-18 rework, was 1 random Ingredient per turn), Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;

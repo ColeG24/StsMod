@@ -1,50 +1,48 @@
-using DrunkenMaster.DrunkenMasterCode.Brew;
+using DrunkenMaster.DrunkenMasterCode.Resources;
 using DrunkenMaster.DrunkenMasterCode.Tips;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
+using MegaCrit.Sts2.Core.Models;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
 /// <summary>
-/// Uncommon Attack (2026-09-15; was Common), 1 Energy. Deal 10 damage. Draw 1 card for each Concoction you brewed this
-/// turn. Upgraded: 13 damage, draw 2 per Concoction. Until 2026-09-15: 7 (10) damage, draw 1 per Ingredient in the Brew.
-/// Rewards playing Ingredients before attacks; a second seal in one turn needs a Shot Glass pot or a hand full of Ingredients.
+/// Uncommon Skill, 1 Energy (2026-09-18 rework; was an Attack: 10 (13) damage + draw per Concoction brewed this turn).
+/// Gain 2 Intoxication. Add a random Poised card from your draw pile into your hand. Upgraded: 3 Intoxication and you
+/// choose the card. Poised cards are the Intoxication-cost cards (plus Upper Deckie / Chug), so this fetches the
+/// thing the Intoxication is for. Nothing happens on a draw pile with no Poised card.
 /// </summary>
-public class StirThePot() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public class StirThePot() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars =>
-    [
-        new DamageVar(10, ValueProp.Move),
-        new CardsVar(1)
-    ];
+    public const string IntoxicationKey = "Intoxication";
+
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new DynamicVar(IntoxicationKey, 2)];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.Static(DrunkenMasterTips.Brew),
-        HoverTipFactory.Static(DrunkenMasterTips.Ingredient)
+        IntoxicationResource.Tip,
+        HoverTipFactory.FromKeyword(DrunkenMasterKeywords.Poised)
     ];
 
-    protected override bool ShouldGlowGoldInternal => BrewSystem.SealsThisTurn(Owner) > 0;
+    private static bool IsPoised(CardModel card) => card.Keywords.Contains(DrunkenMasterKeywords.Poised);
+
+    protected override bool ShouldGlowGoldInternal => PileType.Draw.GetPile(Owner).Cards.Any(IsPoised);
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .FromCard(this, cardPlay)
-            .Targeting(cardPlay.Target)
-            .WithHitFx("vfx/vfx_attack_blunt", null, "blunt_attack.mp3")
-            .Execute(choiceContext);
-        int seals = BrewSystem.SealsThisTurn(Owner);
-        if (seals > 0) await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue * seals, Owner);
+        await IntoxicationResource.GainAsync(choiceContext, Owner, DynamicVars[IntoxicationKey].IntValue);
+        var pile = PileType.Draw.GetPile(Owner);
+        var candidates = pile.Cards.Where(IsPoised).ToList();
+        if (candidates.Count == 0) return;
+        CardModel? picked = IsUpgraded
+            ? (await CardSelectCmd.FromCombatPile(choiceContext, pile, Owner, new CardSelectorPrefs(SelectionScreenPrompt, 1), IsPoised)).FirstOrDefault()
+            : Owner.RunState.Rng.CombatCardGeneration.NextItem(candidates);
+        if (picked != null) await CardPileCmd.Add(picked, PileType.Hand);
     }
 
-    protected override void OnUpgrade()
-    {
-        DynamicVars.Damage.UpgradeValueBy(3m);
-        DynamicVars.Cards.UpgradeValueBy(1m);
-    }
+    protected override void OnUpgrade() => DynamicVars[IntoxicationKey].UpgradeValueBy(1m);
 }

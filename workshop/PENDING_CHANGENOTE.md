@@ -22,6 +22,10 @@ Card changes (2026-09-18).
 - Easy Mark: 1 Energy (was 2), +25% damage to Confused enemies, upgraded +50%.
 - Dutch Courage: now Uncommon and costs 1 (was Rare, 2).
 - Pickled: 5 (9) base Block, up from 4 (8).
+- Stir the Pot reworked into a Skill (1 Energy): gain 2 (3) Intoxication and add a random Poised card
+  from your draw pile into your hand; upgraded, you choose the card.
+- New Rare Power, Blackout Form (3 Energy, Ethereal; the upgrade removes Ethereal): start each turn at
+  12 Intoxication.
 - New Uncommon Skill, Double Down (1 Energy): double your Intoxication and add an Everclear (+) into your hand.
 - Removed: Dizzy Spell, Pregame.
 - Empties: now Rare, and deals 2 (3) additional damage per Ingredient in your exhaust pile, up from 1 (2).
