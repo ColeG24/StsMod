@@ -208,5 +208,5 @@
   "DRUNKENMASTER-DOUBLE_DOWN.title": "Double Down",
   "DRUNKENMASTER-DOUBLE_DOWN.description": "Double your [gold]Intoxication[/gold].\nAdd an {IfUpgraded:show:[gold]Everclear+[/gold]|[gold]Everclear[/gold]} into your [gold]Hand[/gold].",
   "DRUNKENMASTER-BLACKOUT_FORM.title": "Blackout Form",
-  "DRUNKENMASTER-BLACKOUT_FORM.description": "[gold]Ethereal[/gold].\nStart each turn at [blue]12[/blue] [gold]Intoxication[/gold]."
+  "DRUNKENMASTER-BLACKOUT_FORM.description": "Start each turn at [blue]12[/blue] [gold]Intoxication[/gold]."
 }
