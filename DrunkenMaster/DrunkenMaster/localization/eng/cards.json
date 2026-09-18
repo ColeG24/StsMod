@@ -146,8 +146,6 @@
   "DRUNKENMASTER-DOUBLE_VISION.description": "Apply {ConfusionPower:diff()} [gold]Confusion[/gold].",
   "DRUNKENMASTER-SPIN_THE_BOTTLE.title": "Spin the Bottle",
   "DRUNKENMASTER-SPIN_THE_BOTTLE.description": "Apply {ConfusionPower:diff()} [gold]Confusion[/gold] to ALL enemies.",
-  "DRUNKENMASTER-PREGAME.title": "Pregame",
-  "DRUNKENMASTER-PREGAME.description": "Gain {SoberIntoxication:diff()} [gold]Intoxication[/gold] if you are [gold]Sober[/gold], otherwise gain {Intoxication:diff()}.",
   "DRUNKENMASTER-TOLERANCE.title": "Tolerance",
   "DRUNKENMASTER-TOLERANCE.description": "The first time you are [gold]Drunk[/gold] each turn, gain {TolerancePower:diff()} Energy.",
   "DRUNKENMASTER-CHEAP_SHOT.title": "Cheap Shot",
@@ -163,7 +161,7 @@
   "DRUNKENMASTER-STIR_CRAZY.title": "Stir Crazy",
   "DRUNKENMASTER-STIR_CRAZY.description": "Deal {Damage:diff()} damage once for each [gold]Ingredient[/gold] in your [gold]Brew[/gold].",
   "DRUNKENMASTER-BAR_BRAWL.title": "Bar Brawl",
-  "DRUNKENMASTER-BAR_BRAWL.description": "Deal {Damage:diff()} damage.\nAdd {Muddles} [gold]Muddles[/gold] into your [gold]Hand[/gold].",
+  "DRUNKENMASTER-BAR_BRAWL.description": "Deal {Damage:diff()} damage.\nAdd {Muddles} {IfUpgraded:show:[gold]Muddle+[/gold]|[gold]Muddles[/gold]} into your [gold]Hand[/gold].",
   "DRUNKENMASTER-THE_SPINS.title": "The Spins",
   "DRUNKENMASTER-THE_SPINS.description": "Whenever you apply [gold]Confusion[/gold] to an enemy, it takes {TheSpinsPower:diff()} damage.",
   "DRUNKENMASTER-WALK_IT_OFF.title": "Walk It Off",
@@ -201,11 +199,11 @@
   "DRUNKENMASTER-SHOTS_FIRED.description": "Deal {Damage:diff()} damage to a random enemy {Hits} times.\nHits an additional time for each potion you have drunk this combat.",
   "DRUNKENMASTER-BREAKFAST_BEER.title": "Breakfast Beer",
   "DRUNKENMASTER-BREAKFAST_BEER.description": "If you are [gold]Hungover[/gold], gain {Energy} [gold]Energy[/gold].\nDraw {Cards:diff()} cards.",
-  "DRUNKENMASTER-DIZZY_SPELL.title": "Dizzy Spell",
-  "DRUNKENMASTER-DIZZY_SPELL.description": "Double an enemy's [gold]Confusion[/gold].",
   "DRUNKENMASTER-SCRAPE_THE_BARREL.selectionScreenPrompt": "Choose up to 3 Ingredients to scrape up.",
   "DRUNKENMASTER-CONTACT_BUZZ.title": "Contact Buzz",
   "DRUNKENMASTER-CONTACT_BUZZ.description": "Whenever you attack an enemy, apply {ContactBuzzPower} [gold]Confusion[/gold].",
   "DRUNKENMASTER-EASY_MARK.title": "Easy Mark",
-  "DRUNKENMASTER-EASY_MARK.description": "Your Attacks deal {EasyMarkPower}% more damage to enemies with [gold]Confusion[/gold]."
+  "DRUNKENMASTER-EASY_MARK.description": "Your Attacks deal {EasyMarkPower:diff()}% more damage to enemies with [gold]Confusion[/gold].",
+  "DRUNKENMASTER-DOUBLE_DOWN.title": "Double Down",
+  "DRUNKENMASTER-DOUBLE_DOWN.description": "Double your [gold]Intoxication[/gold].\nAdd an {IfUpgraded:show:[gold]Everclear+[/gold]|[gold]Everclear[/gold]} into your [gold]Hand[/gold]."
 }

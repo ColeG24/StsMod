@@ -11,7 +11,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Rare Attack (2026-09-15 late; was Uncommon at 22/27), 3 Energy. Deal 23 damage. Add 2 Muddles into your hand. Upgraded: 28 damage (the Muddles stay unupgraded).</summary>
+/// <summary>Rare Attack (2026-09-15 late; was Uncommon at 22/27), 3 Energy. Deal 23 damage. Add 3 Muddles into your hand. Upgraded: 28 damage and the Muddles are Upgraded (2026-09-18; was 2 unupgraded Muddles).</summary>
 public class BarBrawl() : DrunkenMasterCard(3, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     public const string MuddlesKey = "Muddles";
@@ -19,12 +19,12 @@ public class BarBrawl() : DrunkenMasterCard(3, CardType.Attack, CardRarity.Rare,
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new DamageVar(23, ValueProp.Move),
-        new DynamicVar(MuddlesKey, 2)
+        new DynamicVar(MuddlesKey, 3)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
     [
-        HoverTipFactory.FromCard<Muddle>(),
+        HoverTipFactory.FromCard<Muddle>(IsUpgraded),
         HoverTipFactory.Static(DrunkenMasterTips.Brew)
     ];
 
@@ -39,7 +39,7 @@ public class BarBrawl() : DrunkenMasterCard(3, CardType.Attack, CardRarity.Rare,
         if (CombatState == null) return;
         for (int i = 0; i < DynamicVars[MuddlesKey].IntValue; i++)
         {
-            var muddle = BrewSystem.CreateIngredient(Owner, ModelDb.Card<Muddle>());
+            var muddle = BrewSystem.CreateIngredient(Owner, ModelDb.Card<Muddle>(), upgraded: IsUpgraded);
             await CardPileCmd.AddGeneratedCardToCombat(muddle, PileType.Hand, Owner);
         }
     }

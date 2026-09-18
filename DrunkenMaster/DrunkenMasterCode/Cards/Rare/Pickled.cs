@@ -12,8 +12,8 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
 /// <summary>
-/// Rare Skill, 1 Energy. Gain 4 Block plus your current Intoxication. Blur 1: the Block is not removed at the start
-/// of your next turn. Upgraded: 8 base Block (Blur stays 1). Uses the game's own BlurPower.
+/// Rare Skill, 1 Energy. Gain 5 Block plus your current Intoxication (2026-09-18; was 4 (8)). Blur 1: the Block is not removed at the start
+/// of your next turn. Upgraded: 9 base Block (Blur stays 1). Uses the game's own BlurPower.
 /// </summary>
 public class Pickled() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Rare, TargetType.Self)
 {
@@ -23,7 +23,7 @@ public class Pickled() : DrunkenMasterCard(1, CardType.Skill, CardRarity.Rare, T
 
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
-        new CalculationBaseVar(4),
+        new CalculationBaseVar(5),
         new CalculationExtraVar(1),
         new CalculatedBlockVar(ValueProp.Move).WithMultiplier(
             (CardModel card, Creature? _) => IntoxicationResource.AmountOf(card.Owner)),

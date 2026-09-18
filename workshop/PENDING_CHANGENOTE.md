@@ -16,6 +16,15 @@ Balance pass.
   Drunk or getting there mid turn both count, and it only pays once per turn. It no longer affects
   random card costs, and the upgrade no longer grants Intoxication.
 
+Card changes (2026-09-18).
+
+- Bar Brawl: adds 3 Muddles (was 2); the upgrade also upgrades the Muddles.
+- Easy Mark: 1 Energy (was 2), +25% damage to Confused enemies, upgraded +50%.
+- Dutch Courage: now Uncommon and costs 1 (was Rare, 2).
+- Pickled: 5 (9) base Block, up from 4 (8).
+- New Uncommon Skill, Double Down (1 Energy): double your Intoxication and add an Everclear (+) into your hand.
+- Removed: Dizzy Spell, Pregame.
+
 Compatibility.
 
 - Intoxication-cost cards (Hurl, Cold Water, Rimshot and others) can no longer be played without

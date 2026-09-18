@@ -87,6 +87,6 @@
   "DRUNKENMASTER-CONTACT_BUZZ_POWER.description": "Whenever you attack an enemy, apply [blue]1[/blue] [gold]Confusion[/gold].",
   "DRUNKENMASTER-CONTACT_BUZZ_POWER.smartDescription": "Whenever you attack an enemy, apply [blue]{Amount}[/blue] [gold]Confusion[/gold].",
   "DRUNKENMASTER-EASY_MARK_POWER.title": "Easy Mark",
-  "DRUNKENMASTER-EASY_MARK_POWER.description": "Your Attacks deal [blue]50[/blue]% more damage to enemies with [gold]Confusion[/gold].",
+  "DRUNKENMASTER-EASY_MARK_POWER.description": "Your Attacks deal [blue]25[/blue]% more damage to enemies with [gold]Confusion[/gold].",
   "DRUNKENMASTER-EASY_MARK_POWER.smartDescription": "Your Attacks deal [blue]{Amount}[/blue]% more damage to enemies with [gold]Confusion[/gold]."
 }

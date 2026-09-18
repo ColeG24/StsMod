@@ -8,10 +8,10 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Rare Power, 2 Energy (2026-09-16). Enemies with Confusion take 50% more damage from Attacks. Upgraded: costs 1.</summary>
-public class EasyMark() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+/// <summary>Rare Power, 1 Energy. Enemies with Confusion take 25% more damage from Attacks. Upgraded: 50% (2026-09-18; was 2 Energy, 50%, upgrade cut the cost).</summary>
+public class EasyMark() : DrunkenMasterCard(1, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<EasyMarkPower>(50)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<EasyMarkPower>(25)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [HoverTipFactory.FromPower<EasyMarkPower>(), HoverTipFactory.FromPower<ConfusionPower>()];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
@@ -20,5 +20,5 @@ public class EasyMark() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, 
         await PowerCmd.Apply<EasyMarkPower>(choiceContext, Owner.Creature, DynamicVars[nameof(EasyMarkPower)].BaseValue, Owner.Creature, this);
     }
 
-    protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);
+    protected override void OnUpgrade() => DynamicVars[nameof(EasyMarkPower)].UpgradeValueBy(25m);
 }

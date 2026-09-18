@@ -160,7 +160,7 @@ ones are greyed out and the cost badge shows the price.
 
 | Band | Range | Effect |
 |---|---|---|
-| Sober | 0–3 | No bonus; Intoxication does not fade. Sober-gated: Steady Hands, Pregame, Sober Strike. |
+| Sober | 0–3 | No bonus; Intoxication does not fade. Sober-gated: Steady Hands, Sober Strike. (Pregame was cut 2026-09-18.) |
 | Tipsy | 4–7 | You have 1 Strength and 1 Dexterity (real powers; 2026-09-15, was 2 / 2 from 2026-09-14, hidden +2 damage / +2 Block before that). |
 | Drunk | 8–11 | You have 2 Strength and **-1** Dexterity as the band total, not on top of Tipsy (2026-09-15). Cards you draw get a random cost 0–3 **for this turn**. Entering Drunk re-rolls the hand. Dropping below Drunk restores the costs. |
 | Blackout | 12 | See below. |
@@ -264,7 +264,8 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Stir Crazy | Attack | 1 | Deal 6 (8) damage once for each Ingredient in your Brew. |
 | Double Vision | Skill | 0 | Exhaust. Apply 6 (9) Confusion. |
 | Spin the Bottle | Skill | 0 + 3 Intox | Apply 3 (5) Confusion to ALL enemies. |
-| Pregame | Skill | 1 | Gain 4 (6) Intoxication if Sober, otherwise 2 (3). |
+| Double Down | Skill | 1 | Double your Intoxication. Add an Everclear (+) into your hand. (2026-09-18) |
+| Dutch Courage | Power | 1 | Whenever you Blackout, gain 3 (4) Strength. (Rare at 2 Energy until 2026-09-18.) |
 | Blow Smoke | Skill | 2 | Gain 10 (13) Block. Apply 4 (6) Confusion. |
 | Order Up | Skill | 1 | Gain 7 (10) Block. Next turn, add a Grain Spirit into your hand. |
 | Numb | Skill | 1 | Gain 4 (7) Block. If Tipsy or above, take half damage from attacks until your next turn. |
@@ -274,14 +275,13 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 Still, Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
-Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Dutch Courage (+3 (4) Strength
-whenever you Blackout), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
+Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;
 2026-09-17 rework, was a clamp on random costs while Drunk). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
-Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 2 Muddles; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
+Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 3 Muddles (+) since 2026-09-18; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
 Ingredient played this turn), Clear the Bar (Attack 0: can only be played by a Blackout; 50 (65) to ALL), Haymaker (Attack 1: 8 (11),
 triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)), Muddle Through (Skill 2, Exhaust: transform any number of cards in
-your hand into Muddles (+)). Rare is 22.
+your hand into Muddles (+)). Rare is 22. 2026-09-18: Dizzy Spell cut, Dutch Courage down to Uncommon (Rare 23 in total with the 09-16 additions); Easy Mark 1 Energy, +25% (50%); Pickled 5 (9) base Block.
 
 Pool rules (2026-09-12): **no Common Powers**, and the Rare pool must keep **at least four Powers**
 (Lasting Candy gotcha, see DEV_NOTES). No Harmony patches on base-game relics — fix content instead.

@@ -8,10 +8,10 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Vfx;
 
-namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
+namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
-/// <summary>Rare Power, 2 cost. Whenever you Blackout (end a turn at 12 Intoxication), gain 3 Strength. Upgraded: 4. (2026-09-13: was +1/2 per band raised.)</summary>
-public class DutchCourage() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+/// <summary>Uncommon Power, 1 Energy (2026-09-18; was Rare at 2). Whenever you Blackout (end a turn at 12 Intoxication), gain 3 Strength. Upgraded: 4. (2026-09-13: was +1/2 per band raised.)</summary>
+public class DutchCourage() : DrunkenMasterCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DutchCouragePower>(3)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
