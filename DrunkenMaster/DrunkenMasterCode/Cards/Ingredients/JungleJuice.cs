@@ -8,10 +8,10 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 
-/// <summary>Contributes: Apply 1 Confusion. Upgraded: 2.</summary>
+/// <summary>Contributes: Apply 2 Confusion. Upgraded: 3 (2026-09-18; was 1 (2)).</summary>
 public class JungleJuice : IngredientCard
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<ConfusionPower>(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<ConfusionPower>(2)];
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
         base.ExtraHoverTips.Append(HoverTipFactory.FromPower<ConfusionPower>());
     public override bool TargetsEnemy => true;

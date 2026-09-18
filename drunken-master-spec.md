@@ -128,7 +128,7 @@ Random pool (10 in singleplayer, 11 in co-op; the original plan was 5 "for learn
 | Muddle | Gain 4 Block. | 7 | no |
 | Bitters | Apply 1 Vulnerable. | 2 | yes |
 | Wormwood | Apply 1 Weak. | 2 | yes |
-| Jungle Juice | Apply 1 Confusion. | 2 | yes |
+| Jungle Juice | Apply 2 (3) Confusion. (1 (2) until 2026-09-18.) | 2 | yes |
 | Hair of the Dog | Draw 1 card. | 2 | no |
 | Grain Spirit | Gain 1 Energy. | 2 | no |
 | Ethanol | Gain 2 Intoxication. | 3 | no |
@@ -244,7 +244,6 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Stir the Pot | Attack | 1 | Deal 10 (13) damage. Draw 1 (2) cards for each Concoction you brewed this turn. (Common, 7 (10) + draw per Ingredient in the Brew, until 2026-09-15.) |
 | Molotov | Attack | 2 | Gain 3 Intoxication, then deal 14 (18) damage to ALL enemies. (12 (16) until 2026-09-17.) |
 | Scrape the Barrel | Attack | 2 | Deal 4 damage 4 times. Put 1 (2) random Ingredient from your exhaust pile into your hand. |
-| Empties | Attack | 1 | Deal 8 damage, +1 (+2) for each Ingredient in your exhaust pile. |
 | Staggering Blow | Attack | 2 | Deal 15 (20) damage. Gain 1 (2) Block for each Intoxication. |
 | Knock One Back | Skill | 0 | Gain 2 (3) Intoxication. Draw 1 card. |
 | Pick-Me-Up | Skill | 0 + 3 Intox | Gain 1 (2) Energy. |
@@ -273,7 +272,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 ### Rare (11)
 
-Still, Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
+Empties (Attack 1: 8 damage, +2 (3) per Ingredient in your exhaust pile; Uncommon at +1 (2) until 2026-09-18), Still (Power 2 (1): draw 1 additional card each turn; at the start of your turn a random non-Ingredient card in hand becomes a random Ingredient; 2026-09-18 rework, was 1 random Ingredient per turn), Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;

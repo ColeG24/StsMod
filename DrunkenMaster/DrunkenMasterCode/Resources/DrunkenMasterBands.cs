@@ -76,6 +76,19 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
     }
 
     /// <summary>
+    /// A card that paid an Intoxication cost has now resolved: apply the band change its cost caused (see
+    /// <see cref="IntoxicationResource.Spend{T}"/>). Runs for every card, and is a no-op when nothing changed, so a
+    /// play that was cut short still settles on the next card or at the next turn start.
+    /// </summary>
+    public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        var player = cardPlay.Card.Owner;
+        if (!IsDrunkenMaster(player)) return;
+        var resource = IntoxicationResource.Get(player);
+        if (resource != null) await resource.FlushBandPowers(choiceContext);
+    }
+
+    /// <summary>
     /// Blackout trigger. This is the engine's per-player "auto-play at end of turn" hook (Stampede uses it), and it
     /// arrives with a HookPlayerChoiceContext OWNED BY THIS PLAYER. That matters in co-op: a hook context can carry
     /// exactly one synchronized hook action, and every player choice must happen inside it. The previous home,

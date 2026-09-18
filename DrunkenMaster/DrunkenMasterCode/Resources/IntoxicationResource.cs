@@ -319,17 +319,18 @@ public class IntoxicationResource() : CustomResource(ResourceId)
     }
 
     /// <summary>
-    /// Cards that cost Intoxication spend through here; dropping below Tipsy must take the powers away, and loss
-    /// listeners hear about what was actually spent (X costs spend a different amount than they were asked for).
+    /// Cards that cost Intoxication spend through here. The band powers are NOT flushed here (2026-09-18): the cost is
+    /// paid before OnPlay, so Hurl at 4 previewed 15 with Tipsy's Strength and then hit for 14 once the spend dropped
+    /// you to Sober. The Strength / Dexterity of the band you played the card from now stay until the card has
+    /// resolved; <see cref="DrunkenMasterBands.AfterCardPlayed"/> flushes them. The dial and banner still move at
+    /// once, and loss listeners hear about what was actually spent (X costs spend a different amount than asked).
     /// </summary>
     public override async Task<bool> Spend<T>(ICombatState combatState, AbstractModel? spender, int amount, bool optional)
     {
         int before = Amount;
         bool ok = await base.Spend<T>(combatState, spender, amount, optional);
-        var context = new ThrowingPlayerChoiceContext();
-        await FlushBandPowers(context);
         var owner = Owner;
-        if (owner != null && Amount < before) await NotifyLost(context, owner, before - Amount);
+        if (owner != null && Amount < before) await NotifyLost(new ThrowingPlayerChoiceContext(), owner, before - Amount);
         return ok;
     }
 

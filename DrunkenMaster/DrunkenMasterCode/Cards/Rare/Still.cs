@@ -9,7 +9,7 @@ using MegaCrit.Sts2.Core.Nodes.Vfx;
 
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
-/// <summary>Rare Power, 2 cost. At the start of your turn, add 1 random Ingredient into your hand. Upgraded: costs 1.</summary>
+/// <summary>Rare Power, 2 cost. Draw 1 additional card each turn. At the start of your turn, transform a random card in your hand into a random Ingredient. Upgraded: costs 1. (2026-09-18 rework; was 1 random Ingredient per turn.)</summary>
 public class Still() : DrunkenMasterCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<StillPower>(1)];

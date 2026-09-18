@@ -24,6 +24,12 @@ Card changes (2026-09-18).
 - Pickled: 5 (9) base Block, up from 4 (8).
 - New Uncommon Skill, Double Down (1 Energy): double your Intoxication and add an Everclear (+) into your hand.
 - Removed: Dizzy Spell, Pregame.
+- Empties: now Rare, and deals 2 (3) additional damage per Ingredient in your exhaust pile, up from 1 (2).
+- Jungle Juice: applies 2 (3) Confusion, up from 1 (2).
+- Still reworked: draw 1 additional card each turn, and at the start of your turn a random card in
+  your hand is transformed into a random Ingredient (was: add 1 random Ingredient per turn).
+- Fix: cards that cost Intoxication now deal the damage (and Block) their preview shows. Paying the
+  cost used to drop you out of Tipsy or Drunk before the hit landed, losing that band's Strength.
 
 Compatibility.
 

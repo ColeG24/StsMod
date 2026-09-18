@@ -9,18 +9,18 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 
-namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
+namespace DrunkenMaster.DrunkenMasterCode.Cards.Rare;
 
 /// <summary>
-/// 1 Energy. Deal 8 damage, plus 1 for each Ingredient in your exhaust pile. Upgraded: plus 2.
+/// Rare (2026-09-18; was Uncommon at +1 (2)), 1 Energy. Deal 8 damage, plus 2 for each Ingredient in your exhaust pile. Upgraded: plus 3.
 /// Ingredients Exhaust when brewed (and when they fizzle at end of turn), so this counts bottles emptied this fight.
 /// </summary>
-public class Empties() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
+public class Empties() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars =>
     [
         new CalculationBaseVar(8),
-        new ExtraDamageVar(1),
+        new ExtraDamageVar(2),
         new CalculatedDamageVar(ValueProp.Move).WithMultiplier(CountExhaustedIngredients)
     ];
 
