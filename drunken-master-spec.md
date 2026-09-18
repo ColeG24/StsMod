@@ -272,7 +272,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 
 ### Rare (11)
 
-Empties (Attack 1: 8 damage, +2 (3) per Ingredient in your exhaust pile; Uncommon at +1 (2) until 2026-09-18), Still (Power 2 (1): draw 1 additional card each turn; at the start of your turn a random non-Ingredient card in hand becomes a random Ingredient; 2026-09-18 rework, was 1 random Ingredient per turn), Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
+Empties (Attack 1: 8 damage, +2 (3) per Ingredient in your exhaust pile; Uncommon at +1 (2) until 2026-09-18), Still (Power 2 (1): draw 1 additional card each turn; at the start of your turn choose a non-Ingredient card in hand to become a random Ingredient; 2026-09-18 rework, was 1 random Ingredient per turn), Chug (Skill 1: 5 (7) Block; twice if Tipsy, 4 times if Drunk; Poised; Common until 2026-09-15 evening), Last Round (X Intox: 6 (8) damage X times), Open Bar (1 (0), Exhaust: fill the Brew with random
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;

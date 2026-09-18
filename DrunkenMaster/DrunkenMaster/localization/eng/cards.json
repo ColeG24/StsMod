@@ -24,7 +24,7 @@
   "DRUNKENMASTER-BAR_TAB.title": "Bar Tab",
   "DRUNKENMASTER-BAR_TAB.description": "At the start of your turn, gain {BarTabPower:diff()} [gold]Intoxication[/gold].",
   "DRUNKENMASTER-STILL.title": "Still",
-  "DRUNKENMASTER-STILL.description": "Draw {StillPower} additional {StillPower:plural:card|cards} each turn.\nAt the start of your turn, transform a random card in your [gold]Hand[/gold] into a random [gold]Ingredient[/gold].",
+  "DRUNKENMASTER-STILL.description": "Draw {StillPower} additional {StillPower:plural:card|cards} each turn.\nAt the start of your turn, transform a card in your [gold]Hand[/gold] into a random [gold]Ingredient[/gold].",
   "DRUNKENMASTER-BOTTLE_SMASH.title": "Bottle Smash",
   "DRUNKENMASTER-BOTTLE_SMASH.description": "Deal {Damage:diff()} damage.\nApply {WeakPower:diff()} [gold]Weak[/gold] and {ConfusionPower:diff()} [gold]Confusion[/gold].",
   "DRUNKENMASTER-BARSTOOL_SWING.title": "Barstool Swing",

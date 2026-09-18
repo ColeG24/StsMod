@@ -26,8 +26,8 @@ Card changes (2026-09-18).
 - Removed: Dizzy Spell, Pregame.
 - Empties: now Rare, and deals 2 (3) additional damage per Ingredient in your exhaust pile, up from 1 (2).
 - Jungle Juice: applies 2 (3) Confusion, up from 1 (2).
-- Still reworked: draw 1 additional card each turn, and at the start of your turn a random card in
-  your hand is transformed into a random Ingredient (was: add 1 random Ingredient per turn).
+- Still reworked: draw 1 additional card each turn, and at the start of your turn choose a card in
+  your hand to transform into a random Ingredient (was: add 1 random Ingredient per turn).
 - Fix: cards that cost Intoxication now deal the damage (and Block) their preview shows. Paying the
   cost used to drop you out of Tipsy or Drunk before the hit landed, losing that band's Strength.
 
