@@ -78,7 +78,8 @@ public abstract class DrunkenMasterCard(int cost, CardType type, CardRarity rari
 
     /// <summary>
     /// Every card that costs Intoxication is Poised: Drunk never re-rolls its cost. Subclasses that override this
-    /// (Ingredients, Chaser, Upper Deckie, Chug, Drink to Forget) list their keywords explicitly.
+    /// (Ingredients, Chaser, Upper Deckie, Chug, Drink to Forget) list their keywords explicitly. Ingredients carry a
+    /// canonical Intoxication cost of 0 for Shot Glass (2026-09-19) and are deliberately not Poised.
     /// </summary>
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         _hasIntoxicationCost ? new[] { DrunkenMasterKeywords.Poised } : Array.Empty<CardKeyword>();

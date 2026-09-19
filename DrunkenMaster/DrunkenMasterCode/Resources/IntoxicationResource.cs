@@ -381,12 +381,26 @@ public class IntoxicationResource() : CustomResource(ResourceId)
             {
                 if (model == null) return false;
                 var cost = CustomResources<T>.Cost(model);
-                if (cost == null) return false;
+                if (cost == null || !ShowsBadge(cost)) return false;
                 display.UpdateCostVisual(card, cost, PileType.None);
                 return true;
             });
-        CustomResources<T>.UpdateCostVisuals += (card, cost, pileType) => getDisplay(card).UpdateCostVisual(card, cost, pileType);
+        CustomResources<T>.UpdateCostVisuals += (card, cost, pileType) =>
+        {
+            var display = getDisplay(card);
+            display.UpdateCostVisual(card, cost, pileType);
+            if (!ShowsBadge(cost)) display.Visible = false;
+        };
     }
+
+    /// <summary>
+    /// Ingredients carry a canonical Intoxication cost of 0 so Shot Glass can raise it (2026-09-19). A badge that
+    /// would read "0" on a card printed at 0 is noise, so it is hidden until something makes the cost positive. A
+    /// card printed above 0 keeps its badge even when made free (that "0" is information).
+    /// </summary>
+    private static bool ShowsBadge(ICustomResourceCost cost) =>
+        cost is not CustomResourceCost<IntoxicationResource> c
+        || c.CostsX || c.Canonical > 0 || c.GetWithModifiers(CostModifiers.All) > 0;
 
     // ----- static helpers for cards / relics / potions -----
 

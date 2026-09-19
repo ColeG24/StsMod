@@ -255,12 +255,12 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Steady Hands | Power | — | While Sober, whenever you play an Ingredient, draw 1 card. |
 | Beer Muscles | Power | 1 | Whenever you drink a potion, gain 1 Strength. (Upgrade: Innate.) |
 | Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
-| Stockpot | Power | — | Your Brew holds 1 more Ingredient. |
-| Shot Glass | Power | 1 | Your Brew holds 1 fewer Ingredient. Whenever you drink a Concoction, gain 1 (2) Intoxication. |
+| Stockpot | Power | 2 | Your Brew holds 1 more Ingredient. Gain 2 (3) Strength and 2 (3) Dexterity. (2026-09-19: Bulk Up mirror; was 1 (0) cost, capacity only, never picked.) |
+| Shot Glass | Power | 1 (0) | Your Brew holds 1 fewer Ingredient. Ingredients cost 1 more Intoxication to play. (2026-09-19 rework; was +1 (2) Intoxication per Concoction drunk. The tax stacks per copy; direct-to-pot effects such as Cellar Raid bypass it.) |
 | Drunken Strike | Attack | 1 | Deal 8 (10) damage. Hits twice if you are Tipsy or above. Strike tag. (Was Rare; was "Drunken Fist" until 2026-09-15.) |
 | Cheap Shot | Attack | 0 | Deal 5 (7) damage. Apply 1 (2) Confusion. |
 | Soda Gun | Attack | 1 | Deal 8 (11) damage to ALL enemies. Add a Seltzer (+) into your hand. |
-| Stir Crazy | Attack | 1 | Deal 6 (8) damage once for each Ingredient in your Brew. |
+| Stir Crazy | Attack | 1 | Deal 6 (8) damage. Deal it again once for each Ingredient in your Brew. (2026-09-19: base hit added; was per-Ingredient only, 0 hits on an empty pot.) |
 | Double Vision | Skill | 0 | Exhaust. Apply 6 (9) Confusion. |
 | Spin the Bottle | Skill | 0 + 3 Intox | Apply 3 (5) Confusion to ALL enemies. |
 | Double Down | Skill | 1 | Double your Intoxication. Add an Everclear (+) into your hand. (2026-09-18) |

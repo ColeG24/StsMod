@@ -15,9 +15,19 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Ingredients;
 /// Spec §5. Ingredients are generated 0-cost Exhaust tokens. Playing one has NO immediate effect;
 /// it is added to the Brew. Unplayed Ingredients vanish at end of turn (Ethereal).
 /// Subclasses declare the effect they contribute to a Concoction.
+///
+/// Every Ingredient also carries a canonical Intoxication cost of 0 (2026-09-19) so that a cost object exists for
+/// Shot Glass to raise through BaseLib's in-combat resource-cost hook. The badge stays hidden while it reads 0
+/// (IntoxicationResource.RegisterResourceVisuals). Ingredients are deliberately NOT Poised: Drunk still re-rolls
+/// their Energy cost, and the Intoxication cost is a separate price on top.
 /// </summary>
-public abstract class IngredientCard() : DrunkenMasterCard(0, CardType.Skill, CardRarity.Token, TargetType.Self)
+public abstract class IngredientCard : DrunkenMasterCard
 {
+    protected IngredientCard() : base(0, CardType.Skill, CardRarity.Token, TargetType.Self)
+    {
+        SetIntoxicationCost(0);
+    }
+
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Ethereal];
 
     // Ingredients are never produced by "add a random card" effects; only by the mod's own generators.
@@ -64,8 +74,9 @@ public abstract class IngredientCard() : DrunkenMasterCard(0, CardType.Skill, Ca
     /// <summary>
     /// Greyed out while the pot is full and no potion slot is free (2026-09-14). Playing one then would only exhaust
     /// it; drink or discard a potion first. The pot seals itself the moment a slot opens (BrewSealPatch).
+    /// The base check is the Intoxication cost (0 unless Shot Glass is up).
     /// </summary>
-    protected override bool IsPlayable => Owner == null || !BrewSystem.IsBlocked(Owner);
+    protected override bool IsPlayable => base.IsPlayable && (Owner == null || !BrewSystem.IsBlocked(Owner));
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

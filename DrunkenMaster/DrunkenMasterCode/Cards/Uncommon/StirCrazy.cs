@@ -12,8 +12,10 @@ using MegaCrit.Sts2.Core.ValueProps;
 namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 
 /// <summary>
-/// Uncommon Attack, 1 Energy. Deal 6 damage once for each Ingredient in your Brew (multi-hit). Upgraded: 8.
-/// An empty pot means no hits. The upgrade value was not specified; 8 is a guess.
+/// Uncommon Attack, 1 Energy. Deal 6 damage, then again for each Ingredient in your Brew (multi-hit). Upgraded: 8.
+/// 2026-09-19: the base hit was added. The card was offered 8 times and never taken: the pot empties when it seals,
+/// so a 3-pot never held more than 2 Ingredients and an empty pot meant no hits. Now it is never a dead draw and the
+/// pot count is a bonus that grows with Stockpot / Copper Kettle (the bigger-pot payoff the pool lacked).
 /// </summary>
 public class StirCrazy() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
 {
@@ -29,8 +31,7 @@ public class StirCrazy() : DrunkenMasterCard(1, CardType.Attack, CardRarity.Unco
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-        int hits = BrewSystem.GetBrew(Owner).Count;
-        if (hits <= 0) return;
+        int hits = 1 + BrewSystem.GetBrew(Owner).Count;
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this, cardPlay)
             .Targeting(cardPlay.Target)
