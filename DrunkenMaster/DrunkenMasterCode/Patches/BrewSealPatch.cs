@@ -19,7 +19,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Patches;
 /// triggers this patch again once the stacks are spent. Entropic Brew fills its own old slot inside its use, so the pot
 /// stays full and waits for the next opening.
 ///
-/// Skipped once combat is over or ending: Concoction.AfterCombatEnd discards potions into Dregs, and a Concoction
+/// Skipped once combat is over or ending: Concoction.AfterCombatEnd discards leftover Concoctions, and a Concoction
 /// sealed at that point would outlive the fight with per-instance state (the spec §8 save problem).
 /// </summary>
 public static class BrewSealPatch

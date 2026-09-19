@@ -79,9 +79,10 @@ not a Rag change.
 
 ### Expiry
 
-A Concoction still held when combat ends becomes **Dregs** in the same slot: a stateless, combat-only
-potion that, when drunk, lets you choose 1 of 3 Ingredients to add to your **hand**. This keeps brewed
-potions from being banked for bosses and removed the per-instance persistence problem (§8).
+A Concoction still held when combat ends **vanishes** and its slot frees up. Nothing brewed can be banked
+for a boss, and no per-instance state crosses a save (§8). The potion text says so ("Vanishes at the end
+of combat") and the Brew tooltip repeats it. Until 2026-09-19 a leftover Concoction became **Dregs**, a
+stateless potion that let you choose 1 of 3 Ingredients into your hand; the user cut the concept.
 
 ### Concoction composition
 
@@ -325,7 +326,7 @@ cost-reducing block card, and raised Liquid Courage to +2 so it is net positive 
 |---|---|
 | Character | `PlaceholderCharacterModel` |
 | Cards, Ingredient tokens | `CustomCardModel` via `DrunkenMasterCard` (carries the `[Pool]` attribute) |
-| Concoction, Dregs | `CustomPotionModel` |
+| Concoction | `CustomPotionModel` |
 | Character potion pool | `CustomPotionPoolModel` |
 | Card pool | `CustomCardPoolModel` |
 | Tavern Rag | `CustomRelicModel` |
@@ -350,7 +351,7 @@ cost-reducing block card, and raised Liquid Courage to +2 so it is net positive 
 
 A Concoction's Ingredient list, description and `TargetType` are composed at runtime via `SpireField`.
 Rather than round-trip that through the save file, Concoctions are **combat-scoped**: anything still in
-a slot at end of combat becomes stateless Dregs. Nothing with per-instance data crosses a save.
+a slot at end of combat is discarded. Nothing with per-instance data crosses a save.
 Co-op sync of the composed description is untested.
 
 ---
@@ -365,7 +366,7 @@ Co-op sync of the composed description is untested.
 3. **Matching-ingredient bonus.** Three of the same Ingredient producing an amplified potion. This is
    what makes mixed potions a consolation prize rather than a design failure. Decide before the pool
    grows further.
-4. **Ingredient selection.** Partly answered: Free Pour+ and Dregs are choose-1-of-3; Hard Liquor,
+4. **Ingredient selection.** Partly answered: Free Pour+ is choose-1-of-3; Hard Liquor,
    Slip a Mickey, Sour Punch, Mash, Wake-Up Call and Boilermaker grant specific Ingredients. The
    random generators (Rag, Restock, Still, Open Bar, Cellar Raid) stay random.
 5. **Blackout card source.** Decided: draw pile.

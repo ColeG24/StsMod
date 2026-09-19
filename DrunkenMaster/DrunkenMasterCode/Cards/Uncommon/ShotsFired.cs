@@ -14,7 +14,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Cards.Uncommon;
 /// Uncommon Attack, 2 Energy (2026-09-16). Deal 5 damage to a random enemy once, plus once more for each potion you have
 /// drunk this combat (Sword Boomerang targeting). Upgraded: 7. The hit count is a live CalculatedVar (base 1 + 1 per drink)
 /// so the card shows the real number. Drinks are counted from combat history's PotionUsedEntry, filtered to this player:
-/// Dregs count, a Chaser double-trigger counts once. The potion archetype's first Attack; it double-scales with Strength
+/// A Chaser double-trigger counts once. The potion archetype's first Attack; it double-scales with Strength
 /// from Tipsy and Beer Muscles because every hit gets it.
 /// </summary>
 public class ShotsFired() : DrunkenMasterCard(2, CardType.Attack, CardRarity.Uncommon, TargetType.RandomEnemy)

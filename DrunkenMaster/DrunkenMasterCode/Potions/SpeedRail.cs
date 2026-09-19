@@ -11,7 +11,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Potions;
 
 /// <summary>
 /// Rare character potion (2026-09-14). Add 3 random Ingredients into your hand: a full pot in one drink.
-/// Self-targeted (not AnyPlayer like Dregs): Ingredients only mean something in the Drunken Master's hand.
+/// Self-targeted (not AnyPlayer): Ingredients only mean something in the Drunken Master's hand.
 /// </summary>
 public class SpeedRail : DrunkenMasterPotion
 {

@@ -13,7 +13,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Patches;
 /// Chaser's re-drink. Wraps the Task returned by PotionModel.OnUseWrapper: once the first use has fully resolved
 /// (effects, history, every "whenever you drink" hook), spend a Chaser stack, put the potion back in a slot and run
 /// the wrapper again with the same choice context and target. The second use is therefore a real use inside the SAME
-/// game action on every machine (co-op safe), with a real choice context (Dregs' choose screen works), and every
+/// game action on every machine (co-op safe), with a real choice context (choose screens work), and every
 /// drink power fires again. Recursion ends when the stacks run out.
 ///
 /// If the re-drink cannot happen (target died, no slot), the Brew is given its seal check here, because

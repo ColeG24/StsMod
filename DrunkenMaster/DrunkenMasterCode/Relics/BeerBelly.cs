@@ -10,7 +10,7 @@ namespace DrunkenMaster.DrunkenMasterCode.Relics;
 
 /// <summary>
 /// Rare (2026-09-16, the third Rare that brings the pool to base parity). Whenever you drink a potion, gain 3 Block.
-/// Every potion counts (Concoctions, Dregs, the character potions, shared ones), uncapped: a flat per-drink payoff, and
+/// Every potion counts (Concoctions, the character potions, shared ones), uncapped: a flat per-drink payoff, and
 /// drinks are bounded by the Ingredients spent to brew them. Unpowered like Anchor, so Drunk's -1 Dexterity does not
 /// touch it. Same <see cref="AfterPotionUsed"/> hook as Iron Liver / Shot Glass.
 /// </summary>

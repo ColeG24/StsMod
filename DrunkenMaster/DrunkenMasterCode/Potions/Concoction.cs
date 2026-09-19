@@ -63,8 +63,10 @@ public class Concoction : DrunkenMasterPotion
     public override IEnumerable<IHoverTip> ExtraHoverTips => [IntoxicationResource.Tip];
 
     /// <summary>
-    /// Concoctions are combat-scoped (2026-09-12): one still in a slot when combat ends becomes Dregs in
-    /// the same slot. Dregs carry no state, which is what makes them save-safe.
+    /// Concoctions are combat-scoped (2026-09-12): one still in a slot when combat ends is discarded and the slot
+    /// frees up. Until 2026-09-19 it turned into a stateless "Dregs" potion (choose 1 of 3 Ingredients) instead;
+    /// the user cut that concept, so nothing brewed outlives its fight. This is also what keeps the composed
+    /// per-instance state (Ingredients, targeting) out of the save file.
     /// </summary>
     public override async Task AfterCombatEnd(CombatRoom room)
     {
@@ -72,9 +74,8 @@ public class Concoction : DrunkenMasterPotion
         if (owner == null) return;
         int slot = owner.GetPotionSlotIndex(this);
         if (slot < 0) return;
-        MainFile.Logger.Info($"Concoction in slot {slot} expired into Dregs.");
+        MainFile.Logger.Info($"Concoction in slot {slot} discarded at end of combat.");
         await PotionCmd.Discard(this);
-        await PotionCmd.TryToProcure(ModelDb.Potion<Dregs>().ToMutable(), owner, slot);
     }
 
     protected override async Task OnUse(PlayerChoiceContext choiceContext, Creature? target)

@@ -2,7 +2,7 @@
   "DRUNKENMASTER-INGREDIENT.title": "Ingredient",
   "DRUNKENMASTER-INGREDIENT.description": "Playing it adds its effect to your [gold]Brew[/gold] instead of doing it now.",
   "DRUNKENMASTER-BREW.title": "Brew",
-  "DRUNKENMASTER-BREW.description": "Your pot of [gold]Ingredients[/gold]. When it is full it seals into a [gold]Concoction[/gold] potion. The pot empties at the end of combat.",
+  "DRUNKENMASTER-BREW.description": "Your pot of [gold]Ingredients[/gold]. When it is full it seals into a [gold]Concoction[/gold] potion. The pot empties at the end of combat, and any [gold]Concoction[/gold] you have not drunk vanishes with it.",
   "DRUNKENMASTER-INTOXICATION.title": "Intoxication",
   "DRUNKENMASTER-INTOXICATION.description": "Starts each combat at [blue]3[/blue]. Builds as you drink; holds while [gold]Sober[/gold], fades by [blue]1[/blue] a turn while [gold]Tipsy[/gold] and by [blue]2[/blue] while [gold]Drunk[/gold]. The bands: [gold]Sober[/gold], [gold]Tipsy[/gold], [gold]Drunk[/gold], [gold]Blackout[/gold].",
   "DRUNKENMASTER-SOBER.title": "Sober",

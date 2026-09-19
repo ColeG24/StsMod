@@ -1,8 +1,6 @@
 {
   "DRUNKENMASTER-CONCOCTION.title": "Concoction",
-  "DRUNKENMASTER-CONCOCTION.description": "{Effects}",
-  "DRUNKENMASTER-DREGS.title": "Dregs",
-  "DRUNKENMASTER-DREGS.description": "What's left of a [gold]Concoction[/gold] that outlived its fight.\nChoose [blue]1[/blue] of [blue]3[/blue] [gold]Ingredients[/gold] to add into your [gold]Hand[/gold].",
+  "DRUNKENMASTER-CONCOCTION.description": "{Effects}\nVanishes at the end of combat.",
   "DRUNKENMASTER-BATHTUB_GIN.title": "Bathtub Gin",
   "DRUNKENMASTER-BATHTUB_GIN.description": "Apply [blue]{ConfusionPower}[/blue] [gold]Confusion[/gold].",
   "DRUNKENMASTER-SPEED_RAIL.title": "Speed Rail",
