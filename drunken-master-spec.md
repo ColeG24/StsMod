@@ -252,7 +252,7 @@ Numbers are base (upgraded). "+N Intox" in the cost column is an Intoxication co
 | Sweat It Out | Skill | X Intox | Gain 2 (3) Block for each Intoxication spent. |
 | Line 'Em Up | Skill | 0 | Exhaust. Gain 1 Energy for each Ingredient in your hand. (Upgrade: Retain.) |
 | Bar Tab | Power | 1 | At the start of your turn, gain 2 (3) Intoxication. |
-| Iron Liver | Power | — | Whenever you drink a potion, gain 3 (5) Block. |
+| Iron Liver | Power | — | Moved to Rare 2026-09-16; see the Rare list. |
 | Steady Hands | Power | — | While Sober, whenever you play an Ingredient, draw 1 card. |
 | Beer Muscles | Power | 1 | Whenever you drink a potion, gain 1 Strength. (Upgrade: Innate.) |
 | Barback | Power | — | Whenever you create an Ingredient, gain 2 (3) Block. |
@@ -277,7 +277,7 @@ Blackout Form (Power 3, Ethereal, upgrade removes Ethereal; 2026-09-18: start ea
 Ingredients), Cellar Raid (3 (2), Exhaust: fill your hand with random Ingredients), Lights Out (0, Exhaust: gain 9 (12) Intoxication; the draw was dropped 2026-09-15), Last Call (0,
 Exhaust: +3 Intoxication, draw 2 (3)), Chaser (next potion drunk twice), Moonshiner (Power, 2: whenever the Brew seals, 3 (4) damage to ALL enemies per Ingredient
 in it), Bottomless Cup (Power, 2 (1): the first potion you drink each turn, +1 Energy and draw 1), Tolerance (Power, 2: the first time you are Drunk each turn, gain 2 (3) Energy; once per turn, so dipping out and back in pays nothing;
-2026-09-17 rework, was a clamp on random costs while Drunk), Dead Drunk (Power 2 (1), added 2026-09-19: if you end your turn Drunk, Block is not removed at the start of your next turn; a Blackout counts as ending the turn Drunk. The class's defensive Rare Power, Barricade with a band gate; Walk It Off already owns Intoxication-to-Block). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
+2026-09-17 rework, was a clamp on random costs while Drunk), Iron Liver (Power 2 (1), 2026-09-19 rework: if you end your turn Drunk, Block is not removed at the start of your next turn; a Blackout counts as ending the turn Drunk. The class's defensive Rare Power, Barricade with a band gate; Walk It Off already owns Intoxication-to-Block. Was 1 cost, 2 (3) Vigor per potion drunk from 2026-09-16, and an Uncommon giving 3 (5) Block per drink before that). Drunken Fist moved to Uncommon on 2026-09-13 and became Drunken Strike on 2026-09-15.
 Added 2026-09-15 late: Bar Brawl (Attack 3: 23 (28) + 3 Muddles (+) since 2026-09-18; up from Uncommon), Kitchen Sink (Attack 2: 14 (16) + 4 (5) per
 Ingredient played this turn), Clear the Bar (Attack 0: can only be played by a Blackout; 50 (65) to ALL), Haymaker (Attack 1: 8 (11),
 triple damage while Drunk), Drink to Forget (Skill 0 + 5 Intox, Exhaust: discard your hand, draw 5 (7)), Muddle Through (Skill 2, Exhaust: transform any number of cards in
