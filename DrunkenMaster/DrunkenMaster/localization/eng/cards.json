@@ -167,6 +167,8 @@
   "DRUNKENMASTER-THE_SPINS.description": "Whenever you apply [gold]Confusion[/gold] to an enemy, it takes {TheSpinsPower:diff()} damage.",
   "DRUNKENMASTER-WALK_IT_OFF.title": "Walk It Off",
   "DRUNKENMASTER-WALK_IT_OFF.description": "Whenever you gain, spend or lose [gold]Intoxication[/gold], gain {WalkItOffPower:diff()} [gold]Block[/gold].",
+  "DRUNKENMASTER-DEAD_DRUNK.title": "Dead Drunk",
+  "DRUNKENMASTER-DEAD_DRUNK.description": "If you end your turn [gold]Drunk[/gold], [gold]Block[/gold] is not removed at the start of your next turn.",
   "DRUNKENMASTER-BENDER.title": "Bender",
   "DRUNKENMASTER-BENDER.description": "Whenever you [gold]Blackout[/gold], play {BenderPower:diff()} additional {IfUpgraded:show:cards|card}.",
   "DRUNKENMASTER-BOTTOMS_UP.title": "Bottoms Up",
