@@ -67,19 +67,20 @@ if [[ "$GALLERY_SHA" != "$(cat "$WS/gallery.sha" 2>/dev/null)" ]]; then
     (( BYTES < 1000000 )) || { echo "$f is $BYTES bytes; Steam requires < 1 MB" >&2; exit 1; }
   done
   STAMP="$(date +%Y%m%d%H%M%S)"
-  for salt in $(seq 1 2000); do
-    rm -rf "$WS/previews"; mkdir "$WS/previews"
-    for f in "$WS/gallery"/*; do
-      NAME="$(basename "$f")"
-      : > "$WS/previews/${NAME%.*}.$STAMP-$salt.${NAME##*.}"
-    done
-    ORDER="$(ls -f "$WS/previews" | grep -v '^\.\.\{0,1\}$')"
-    [[ "$ORDER" == "$(sort <<< "$ORDER")" ]] && break
-    [[ "$salt" != 2000 ]] || { echo "could not find preview names that list in gallery order" >&2; exit 1; }
-  done
+  # Files are placed one at a time, each under a salted name chosen so it lists after the ones
+  # already staged (adding a name never reorders the existing ones). That takes about k tries for
+  # the k-th file instead of one lucky draw out of n! for the whole set.
+  rm -rf "$WS/previews"; mkdir "$WS/previews"
   for f in "$WS/gallery"/*; do
     NAME="$(basename "$f")"
-    cp "$f" "$WS/previews/${NAME%.*}.$STAMP-$salt.${NAME##*.}"
+    for salt in $(seq 1 5000); do
+      STAGED="$WS/previews/${NAME%.*}.$STAMP-$salt.${NAME##*.}"
+      : > "$STAGED"
+      ORDER="$(ls -f "$WS/previews" | grep -v '^\.\.\{0,1\}$')"
+      [[ "$ORDER" == "$(sort <<< "$ORDER")" ]] && { cp "$f" "$STAGED"; break; }
+      rm "$STAGED"
+      [[ "$salt" != 5000 ]] || { echo "could not find a preview name for $NAME that lists after the others" >&2; exit 1; }
+    done
   done
   echo ">> previews, in upload order:"; ls -f "$WS/previews" | grep -v '^\.\.\{0,1\}$'
 else
