@@ -181,8 +181,9 @@ turn, Blackout fires.
 - Your hand is discarded as normal (2026-09-14; it used to be Exhausted).
 - Resets Intoxication to 0.
 - Applies **Hungover** for the next turn only: 1 less Energy, draw 1 fewer card. It ticks off at the
-  end of that turn (a counter in code, but since Blackout resets Intoxication to 0 a second Blackout
-  lands after it is gone; in practice it never stacks).
+  end of that turn. Hungover never stacks (2026-09-19): a Blackout that resolves while you are already
+  Hungover (Blackout Form, or any two Blackouts on consecutive turns) refreshes it for one more turn
+  instead of adding a second stack.
 
 Design note kept from v0.1: the auto-trigger risk is that every point of Intoxication becomes a step
 toward a turn you didn't want. Mitigated so far by the high threshold and by 1/turn decay; revisit if

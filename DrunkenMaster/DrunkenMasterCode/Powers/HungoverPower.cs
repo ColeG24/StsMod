@@ -8,9 +8,10 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 namespace DrunkenMaster.DrunkenMasterCode.Powers;
 
 /// <summary>
-/// Applied by Blackout at the end of a turn. For the next turn: 1 less Energy and draw 1 fewer card
-/// per stack. Ticks down at the end of your turn; the tick on the turn it was applied is skipped
-/// (SkipNextDurationTick) so it always lasts exactly the following turn.
+/// Applied by Blackout at the end of a turn. For the next turn: 1 less Energy and draw 1 fewer card.
+/// Ticks down at the end of your turn; the tick on the turn it was applied is skipped
+/// (SkipNextDurationTick) so it always lasts exactly the following turn. A second Blackout while already
+/// Hungover calls <see cref="Refresh"/> instead of applying again, so it stays at 1 (2026-09-19; it used to stack).
 /// </summary>
 public class HungoverPower : DrunkenMasterPower
 {
@@ -27,6 +28,16 @@ public class HungoverPower : DrunkenMasterPower
         if (player != Owner.Player) return;
         Flash();
         await PlayerCmd.LoseEnergy(Amount, player);
+    }
+
+    /// <summary>
+    /// Another Blackout resolved while this is still up: keep it for one more turn without adding a stack. The end-of-turn
+    /// tick that would have removed it tonight is skipped, exactly as a fresh application would be.
+    /// </summary>
+    public void Refresh()
+    {
+        SkipNextDurationTick = true;
+        Flash();
     }
 
     public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)

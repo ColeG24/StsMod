@@ -139,8 +139,21 @@ public class DrunkenMasterBands() : CustomSingletonModel(HookType.Combat)
         await IntoxicationResource.NotifyLost(choiceContext, player, before - resource.Amount);
         if (CombatManager.Instance.IsOverOrEnding || creature.IsDead) return;
 
-        var hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, creature, 1, creature, null);
-        if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now
+        // Hungover never stacks (2026-09-19). Back-to-back Blackouts (Blackout Form every turn) used to add a stack each
+        // time: HungoverPower is a Counter, and PowerCmd.Apply both adds to the existing amount and re-arms
+        // SkipNextDurationTick for every debuff on a player, so the tick never landed and the draw and Energy loss
+        // grew by 1 per turn until you drew nothing. A Blackout while already Hungover now just refreshes it: the same
+        // 1 less Energy and 1 fewer card next turn.
+        var hungover = creature.Powers.OfType<HungoverPower>().FirstOrDefault();
+        if (hungover != null)
+        {
+            hungover.Refresh();
+        }
+        else
+        {
+            hungover = await PowerCmd.Apply<HungoverPower>(choiceContext, creature, 1, creature, null);
+            if (hungover != null) hungover.SkipNextDurationTick = true;   // lasts the *next* turn, not the one ending now
+        }
 
         foreach (var listener in creature.Powers.OfType<IBlackoutListener>().ToList())
         {
